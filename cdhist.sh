@@ -71,8 +71,10 @@
 ###
 
 
+declare CDHIST_CDLOG
 CDHIST_CDQMAX=10
 declare -a CDHIST_CDQ
+CDHIST_CDLOG="$HOME/zsh_cdhist"
 
 function cdhist_reset()
 {
@@ -182,8 +184,33 @@ function cdhist_back()
     cdhist_disp "${CDHIST_CDQ[@]}"
 }
 
+function cdhist_logview() { tac <(tac $CDHIST_CDLOG | awk '!colname[$0]++{print $0}'); }
+function cdhist_initialize()
+{
+    local count
+    local -a log_array
 
-if [ ${#CDHIST_CDQ[@]} = 0 ]; then cdhist_reset; fi
+    count=0
+    if [ "$ZSH_NAME" = "zsh" ];then
+        setopt localoptions ksharrays
+    fi
+    log_array=( $(cdhist_logview) )
+    for ((i=${#log_array[*]}-1; i>=0; i--))
+    do
+        CDHIST_CDQ[$count]="${log_array[i]}"
+        let count++
+        [ $count -eq $CDHIST_CDQMAX ] && break
+    done
+}
+
+#if [ ${#CDHIST_CDQ[@]} = 0 ]; then cdhist_reset; fi
+if [ -f $CDHIST_CDLOG ]; then
+    cdhist_initialize
+    unset -f cdhist_initialize
+    cdhist_cd $HOME
+else
+    cdhist_reset
+fi
 
 
 ###  Aliases
