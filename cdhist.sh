@@ -104,7 +104,11 @@ function cdhist_del()
 
 function cdhist_rot()
 {
-    local i q
+    if [ "$ZSH_NAME" = "zsh" ];then
+        setopt localoptions ksharrays
+    fi
+    local i
+    local -a q
     for ((i=0; i<$1; i++)); do
         q[$i]="${CDHIST_CDQ[$(((i+$1+$2)%$1))]}"
     done
@@ -115,6 +119,9 @@ function cdhist_rot()
 
 function cdhist_cd()
 {
+    if [ "$ZSH_NAME" = "zsh" ];then
+        setopt localoptions ksharrays
+    fi
     local i f=0
     builtin cd "$@" || return 1
     for ((i=0; i<${#CDHIST_CDQ[@]}; i++)); do
@@ -132,6 +139,9 @@ function cdhist_cd()
 
 function cdhist_history()
 {
+    if [ "$ZSH_NAME" = "zsh" ];then
+        setopt localoptions ksharrays
+    fi
     local i d
     if [ $# -eq 0 ]; then
         for ((i=${#CDHIST_CDQ[@]}-1; 0<=i; i--)); do
@@ -150,6 +160,9 @@ function cdhist_history()
 
 function cdhist_forward()
 {
+    if [ "$ZSH_NAME" = "zsh" ];then
+        setopt localoptions ksharrays
+    fi
     cdhist_rot ${#CDHIST_CDQ[@]} -${1-1}
     if ! builtin cd "${CDHIST_CDQ[0]}"; then
         cdhist_del 0
@@ -159,6 +172,9 @@ function cdhist_forward()
 
 function cdhist_back()
 {
+    if [ "$ZSH_NAME" = "zsh" ];then
+        setopt localoptions ksharrays
+    fi
     cdhist_rot ${#CDHIST_CDQ[@]} ${1-1}
     if ! builtin cd "${CDHIST_CDQ[0]}"; then
         cdhist_del 0
