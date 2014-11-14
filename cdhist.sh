@@ -94,7 +94,7 @@ function cdhist_disp()
 
 function cdhist_add()
 {
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     CDHIST_CDQ=("$1" "${CDHIST_CDQ[@]}")
@@ -112,7 +112,7 @@ function cdhist_del()
 
 function cdhist_rot()
 {
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     local i
@@ -127,7 +127,7 @@ function cdhist_rot()
 
 function cdhist_cd()
 {
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     local i f=0
@@ -147,7 +147,7 @@ function cdhist_cd()
 
 function cdhist_history()
 {
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     local i d
@@ -168,7 +168,7 @@ function cdhist_history()
 
 function cdhist_forward()
 {
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     cdhist_rot ${#CDHIST_CDQ[@]} -${1-1}
@@ -180,7 +180,7 @@ function cdhist_forward()
 
 function cdhist_back()
 {
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     cdhist_rot ${#CDHIST_CDQ[@]} ${1-1}
@@ -197,7 +197,7 @@ function cdhist_initialize()
     local -a log_array
 
     count=0
-    if [ "$ZSH_NAME" = "zsh" ];then
+    if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     log_array=( $(cdhist_logview) )
