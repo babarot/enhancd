@@ -1,3 +1,9 @@
+# Only shell script for bash and zsh
+if [ ! "$BASH_VERSION" -a ! "$ZSH_VERSION" ]; then
+  echo "Require bash or zsh"
+  exit
+fi
+
 ###  cdhist.sh
 ###
 ###  Copyright (c) 2001 Yusuke Shinyama <yusuke at cs . nyu . edu>
