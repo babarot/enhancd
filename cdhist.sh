@@ -102,12 +102,19 @@ function cdhist_add()
 
 function cdhist_del()
 {
+    if [ "$ZSH_NAME" = "zsh" ]; then
+        setopt localoptions ksharrays
+    fi
     local i=${1-0}
     if [ ${#CDHIST_CDQ[@]} -le 1 ]; then return; fi
     for ((; i<${#CDHIST_CDQ[@]}-1; i++)); do
         CDHIST_CDQ[$i]="${CDHIST_CDQ[$((i+1))]}"
     done
-    unset CDHIST_CDQ[$i]
+    if [ "$ZSH_NAME" = "zsh" ]; then
+        CDHIST_CDQ=(${CDHIST_CDQ[0, (($i-1))]})
+    else
+        unset CDHIST_CDQ[$i]
+    fi
 }
 
 function cdhist_rot()
