@@ -173,6 +173,34 @@ function cdhist_history()
     fi
 }
 
+function cdhist_refresh()
+{
+    if [ "$ZSH_NAME" = "zsh" ]; then
+        setopt localoptions ksharrays
+    fi
+
+    local -a delete_candidate
+    local i
+
+    if [ -z "$1" ]; then
+        for i in "$(cdhist_logview)"
+        do
+            [ ! -d "$i" ] && delete_candidate+=($i)
+        done
+    else
+        delete_candidate+=("$@")
+    fi
+
+    local raw_date
+    raw_date=$(cat $CDHIST_CDLOG)
+
+    for i in "${delete_candidate[@]}"
+    do
+      raw_date=$(echo "${raw_date}" | \grep -E -x -v "$i")
+    done
+    echo "${raw_date}" >|$CDHIST_CDLOG
+}
+
 function cdhist_forward()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
