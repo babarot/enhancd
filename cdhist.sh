@@ -4,6 +4,9 @@ if [ ! "$BASH_VERSION" -a ! "$ZSH_VERSION" ]; then
     exit
 fi
 
+is_zsh()  { test -n "$ZSH_VERSION"; }
+is_bash() { test -n "$BASH_VERSION"; }
+
 ###  cdhist.sh
 ###
 ###  Copyright (c) 2001 Yusuke Shinyama <yusuke at cs . nyu . edu>
