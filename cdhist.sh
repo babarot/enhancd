@@ -274,6 +274,89 @@ fi
 ###  Aliases
 ###
 
+function cd()
+{
+    if [ "$ZSH_NAME" = "zsh" ]; then
+        setopt localoptions ksharrays
+    fi
+    function cd_internal()
+    {
+        if [ -d "$1" ]; then
+            cdhist_cd "$1" && return 0
+        else
+            # Move to CDHIST_CDQ, directly
+            # known isuue:
+            #   unsupport CDHIST_CDQ because "^[0-9]$"
+            if expr "$1" : '^[0-9]$' >/dev/null; then
+                cdhist_cd "${CDHIST_CDQ[$1]}" && return 0
+            fi
+
+            # Move to filered target directory like a ring.
+            filered_array=($(cdhist_logview | \grep -i -E "/\.?$1[^/]*$"))
+            for ((i=${#filered_array[*]}-1; i>=0; i--))
+            do
+                # Equals PWD to filered_array[i],
+                # go to filered_array of first origin
+                # This is means that you can go to other directory.
+                if [ "$PWD" = "${filered_array[i]}" ]; then
+                    cdhist_cd "${filered_array[0]}" && return 0
+                fi
+                cdhist_cd "${filered_array[i]}" && return 0
+            done
+        fi
+        return 1
+    }
+
+    if [ -z "$1" ]; then
+        cdhist_cd ${CDHIST_CDHOME:-$HOME}
+        return 0
+    fi
+    while (( $# > 0 ))
+    do
+        case "$1" in
+            =)
+                shift
+                if [ "$1" = 'all' ]; then
+                    cdhist_logview
+                    return 0
+                fi
+                if [ -z "$1" ] || expr "$1" : '[0-9]*' >/dev/null; then
+                    cdhist_history ${1+"$1"} && return 0
+                    return 1
+                fi
+                ;;
+            +)
+                shift
+                cdhist_forward ${1+"$1"}
+                return 0
+                ;;
+            -)
+                shift
+                cdhist_back ${1+"$1"}
+                return 0
+                ;;
+            -*)
+                if [[ "$1" =~ ^-[0-9]$ ]]; then
+                    cdhist_history "${1/-/}"
+                    return 0
+                fi
+                if [[ "$1" =~ 'l' ]]; then
+                    shift
+                    cd_internal "$1"
+                    return 0
+                fi
+                ;;
+            *)
+                if ! cd_internal "$1" 2>/dev/null; then
+                    echo "Unfortunately, \"$1\" was not found in the CWD or the movement history database." >/dev/stderr
+                    return 1
+                fi
+                return 0
+                ;;
+        esac
+    done
+    return 1
+}
 
 function cdhist_addhistory()
 {
