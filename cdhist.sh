@@ -7,6 +7,10 @@ fi
 is_zsh()  { test -n "$ZSH_VERSION"; }
 is_bash() { test -n "$BASH_VERSION"; }
 
+if [ -d ~/Dropbox ]; then
+    CDHIST_CDHOME=~/Dropbox
+fi
+
 ###  cdhist.sh
 ###
 ###  Copyright (c) 2001 Yusuke Shinyama <yusuke at cs . nyu . edu>
