@@ -199,7 +199,7 @@ function cdhist_refresh()
 
     for i in "${delete_candidate[@]}"
     do
-      raw_date=$(echo "${raw_date}" | \grep -E -x -v "$i")
+        raw_date=$(echo "${raw_date}" | \grep -E -x -v "$i")
     done
     echo "${raw_date}" >|$CDHIST_CDLOG
 }
