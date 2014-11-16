@@ -16,6 +16,9 @@ CDHIST_CDQMAX=10
 declare -a CDHIST_CDQ
 CDHIST_CDLOG="$HOME/zsh_cdhist"
 
+### cdhist libraries
+###
+
 function cdhist_reset()
 {
     CDHIST_CDQ=("$PWD")
