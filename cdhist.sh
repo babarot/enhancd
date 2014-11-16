@@ -267,7 +267,18 @@ fi
 ###  Aliases
 ###
 
-function cd { cdhist_cd "$@"; }
+
+function cdhist_addhistory()
+{
+    touch $CDHIST_CDLOG
+    if [ "$PWD" != "$OLDPWD" ]; then
+        OLDPWD=$PWD
+        pwd >>$CDHIST_CDLOG
+    fi
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd cdhist_addhistory
+
 function + { cdhist_forward "$@"; }
 function - { cdhist_back "$@"; }
 function = { cdhist_history "$@"; }
