@@ -290,6 +290,25 @@ elif is_zsh; then
     add-zsh-hook precmd cdhist_addhistory
 fi
 
+if is_zsh; then
+    function cdhist-peco-cd-complement()
+    {
+        if ! type peco >/dev/null 2>&1; then
+            return 1
+        fi
+        local selected_dir
+        selected_dir=$(cdhist_logview -r | sed "s $HOME ~ g" | peco)
+
+        if [ -n "$selected_dir" ]; then
+            BUFFER="cd ${selected_dir}"
+            zle accept-line
+        fi
+        zle clear-screen
+    }
+    zle -N cdhist-peco-cd-complement
+    bindkey "${CDHIST_PECO_BIND:-^g}" cdhist-peco-cd-complement
+fi
+
 function + { cdhist_forward "$@"; }
 function - { cdhist_back "$@"; }
 function = { cdhist_history "$@"; }
