@@ -1,7 +1,7 @@
 # Only shell script for bash and zsh
 if [ ! "$BASH_VERSION" -a ! "$ZSH_VERSION" ]; then
-  echo "Require bash or zsh"
-  exit
+    echo "Require bash or zsh"
+    exit
 fi
 
 ###  cdhist.sh
