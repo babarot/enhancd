@@ -247,6 +247,13 @@ function cdhist_initialize()
     done
 }
 
+function cdhist_reverse() {
+$(which ex) -s $1 <<-EOF
+g/^/mo0
+%p
+EOF
+}
+
 #if [ ${#CDHIST_CDQ[@]} = 0 ]; then cdhist_reset; fi
 if [ -f $CDHIST_CDLOG ]; then
     cdhist_initialize
