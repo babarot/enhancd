@@ -283,8 +283,12 @@ function cdhist_addhistory()
         pwd >>$CDHIST_CDLOG
     fi
 }
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd cdhist_addhistory
+if is_bash; then
+    PROMPT_COMMAND="cdhist_addhistory;$PROMPT_COMMAND"
+elif is_zsh; then
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd cdhist_addhistory
+fi
 
 function + { cdhist_forward "$@"; }
 function - { cdhist_back "$@"; }
