@@ -186,7 +186,7 @@ function cdhist_refresh()
     local i
 
     if [ -z "$1" ]; then
-        for i in "$(cdhist_logview)"
+        for i in $(cdhist_logview)
         do
             [ ! -d "$i" ] && delete_candidate+=($i)
         done
