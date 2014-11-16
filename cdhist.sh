@@ -228,7 +228,14 @@ function cdhist_back()
     cdhist_disp "${CDHIST_CDQ[@]}"
 }
 
-function cdhist_logview() { tac <(tac $CDHIST_CDLOG | awk '!colname[$0]++{print $0}'); }
+function cdhist_logview()
+{
+    if [ "$1" = '-r' ]; then
+        cdhist_reverse "$CDHIST_CDLOG" | awk '!colname[$0]++'
+    else
+        cdhist_reverse <(cdhist_reverse "$CDHIST_CDLOG" | awk '!colname[$0]++')
+    fi
+}
 function cdhist_initialize()
 {
     local count
