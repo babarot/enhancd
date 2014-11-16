@@ -164,10 +164,13 @@ function cdhist_history()
         done
     elif [ "$1" -lt ${#CDHIST_CDQ[@]} ]; then
         d=${CDHIST_CDQ[$1]}
-        if builtin cd "$d"; then
+        if builtin cd "$d" 2>/dev/null; then
             cdhist_rot $(($1+1)) -1
         else
+            echo "Unfortunately, ${CDHIST_CDQ[$1]} is not available" >/dev/stderr
+            cdhist_refresh "${CDHIST_CDQ[$1]}"
             cdhist_del $1
+            return 1
         fi
         cdhist_disp "${CDHIST_CDQ[@]}"
     fi
