@@ -75,7 +75,11 @@ function cdhist_cd()
         setopt localoptions ksharrays
     fi
     local i f=0
-    builtin cd "$@" || return 1
+    if ! builtin cd "$@" 2>/dev/null; then
+        echo "Unfortunately, $@ is not available" >/dev/stderr
+        cdhist_refresh "$@"
+        return 1
+    fi
     for ((i=0; i<${#CDHIST_CDQ[@]}; i++)); do
         if [ "${CDHIST_CDQ[$i]}" = "$PWD" ]; then f=1; break; fi
     done
