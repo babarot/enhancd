@@ -302,11 +302,42 @@ function cd()
     return 1
 }
 
+function cdhist_autoaddition()
+{
+    local i
+    local target=$PWD
+    local file
+
+    # Do NOT execute if there is registration in the last 10
+    # This is in order to avoid duplicate registration
+    #
+    if cdhist_logview | tail | grep -x -q "$target"; then
+        return 0
+    fi
+    file=$(
+    for ((i=1; i<${#target}+1; i++))
+    do
+        if [[ ${target:0:$i+1} =~ /$ ]]; then
+            echo ${target:0:$i}
+        fi
+    done
+    find $target -maxdepth 1 -type d | grep -v "\/\."
+    while read LINE
+    do
+        echo "$LINE"
+    done <"$CDHIST_CDLOG"
+    )
+    echo "${file[@]}" >|$CDHIST_CDLOG
+}
+
 function cdhist_addhistory()
 {
     touch $CDHIST_CDLOG
     if [ "$PWD" != "$OLDPWD" ]; then
         OLDPWD=$PWD
+        if [ ${CDHIST_AUTOADD:-true} = 'true' ]; then
+            cdhist_autoaddition
+        fi
         pwd >>$CDHIST_CDLOG
     fi
 }
