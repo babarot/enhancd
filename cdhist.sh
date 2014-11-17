@@ -123,13 +123,14 @@ function cdhist_refresh()
         setopt localoptions ksharrays
     fi
 
+    IFS=$'\n'
     local -a delete_candidate
     local i
 
     if [ -z "$1" ]; then
         for i in $(cdhist_logview)
         do
-            [ ! -d "$i" ] && delete_candidate+=($i)
+            [ ! -d "$i" ] && delete_candidate+=("$i")
         done
     else
         delete_candidate+=("$@")
