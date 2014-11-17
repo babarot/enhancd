@@ -7,13 +7,18 @@ fi
 is_zsh()  { test -n "$ZSH_VERSION"; }
 is_bash() { test -n "$BASH_VERSION"; }
 
-if [ -d ~/Dropbox ]; then
-    CDHIST_CDHOME=~/Dropbox
 fi
 
-declare CDHIST_CDLOG
-CDHIST_CDQMAX=10
+declare    CDHIST_AUTOADD
+declare    CDHIST_CDHOME
+declare    CDHIST_CDLOG
 declare -a CDHIST_CDQ
+declare    CDHIST_CDQMAX
+declare    CDHIST_COMP_LIMIT
+declare    CDHIST_PECO_BIND
+declare    CDHIST_REFRESH_STARTUP
+
+CDHIST_CDQMAX=10
 CDHIST_CDLOG="$HOME/zsh_cdhist"
 
 ### cdhist libraries
