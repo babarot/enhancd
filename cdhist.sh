@@ -208,14 +208,6 @@ EOF
 }
 
 #if [ ${#CDHIST_CDQ[@]} = 0 ]; then cdhist_reset; fi
-if [ -f $CDHIST_CDLOG ]; then
-    cdhist_initialize
-    unset -f cdhist_initialize
-    cdhist_cd $HOME
-else
-    cdhist_reset
-fi
-
 
 ###  Aliases
 ###
@@ -345,12 +337,6 @@ function cdhist_addhistory()
         pwd >>$CDHIST_CDLOG
     fi
 }
-if is_bash; then
-    PROMPT_COMMAND="cdhist_addhistory;$PROMPT_COMMAND"
-elif is_zsh; then
-    autoload -Uz add-zsh-hook
-    add-zsh-hook precmd cdhist_addhistory
-fi
 
 if is_zsh; then
     function cdhist-peco-cd-complement()
@@ -371,6 +357,30 @@ if is_zsh; then
     bindkey "${CDHIST_PECO_BIND:-^g}" cdhist-peco-cd-complement
 fi
 
-function + { cdhist_forward "$@"; }
-function - { cdhist_back "$@"; }
-function = { cdhist_history "$@"; }
+
+### Misc {{{1
+
+# Add history
+# Use PROMPT_COMMAND or precmd
+if is_bash; then
+    if echo "$PROMPT_COMMAND" | grep -q -v "cdhist_addhistory"; then
+        PROMPT_COMMAND="cdhist_addhistory;$PROMPT_COMMAND"
+    fi
+elif is_zsh; then
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd cdhist_addhistory
+fi
+
+# Main at startup
+#
+if [ -f $CDHIST_CDLOG ]; then
+    if [ "${CDHIST_REFRESH_STARTUP:-true}" = 'true' ]; then
+        cdhist_refresh
+    fi
+    cdhist_initialize
+    unset -f cdhist_initialize
+    cdhist_cd $HOME
+else
+    cdhist_reset
+fi
+# vim:fdm=marker expandtab fdc=3 ts=4 sw=4 sts=4:
