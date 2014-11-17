@@ -242,8 +242,10 @@ function cd()
                 # This is means that you can go to other directory.
                 if [ "$PWD" = "${filered_array[i]}" ]; then
                     cdhist_cd "${filered_array[0]}" && return 0
+                    return 1
                 fi
                 cdhist_cd "${filered_array[i]}" && return 0
+                return 1
             done
         fi
         return 1
