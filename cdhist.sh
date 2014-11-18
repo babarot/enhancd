@@ -377,6 +377,141 @@ if is_zsh; then
     bindkey "${CDHIST_PECO_BIND:-^g}" cdhist-peco-cd-complement
 fi
 
+#function + { cdhist_forward "$@"; }
+#function - { cdhist_back "$@"; }
+#function = { cdhist_history "$@"; }
+
+### Complement {{{1
+###
+
+if is_zsh; then
+    setopt listpacked
+    LISTMAX=$COLUMNS
+
+    function _cd()
+    {
+        local context curcontext=$curcontext state line
+        declare -A opt_args
+        local ret=1
+
+        _arguments -C \
+            '--help[Show help and usage]' \
+            '(-l --list)'{-l,--list}'[Lists all directories]:list:->list' \
+            '(-L --list-detail)'{-L,--list-detail}'[Lists all directories in detail]:detail:->detail' \
+            '1: :_no_arguments' \
+            '*:: :->args' \
+            && ret=0
+
+        IFS=$'\n'
+
+        case $state in
+            (list)
+                _listup_history && ret=0
+                ;;
+            (detail)
+                _listup_history_in_detail && ret=0
+                ;;
+            (args)
+                case $words[1] in
+                    (+)
+                        _buffer_ring_reverse && ret=0
+                        ;;
+                    (-)
+                        _buffer_ring_normal && ret=0
+                        ;;
+                    (=)
+                        _buffer_ring_normal && ret=0
+                        ;;
+                esac
+                ;;
+        esac
+
+        #IFS=$OLDIFS
+        return ret
+    }
+
+    _buffer_ring_normal()
+    {
+        IFS=$'\n'
+        local -a _c
+        _c=(
+        '0:'"${CDHIST_CDQ[1]/$HOME/~}"
+        '1:'"${CDHIST_CDQ[2]/$HOME/~}"
+        '2:'"${CDHIST_CDQ[3]/$HOME/~}"
+        '3:'"${CDHIST_CDQ[4]/$HOME/~}"
+        '4:'"${CDHIST_CDQ[5]/$HOME/~}"
+        '5:'"${CDHIST_CDQ[6]/$HOME/~}"
+        '6:'"${CDHIST_CDQ[7]/$HOME/~}"
+        '7:'"${CDHIST_CDQ[8]/$HOME/~}"
+        '8:'"${CDHIST_CDQ[9]/$HOME/~}"
+        '9:'"${CDHIST_CDQ[10]/$HOME/~}"
+        )
+        _describe -t commands Commands _c
+    }
+
+    _buffer_ring_reverse()
+    {
+        IFS=$'\n'
+        local -a _c
+        _c=(
+        '0:'"${CDHIST_CDQ[1]/$HOME/~}"
+        '1:'"${CDHIST_CDQ[10]/$HOME/~}"
+        '2:'"${CDHIST_CDQ[9]/$HOME/~}"
+        '3:'"${CDHIST_CDQ[8]/$HOME/~}"
+        '4:'"${CDHIST_CDQ[7]/$HOME/~}"
+        '5:'"${CDHIST_CDQ[6]/$HOME/~}"
+        '6:'"${CDHIST_CDQ[5]/$HOME/~}"
+        '7:'"${CDHIST_CDQ[4]/$HOME/~}"
+        '8:'"${CDHIST_CDQ[3]/$HOME/~}"
+        '9:'"${CDHIST_CDQ[2]/$HOME/~}"
+        )
+        _describe -t commands Commands _c
+    }
+
+    _listup_history()
+    {
+        local -a _c
+        _c=(`cdhist_logview | sed 's|.*/||g'`)
+        _describe -t others "History" _c
+    }
+
+    _listup_history_in_detail()
+    {
+        local -a head
+        local -a full
+        local -a _c
+
+        head=(`cdhist_logview | sed 's|.*/||g'`)
+        full=(`cdhist_logview`)
+
+        local i
+        for ((i=1; i<${#head[@]}; i++))
+        do
+            _c+=(
+            "$head[$i]"':'"$full[$i]"
+            )
+        done
+        _describe -t others "History" _c
+    }
+
+    _no_arguments()
+    {
+        local -a _candidates
+        _candidates=(`cat "$CDHIST_CDLOG" | sort | uniq -c | sort -nr | head -n ${CDHIST_COMP_LIMIT:-100} | sed 's|.*/||g'`)
+
+        local -a _c
+        _c=(
+        '+:Go back like a web-browser (0,9,8,...)'
+        '-:Forward like a web-browser (0,1,2,...)'
+        )
+
+        _files -/
+        _describe -t commands "Commands" _c
+        _describe -t others "History" _candidates
+    }
+    autoload -Uz compinit
+    compdef _cd cd
+fi
 
 ### Misc {{{1
 
