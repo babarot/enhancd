@@ -281,11 +281,25 @@ function cd()
                 return 0
                 ;;
             -*)
-                if [[ "$1" =~ ^-[0-9]$ ]]; then
+                if [[ "$1" == '--help' ]]; then
+                    echo 'usage: cd [OPTION] path'
+                    echo ''
+                    echo 'OPTION:'
+                    echo '  - <num>          Go back to the <num> previous directory'
+                    echo '  + <num>          Forward to the <num> previous directory'
+                    echo '  = <num>          Show directory queue and go to <num> directory'
+                    echo '  --help           Show this help and exit'
+                    echo '  -l,--list        Listup all directory paths'
+                    echo '  -L,--list-detail Listup all paths in detail'
+                    return 0
+                elif [[ "$1" =~ ^-[0-9]$ ]]; then
                     cdhist_history "${1/-/}"
                     return 0
-                fi
-                if [[ "$1" =~ 'l' ]]; then
+                elif [[ "$1" == '--list' ]] || [[ "$1" == '-l' ]]; then
+                    shift
+                    cd_internal "$1"
+                    return 0
+                elif [[ "$1" == '--list-detail' ]] || [[ "$1" == '-L' ]]; then
                     shift
                     cd_internal "$1"
                     return 0
