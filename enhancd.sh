@@ -15,55 +15,55 @@ if [ -f ~/.enhancd.conf ]; then
     source ~/.enhancd.conf
 fi
 
-declare -a CDHIST_CDQ
-declare CDHIST_AUTOADD=${CDHIST_AUTOADD:=true}
-declare CDHIST_CDHOME=${CDHIST_CDHOME:=$HOME}
-declare CDHIST_CDLOG=${CDHIST_CDLOG:=~/zsh_cdhist}
-declare CDHIST_CDQMAX=${CDHIST_CDQMAX:=10}
-declare CDHIST_COMP_LIMIT=${CDHIST_COMP_LIMIT:=60}
-declare CDHIST_PECO_BIND=${CDHIST_PECO_BIND:=^g}
-declare CDHIST_REFRESH_STARTUP=${CDHIST_REFRESH_STARTUP:=true}
-declare CDHIST_ALLWAYS_DISP=${CDHIST_ALLWAYS_DISP:=false}
+declare -a ENHANCD_CDQ
+declare ENHANCD_AUTOADD=${ENHANCD_AUTOADD:=true}
+declare ENHANCD_CDHOME=${ENHANCD_CDHOME:=$HOME}
+declare ENHANCD_CDLOG=${ENHANCD_CDLOG:=~/.enhancd.db}
+declare ENHANCD_CDQMAX=${ENHANCD_CDQMAX:=10}
+declare ENHANCD_COMP_LIMIT=${ENHANCD_COMP_LIMIT:=60}
+declare ENHANCD_PECO_BIND=${ENHANCD_PECO_BIND:=^g}
+declare ENHANCD_REFRESH_STARTUP=${ENHANCD_REFRESH_STARTUP:=true}
+declare ENHANCD_ALLWAYS_DISP=${ENHANCD_ALLWAYS_DISP:=false}
 
 ### General utils {{{1
 ###
 
-function cdhist_reset()
+function enhancd_reset()
 {
-    CDHIST_CDQ=("$PWD")
+    ENHANCD_CDQ=("$PWD")
 }
 
-function cdhist_disp()
+function enhancd_disp()
 {
     echo "$*" | sed "s $HOME ~ g"
 }
 
-function cdhist_add()
+function enhancd_add()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
-    CDHIST_CDQ=("$1" "${CDHIST_CDQ[@]}")
+    ENHANCD_CDQ=("$1" "${ENHANCD_CDQ[@]}")
 }
 
-function cdhist_del()
+function enhancd_del()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     local i=${1-0}
-    if [ ${#CDHIST_CDQ[@]} -le 1 ]; then return; fi
-    for ((; i<${#CDHIST_CDQ[@]}-1; i++)); do
-        CDHIST_CDQ[$i]="${CDHIST_CDQ[$((i+1))]}"
+    if [ ${#ENHANCD_CDQ[@]} -le 1 ]; then return; fi
+    for ((; i<${#ENHANCD_CDQ[@]}-1; i++)); do
+        ENHANCD_CDQ[$i]="${ENHANCD_CDQ[$((i+1))]}"
     done
     if [ "$ZSH_NAME" = "zsh" ]; then
-        CDHIST_CDQ=(${CDHIST_CDQ[0, (($i-1))]})
+        ENHANCD_CDQ=(${ENHANCD_CDQ[0, (($i-1))]})
     else
-        unset CDHIST_CDQ[$i]
+        unset ENHANCD_CDQ[$i]
     fi
 }
 
-function cdhist_rot()
+function enhancd_rot()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
@@ -71,14 +71,14 @@ function cdhist_rot()
     local i
     local -a q
     for ((i=0; i<$1; i++)); do
-        q[$i]="${CDHIST_CDQ[$(((i+$1+$2)%$1))]}"
+        q[$i]="${ENHANCD_CDQ[$(((i+$1+$2)%$1))]}"
     done
     for ((i=0; i<$1; i++)); do
-        CDHIST_CDQ[$i]="${q[$i]}"
+        ENHANCD_CDQ[$i]="${q[$i]}"
     done
 }
 
-function cdhist_cd()
+function enhancd_cd()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
@@ -86,49 +86,49 @@ function cdhist_cd()
     local i f=0
     if ! builtin cd "$@" 2>/dev/null; then
         echo "Unfortunately, $@ is not available" >/dev/stderr
-        cdhist_refresh "$@"
+        enhancd_refresh "$@"
         return 1
     fi
-    for ((i=0; i<${#CDHIST_CDQ[@]}; i++)); do
-        if [ "${CDHIST_CDQ[$i]}" = "$PWD" ]; then f=1; break; fi
+    for ((i=0; i<${#ENHANCD_CDQ[@]}; i++)); do
+        if [ "${ENHANCD_CDQ[$i]}" = "$PWD" ]; then f=1; break; fi
     done
     if [ $f -eq 1 ]; then
-        cdhist_rot $((i+1)) -1
-    elif [ ${#CDHIST_CDQ[@]} -lt $CDHIST_CDQMAX ]; then 
-        cdhist_add "$PWD"
+        enhancd_rot $((i+1)) -1
+    elif [ ${#ENHANCD_CDQ[@]} -lt $ENHANCD_CDQMAX ]; then 
+        enhancd_add "$PWD"
     else
-        cdhist_rot ${#CDHIST_CDQ[@]} -1
-        CDHIST_CDQ[0]="$PWD"
+        enhancd_rot ${#ENHANCD_CDQ[@]} -1
+        ENHANCD_CDQ[0]="$PWD"
     fi
 }
 
-function cdhist_history()
+function enhancd_history()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
     local i d
     if [ $# -eq 0 ]; then
-        for ((i=${#CDHIST_CDQ[@]}-1; 0<=i; i--)); do
-            cdhist_disp " $i ${CDHIST_CDQ[$i]}"
+        for ((i=${#ENHANCD_CDQ[@]}-1; 0<=i; i--)); do
+            enhancd_disp " $i ${ENHANCD_CDQ[$i]}"
         done
-    elif [ "$1" -lt ${#CDHIST_CDQ[@]} ]; then
-        d=${CDHIST_CDQ[$1]}
+    elif [ "$1" -lt ${#ENHANCD_CDQ[@]} ]; then
+        d=${ENHANCD_CDQ[$1]}
         if builtin cd "$d" 2>/dev/null; then
-            cdhist_rot $(($1+1)) -1
+            enhancd_rot $(($1+1)) -1
         else
-            echo "Unfortunately, ${CDHIST_CDQ[$1]} is not available" >/dev/stderr
-            cdhist_refresh "${CDHIST_CDQ[$1]}"
-            cdhist_del $1
+            echo "Unfortunately, ${ENHANCD_CDQ[$1]} is not available" >/dev/stderr
+            enhancd_refresh "${ENHANCD_CDQ[$1]}"
+            enhancd_del $1
             return 1
         fi
-        if [ ${CDHIST_ALLWAYS_DISP:-false} = "true" ]; then
-            cdhist_disp "${CDHIST_CDQ[@]}"
+        if [ ${ENHANCD_ALLWAYS_DISP:-false} = "true" ]; then
+            enhancd_disp "${ENHANCD_CDQ[@]}"
         fi
     fi
 }
 
-function cdhist_refresh()
+function enhancd_refresh()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
@@ -139,7 +139,7 @@ function cdhist_refresh()
     local i
 
     if [ -z "$1" ]; then
-        for i in $(cdhist_logview)
+        for i in $(enhancd_logview)
         do
             [ ! -d "$i" ] && delete_candidate+=("$i")
         done
@@ -148,52 +148,52 @@ function cdhist_refresh()
     fi
 
     local raw_date
-    raw_date=$(cat $CDHIST_CDLOG)
+    raw_date=$(cat $ENHANCD_CDLOG)
 
     for i in "${delete_candidate[@]}"
     do
         raw_date=$(echo "${raw_date}" | \grep -E -x -v "$i")
     done
-    echo "${raw_date}" >|$CDHIST_CDLOG
+    echo "${raw_date}" >|$ENHANCD_CDLOG
 }
 
-function cdhist_forward()
+function enhancd_forward()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
-    cdhist_rot ${#CDHIST_CDQ[@]} -${1-1}
-    if ! builtin cd "${CDHIST_CDQ[0]}"; then
-        cdhist_del 0
+    enhancd_rot ${#ENHANCD_CDQ[@]} -${1-1}
+    if ! builtin cd "${ENHANCD_CDQ[0]}"; then
+        enhancd_del 0
     fi
-    if [ ${CDHIST_ALLWAYS_DISP:-false} = "true" ]; then
-        cdhist_disp "${CDHIST_CDQ[@]}"
+    if [ ${ENHANCD_ALLWAYS_DISP:-false} = "true" ]; then
+        enhancd_disp "${ENHANCD_CDQ[@]}"
     fi
 }
 
-function cdhist_back()
+function enhancd_back()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
-    cdhist_rot ${#CDHIST_CDQ[@]} ${1-1}
-    if ! builtin cd "${CDHIST_CDQ[0]}"; then
-        cdhist_del 0
+    enhancd_rot ${#ENHANCD_CDQ[@]} ${1-1}
+    if ! builtin cd "${ENHANCD_CDQ[0]}"; then
+        enhancd_del 0
     fi
-    if [ ${CDHIST_ALLWAYS_DISP:-false} = "true" ]; then
-        cdhist_disp "${CDHIST_CDQ[@]}"
+    if [ ${ENHANCD_ALLWAYS_DISP:-false} = "true" ]; then
+        enhancd_disp "${ENHANCD_CDQ[@]}"
     fi
 }
 
-function cdhist_logview()
+function enhancd_logview()
 {
     if [ "$1" = '-r' ]; then
-        cdhist_reverse "$CDHIST_CDLOG" | awk '!colname[$0]++'
+        enhancd_reverse "$ENHANCD_CDLOG" | awk '!colname[$0]++'
     else
-        cdhist_reverse <(cdhist_reverse "$CDHIST_CDLOG" | awk '!colname[$0]++')
+        enhancd_reverse <(enhancd_reverse "$ENHANCD_CDLOG" | awk '!colname[$0]++')
     fi
 }
-function cdhist_initialize()
+function enhancd_initialize()
 {
     local count
     local -a log_array
@@ -202,23 +202,23 @@ function cdhist_initialize()
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
-    log_array=( $(cdhist_logview) )
+    log_array=( $(enhancd_logview) )
     for ((i=${#log_array[*]}-1; i>=0; i--))
     do
-        CDHIST_CDQ[$count]="${log_array[i]}"
+        ENHANCD_CDQ[$count]="${log_array[i]}"
         let count++
-        [ $count -eq $CDHIST_CDQMAX ] && break
+        [ $count -eq $ENHANCD_CDQMAX ] && break
     done
 }
 
-function cdhist_reverse() {
+function enhancd_reverse() {
 $(which ex) -s $1 <<-EOF
 g/^/mo0
 %p
 EOF
 }
 
-#if [ ${#CDHIST_CDQ[@]} = 0 ]; then cdhist_reset; fi
+#if [ ${#ENHANCD_CDQ[@]} = 0 ]; then enhancd_reset; fi
 
 ### Special utils {{{1
 ###
@@ -231,27 +231,27 @@ function cd()
     function cd_internal()
     {
         if [ -d "$1" ]; then
-            cdhist_cd "$1" && return 0
+            enhancd_cd "$1" && return 0
         else
-            # Move to CDHIST_CDQ, directly
+            # Move to ENHANCD_CDQ, directly
             # known isuue:
-            #   unsupport CDHIST_CDQ because "^[0-9]$"
+            #   unsupport ENHANCD_CDQ because "^[0-9]$"
             if expr "$1" : '^[0-9]$' >/dev/null; then
-                cdhist_cd "${CDHIST_CDQ[$1]}" && return 0
+                enhancd_cd "${ENHANCD_CDQ[$1]}" && return 0
             fi
 
             # Move to filered target directory like a ring.
-            filered_array=($(cdhist_logview | \grep -i -E "/\.?$1[^/]*$"))
+            filered_array=($(enhancd_logview | \grep -i -E "/\.?$1[^/]*$"))
             for ((i=${#filered_array[*]}-1; i>=0; i--))
             do
                 # Equals PWD to filered_array[i],
                 # go to filered_array of first origin
                 # This is means that you can go to other directory.
                 if [ "$PWD" = "${filered_array[i]}" ]; then
-                    cdhist_cd "${filered_array[0]}" && return 0
+                    enhancd_cd "${filered_array[0]}" && return 0
                     return 1
                 fi
-                cdhist_cd "${filered_array[i]}" && return 0
+                enhancd_cd "${filered_array[i]}" && return 0
                 return 1
             done
         fi
@@ -259,7 +259,7 @@ function cd()
     }
 
     if [ -z "$1" ]; then
-        cdhist_cd ${CDHIST_CDHOME:-$HOME}
+        enhancd_cd ${ENHANCD_CDHOME:-$HOME}
         return 0
     fi
     while (( $# > 0 ))
@@ -268,22 +268,22 @@ function cd()
             =)
                 shift
                 if [ "$1" = 'all' ]; then
-                    cdhist_logview
+                    enhancd_logview
                     return 0
                 fi
                 if [ -z "$1" ] || expr "$1" : '[0-9]*' >/dev/null; then
-                    cdhist_history ${1+"$1"} && return 0
+                    enhancd_history ${1+"$1"} && return 0
                     return 1
                 fi
                 ;;
             +)
                 shift
-                cdhist_forward ${1+"$1"}
+                enhancd_forward ${1+"$1"}
                 return 0
                 ;;
             -)
                 shift
-                cdhist_back ${1+"$1"}
+                enhancd_back ${1+"$1"}
                 return 0
                 ;;
             -*)
@@ -299,7 +299,7 @@ function cd()
                     echo '  -L,--list-detail Listup all paths in detail'
                     return 0
                 elif [[ "$1" =~ ^-[0-9]$ ]]; then
-                    cdhist_history "${1/-/}"
+                    enhancd_history "${1/-/}"
                     return 0
                 elif [[ "$1" == '--list' ]] || [[ "$1" == '-l' ]]; then
                     shift
@@ -323,7 +323,7 @@ function cd()
     return 1
 }
 
-function cdhist_autoaddition()
+function enhancd_autoaddition()
 {
     local i
     local target=$PWD
@@ -332,7 +332,7 @@ function cdhist_autoaddition()
     # Do NOT execute if there is registration in the last 10
     # This is in order to avoid duplicate registration
     #
-    if cdhist_logview | tail | grep -x -q "$target"; then
+    if enhancd_logview | tail | grep -x -q "$target"; then
         return 0
     fi
     file=$(
@@ -346,31 +346,31 @@ function cdhist_autoaddition()
     while read LINE
     do
         echo "$LINE"
-    done <"$CDHIST_CDLOG"
+    done <"$ENHANCD_CDLOG"
     )
-    echo "${file[@]}" >|$CDHIST_CDLOG
+    echo "${file[@]}" >|$ENHANCD_CDLOG
 }
 
-function cdhist_addhistory()
+function enhancd_addhistory()
 {
-    touch $CDHIST_CDLOG
+    touch $ENHANCD_CDLOG
     if [ "$PWD" != "$OLDPWD" ]; then
         OLDPWD=$PWD
-        if [ ${CDHIST_AUTOADD:-true} = 'true' ]; then
-            cdhist_autoaddition
+        if [ ${ENHANCD_AUTOADD:-true} = 'true' ]; then
+            enhancd_autoaddition
         fi
-        pwd >>$CDHIST_CDLOG
+        pwd >>$ENHANCD_CDLOG
     fi
 }
 
 if is_zsh; then
-    function cdhist-peco-cd-complement()
+    function enhancd-peco-cd-complement()
     {
         if ! type peco >/dev/null 2>&1; then
             return 1
         fi
         local selected_dir
-        selected_dir=$(cdhist_logview -r | sed "s $HOME ~ g" | peco)
+        selected_dir=$(enhancd_logview -r | sed "s $HOME ~ g" | peco)
 
         if [ -n "$selected_dir" ]; then
             BUFFER="cd ${selected_dir}"
@@ -378,13 +378,13 @@ if is_zsh; then
         fi
         zle clear-screen
     }
-    zle -N cdhist-peco-cd-complement
-    bindkey "${CDHIST_PECO_BIND:-^g}" cdhist-peco-cd-complement
+    zle -N enhancd-peco-cd-complement
+    bindkey "${ENHANCD_PECO_BIND:-^g}" enhancd-peco-cd-complement
 fi
 
-#function + { cdhist_forward "$@"; }
-#function - { cdhist_back "$@"; }
-#function = { cdhist_history "$@"; }
+#function + { enhancd_forward "$@"; }
+#function - { enhancd_back "$@"; }
+#function = { enhancd_history "$@"; }
 
 ### Complement {{{1
 ###
@@ -440,16 +440,16 @@ if is_zsh; then
         IFS=$'\n'
         local -a _c
         _c=(
-        '0:'"${CDHIST_CDQ[1]/$HOME/~}"
-        '1:'"${CDHIST_CDQ[2]/$HOME/~}"
-        '2:'"${CDHIST_CDQ[3]/$HOME/~}"
-        '3:'"${CDHIST_CDQ[4]/$HOME/~}"
-        '4:'"${CDHIST_CDQ[5]/$HOME/~}"
-        '5:'"${CDHIST_CDQ[6]/$HOME/~}"
-        '6:'"${CDHIST_CDQ[7]/$HOME/~}"
-        '7:'"${CDHIST_CDQ[8]/$HOME/~}"
-        '8:'"${CDHIST_CDQ[9]/$HOME/~}"
-        '9:'"${CDHIST_CDQ[10]/$HOME/~}"
+        '0:'"${ENHANCD_CDQ[1]/$HOME/~}"
+        '1:'"${ENHANCD_CDQ[2]/$HOME/~}"
+        '2:'"${ENHANCD_CDQ[3]/$HOME/~}"
+        '3:'"${ENHANCD_CDQ[4]/$HOME/~}"
+        '4:'"${ENHANCD_CDQ[5]/$HOME/~}"
+        '5:'"${ENHANCD_CDQ[6]/$HOME/~}"
+        '6:'"${ENHANCD_CDQ[7]/$HOME/~}"
+        '7:'"${ENHANCD_CDQ[8]/$HOME/~}"
+        '8:'"${ENHANCD_CDQ[9]/$HOME/~}"
+        '9:'"${ENHANCD_CDQ[10]/$HOME/~}"
         )
         _describe -t commands Commands _c
     }
@@ -459,16 +459,16 @@ if is_zsh; then
         IFS=$'\n'
         local -a _c
         _c=(
-        '0:'"${CDHIST_CDQ[1]/$HOME/~}"
-        '1:'"${CDHIST_CDQ[10]/$HOME/~}"
-        '2:'"${CDHIST_CDQ[9]/$HOME/~}"
-        '3:'"${CDHIST_CDQ[8]/$HOME/~}"
-        '4:'"${CDHIST_CDQ[7]/$HOME/~}"
-        '5:'"${CDHIST_CDQ[6]/$HOME/~}"
-        '6:'"${CDHIST_CDQ[5]/$HOME/~}"
-        '7:'"${CDHIST_CDQ[4]/$HOME/~}"
-        '8:'"${CDHIST_CDQ[3]/$HOME/~}"
-        '9:'"${CDHIST_CDQ[2]/$HOME/~}"
+        '0:'"${ENHANCD_CDQ[1]/$HOME/~}"
+        '1:'"${ENHANCD_CDQ[10]/$HOME/~}"
+        '2:'"${ENHANCD_CDQ[9]/$HOME/~}"
+        '3:'"${ENHANCD_CDQ[8]/$HOME/~}"
+        '4:'"${ENHANCD_CDQ[7]/$HOME/~}"
+        '5:'"${ENHANCD_CDQ[6]/$HOME/~}"
+        '6:'"${ENHANCD_CDQ[5]/$HOME/~}"
+        '7:'"${ENHANCD_CDQ[4]/$HOME/~}"
+        '8:'"${ENHANCD_CDQ[3]/$HOME/~}"
+        '9:'"${ENHANCD_CDQ[2]/$HOME/~}"
         )
         _describe -t commands Commands _c
     }
@@ -476,7 +476,7 @@ if is_zsh; then
     _listup_history()
     {
         local -a _c
-        _c=(`cdhist_logview | sed 's|.*/||g'`)
+        _c=(`enhancd_logview | sed 's|.*/||g'`)
         _describe -t others "History" _c
     }
 
@@ -486,8 +486,8 @@ if is_zsh; then
         local -a full
         local -a _c
 
-        head=(`cdhist_logview | sed 's|.*/||g'`)
-        full=(`cdhist_logview`)
+        head=(`enhancd_logview | sed 's|.*/||g'`)
+        full=(`enhancd_logview`)
 
         local i
         for ((i=1; i<${#head[@]}; i++))
@@ -502,7 +502,7 @@ if is_zsh; then
     _no_arguments()
     {
         local -a _candidates
-        _candidates=(`cat "$CDHIST_CDLOG" | sort | uniq -c | sort -nr | head -n ${CDHIST_COMP_LIMIT:-100} | sed 's|.*/||g'`)
+        _candidates=(`cat "$ENHANCD_CDLOG" | sort | uniq -c | sort -nr | head -n ${ENHANCD_COMP_LIMIT:-100} | sed 's|.*/||g'`)
 
         local -a _c
         _c=(
@@ -523,24 +523,24 @@ fi
 # Add history
 # Use PROMPT_COMMAND or precmd
 if is_bash; then
-    if echo "$PROMPT_COMMAND" | grep -q -v "cdhist_addhistory"; then
-        PROMPT_COMMAND="cdhist_addhistory;$PROMPT_COMMAND"
+    if echo "$PROMPT_COMMAND" | grep -q -v "enhancd_addhistory"; then
+        PROMPT_COMMAND="enhancd_addhistory;$PROMPT_COMMAND"
     fi
 elif is_zsh; then
     autoload -Uz add-zsh-hook
-    add-zsh-hook precmd cdhist_addhistory
+    add-zsh-hook precmd enhancd_addhistory
 fi
 
 # Main at startup
 #
-if [ -f $CDHIST_CDLOG ]; then
-    if [ "${CDHIST_REFRESH_STARTUP:-true}" = 'true' ]; then
-        cdhist_refresh
+if [ -f $ENHANCD_CDLOG ]; then
+    if [ "${ENHANCD_REFRESH_STARTUP:-true}" = 'true' ]; then
+        enhancd_refresh
     fi
-    cdhist_initialize
-    unset -f cdhist_initialize
-    cdhist_cd $HOME
+    enhancd_initialize
+    unset -f enhancd_initialize
+    enhancd_cd $HOME
 else
-    cdhist_reset
+    enhancd_reset
 fi
 # vim:fdm=marker expandtab fdc=3 ts=4 sw=4 sts=4:
