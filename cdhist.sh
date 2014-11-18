@@ -1,3 +1,5 @@
+### enhancd.sh
+###
 
 is_zsh()  { test -n "$ZSH_VERSION"; }
 is_bash() { test -n "$BASH_VERSION"; }
@@ -18,8 +20,7 @@ declare CDHIST_PECO_BIND=${CDHIST_PECO_BIND:=^g}
 declare CDHIST_REFRESH_STARTUP=${CDHIST_REFRESH_STARTUP:=true}
 declare CDHIST_ALLWAYS_DISP=${CDHIST_ALLWAYS_DISP:=false}
 
-
-### cdhist libraries
+### General utils {{{1
 ###
 
 function cdhist_reset()
@@ -214,7 +215,7 @@ EOF
 
 #if [ ${#CDHIST_CDQ[@]} = 0 ]; then cdhist_reset; fi
 
-###  Aliases
+### Special utils {{{1
 ###
 
 function cd()
