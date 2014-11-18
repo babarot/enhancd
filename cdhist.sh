@@ -8,17 +8,16 @@ if ! is_bash && ! is_zsh; then
     exit 1
 fi
 
-declare    CDHIST_AUTOADD
-declare    CDHIST_CDHOME
-declare    CDHIST_CDLOG
 declare -a CDHIST_CDQ
-declare    CDHIST_CDQMAX
-declare    CDHIST_COMP_LIMIT
-declare    CDHIST_PECO_BIND
-declare    CDHIST_REFRESH_STARTUP
+declare CDHIST_AUTOADD=${CDHIST_AUTOADD:=true}
+declare CDHIST_CDHOME=${CDHIST_CDHOME:=$HOME}
+declare CDHIST_CDLOG=${CDHIST_CDLOG:=~/zsh_cdhist}
+declare CDHIST_CDQMAX=${CDHIST_CDQMAX:=10}
+declare CDHIST_COMP_LIMIT=${CDHIST_COMP_LIMIT:=60}
+declare CDHIST_PECO_BIND=${CDHIST_PECO_BIND:=^g}
+declare CDHIST_REFRESH_STARTUP=${CDHIST_REFRESH_STARTUP:=true}
+declare CDHIST_ALLWAYS_DISP=${CDHIST_ALLWAYS_DISP:=false}
 
-CDHIST_CDQMAX=10
-CDHIST_CDLOG="$HOME/zsh_cdhist"
 
 ### cdhist libraries
 ###
