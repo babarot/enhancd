@@ -10,6 +10,11 @@ if ! is_bash && ! is_zsh; then
     exit 1
 fi
 
+# load env variables if exists
+if [ -f ~/.enhancd.conf ]; then
+    source ~/.enhancd.conf
+fi
+
 declare -a CDHIST_CDQ
 declare CDHIST_AUTOADD=${CDHIST_AUTOADD:=true}
 declare CDHIST_CDHOME=${CDHIST_CDHOME:=$HOME}
