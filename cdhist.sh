@@ -116,7 +116,9 @@ function cdhist_history()
             cdhist_del $1
             return 1
         fi
-        cdhist_disp "${CDHIST_CDQ[@]}"
+        if [ ${CDHIST_ALLWAYS_DISP:-false} = "true" ]; then
+            cdhist_disp "${CDHIST_CDQ[@]}"
+        fi
     fi
 }
 
@@ -158,7 +160,9 @@ function cdhist_forward()
     if ! builtin cd "${CDHIST_CDQ[0]}"; then
         cdhist_del 0
     fi
-    cdhist_disp "${CDHIST_CDQ[@]}"
+    if [ ${CDHIST_ALLWAYS_DISP:-false} = "true" ]; then
+        cdhist_disp "${CDHIST_CDQ[@]}"
+    fi
 }
 
 function cdhist_back()
@@ -170,7 +174,9 @@ function cdhist_back()
     if ! builtin cd "${CDHIST_CDQ[0]}"; then
         cdhist_del 0
     fi
-    cdhist_disp "${CDHIST_CDQ[@]}"
+    if [ ${CDHIST_ALLWAYS_DISP:-false} = "true" ]; then
+        cdhist_disp "${CDHIST_CDQ[@]}"
+    fi
 }
 
 function cdhist_logview()
