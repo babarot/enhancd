@@ -527,9 +527,18 @@ if is_zsh; then
         '-:Forward like a web-browser (0,1,2,...)'
         )
 
-        _files -/
+        #TODO directory only...
+        _cd_org
         _describe -t commands "Commands" _c
         _describe -t others "History" _candidates
+        #if ls -F -1 | grep -q "/$"; then
+        #    _files -/
+        #    _describe -t commands "Commands" _c
+        #fi
+        #_describe -t others "History" _candidates
+        #if ls -F -1 | grep -qv "/$"; then
+        #    _describe -t commands "Commands" _c
+        #fi
     }
     autoload -Uz compinit
     compinit
