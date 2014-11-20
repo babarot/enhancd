@@ -541,7 +541,6 @@ if is_zsh; then
         #fi
     }
     autoload -Uz compinit
-    compinit
     compdef _cd cd
     function _cd_org()
     {
