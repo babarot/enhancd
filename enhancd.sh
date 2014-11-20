@@ -534,6 +534,81 @@ if is_zsh; then
     autoload -Uz compinit
     compinit
     compdef _cd cd
+    function _cd_org()
+    {
+        _cd_options () {
+            _arguments -s '-q[quiet, no output or use of hooks]' '-s[refuse to use paths with symlinks]' '(-P)-L[retain symbolic links ignoring CHASE_LINKS]' '(-L)-P[resolve symbolic links as CHASE_LINKS]'
+        }
+        setopt localoptions nonomatch
+        local expl ret=1 curarg
+        integer argstart=2 noopts
+        if (( CURRENT > 1 ))
+        then
+            while [[ $words[$argstart] = -* && argstart -lt CURRENT ]]
+            do
+                curarg=$words[$argstart]
+                [[ $curarg = -<-> ]] && break
+                (( argstart++ ))
+                [[ $curarg = -- ]] && noopts=1  && break
+            done
+        fi
+        if [[ CURRENT -eq $((argstart+1)) ]]
+        then
+            local rep
+            rep=(${~PWD/$words[$argstart]/*}~$PWD(-/))
+            rep=(${${rep#${PWD%%$words[$argstart]*}}%${PWD#*$words[$argstart]}})
+            (( $#rep )) && _wanted -C replacement strings expl replacement compadd -a rep
+        else
+            if [[ "$PREFIX" = (#b)(\~|)[^/]# && ( -n "$match[1]" || ( CURRENT -gt 1 && ! -o cdablevars ) ) ]]
+            then
+                _directory_stack && ret=0
+            fi
+            local -a tmpWpath
+            if [[ $PREFIX = (|*/)../* ]]
+            then
+                local tmpprefix
+                tmpprefix=$(cd ${PREFIX%/*} >&/dev/null && print $PWD)
+                if [[ -n $tmpprefix ]]
+                then
+                    tmpWpath=(-W $tmpprefix)
+                    IPREFIX=${IPREFIX}${PREFIX%/*}/
+                    PREFIX=${PREFIX##*/}
+                fi
+            fi
+            if [[ $PREFIX != (\~|/|./|../)* && $IPREFIX != ../* ]]
+            then
+                local tmpcdpath alt
+                alt=()
+                tmpcdpath=(${${(@)cdpath:#.}:#$PWD})
+                (( $#tmpcdpath )) && alt=('path-directories:directory in cdpath:_path_files -W tmpcdpath -/')
+                if [[ -o cdablevars && -n "$PREFIX" && "$PREFIX" != <-> ]]
+                then
+                    if [[ "$PREFIX" != */* ]]
+                    then
+                        alt=("$alt[@]" 'named-directories: : _tilde')
+                    else
+                        local oipre="$IPREFIX" opre="$PREFIX" dirpre dir
+                        dirpre="${PREFIX%%/*}/"
+                        IPREFIX="$IPREFIX$dirpre"
+                        eval "dir=( ~$dirpre )"
+                        PREFIX="${PREFIX#*/}"
+                        [[ $#dir -eq 1 && "$dir[1]" != "~$dirpre" ]] && _wanted named-directories expl 'directory after cdablevar' _path_files -W dir -/ && ret=0
+                        PREFIX="$opre"
+                        IPREFIX="$oipre"
+                    fi
+                fi
+                [[ CURRENT -ne 1 || ( -z "$path[(r).]" && $PREFIX != */* ) ]] && alt=("${cdpath+local-}directories:${cdpath+local }directory:_path_files ${(j: :)${(@q)tmpWpath}} -/" "$alt[@]")
+                if [[ CURRENT -eq argstart && noopts -eq 0 && $PREFIX = -* ]] && zstyle -t ":completion:${curcontext}:options" complete-options
+                then
+                    alt=("$service-options:$service option:_cd_options" "$alt[@]")
+                fi
+                _alternative "$alt[@]" && ret=0
+                return ret
+            fi
+            [[ CURRENT -ne 1 ]] && _wanted directories expl directory _path_files $tmpWpath -/ && ret=0
+            return ret
+        fi
+    }
 fi
 
 ### Misc {{{1
