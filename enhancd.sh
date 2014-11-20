@@ -532,6 +532,7 @@ if is_zsh; then
         _describe -t others "History" _candidates
     }
     autoload -Uz compinit
+    compinit
     compdef _cd cd
 fi
 
