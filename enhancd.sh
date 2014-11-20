@@ -230,23 +230,34 @@ function cd()
     fi
     function cd_internal()
     {
-        if [ -d "$1" ]; then
+        #if [[ "$1" == "--past-only" ]]; then
+        #    :
+        #else
+        #    if [ -d "$1" ]; then
+        #        enhancd_cd "$1" && return 0
+        #    fi
+        #fi
+        if [[ "$1" != "--past-only" ]] && [[ -d "$1" ]]; then
             enhancd_cd "$1" && return 0
         else
             # Move to ENHANCD_CDQ, directly
             # known isuue:
             #   unsupport ENHANCD_CDQ because "^[0-9]$"
+            #
+            [[ "$1" == "--past-only" ]] && shift
             if expr "$1" : '^[0-9]$' >/dev/null; then
                 enhancd_cd "${ENHANCD_CDQ[$1]}" && return 0
             fi
 
             # Move to filered target directory like a ring.
+            #
             filered_array=($(enhancd_logview | \grep -i -E "/\.?$1[^/]*$"))
             for ((i=${#filered_array[*]}-1; i>=0; i--))
             do
                 # Equals PWD to filered_array[i],
                 # go to filered_array of first origin
                 # This is means that you can go to other directory.
+                #
                 if [ "$PWD" = "${filered_array[i]}" ]; then
                     enhancd_cd "${filered_array[0]}" && return 0
                     return 1
@@ -303,7 +314,11 @@ function cd()
                     return 0
                 elif [[ "$1" == '--list' ]] || [[ "$1" == '-l' ]]; then
                     shift
-                    cd_internal "$1"
+                    if [ -z "$1" ]; then
+                        enhancd_logview
+                        return 0
+                    fi
+                    cd_internal --past-only "$1"
                     return 0
                 elif [[ "$1" == '--list-detail' ]] || [[ "$1" == '-L' ]]; then
                     shift
