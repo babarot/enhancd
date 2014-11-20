@@ -94,7 +94,7 @@ function enhancd_cd()
     done
     if [ $f -eq 1 ]; then
         enhancd_rot $((i+1)) -1
-    elif [ ${#ENHANCD_CDQ[@]} -lt $ENHANCD_CDQMAX ]; then 
+    elif [ ${#ENHANCD_CDQ[@]} -lt $ENHANCD_CDQMAX ]; then
         enhancd_add "$PWD"
     else
         enhancd_rot ${#ENHANCD_CDQ[@]} -1
@@ -284,6 +284,8 @@ function cd()
                 fi
                 if [ -z "$1" ] || expr "$1" : '[0-9]*' >/dev/null; then
                     enhancd_history ${1+"$1"} && return 0
+                else
+                    echo "usage: cd = [num]"
                     return 1
                 fi
                 ;;
