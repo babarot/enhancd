@@ -18,7 +18,7 @@ fi
 declare -a ENHANCD_CDQ
 declare ENHANCD_AUTOADD=${ENHANCD_AUTOADD:=true}
 declare ENHANCD_CDHOME=${ENHANCD_CDHOME:=$HOME}
-declare ENHANCD_CDLOG=${ENHANCD_CDLOG:=~/.enhancd.db}
+declare ENHANCD_DATABASE=${ENHANCD_DATABASE:=~/.enhancd.db}
 declare ENHANCD_CDQMAX=${ENHANCD_CDQMAX:=10}
 declare ENHANCD_COMP_LIMIT=${ENHANCD_COMP_LIMIT:=60}
 declare ENHANCD_PECO_BIND=${ENHANCD_PECO_BIND:=^g}
@@ -148,13 +148,13 @@ function enhancd_refresh()
     fi
 
     local raw_date
-    raw_date=$(cat $ENHANCD_CDLOG)
+    raw_date=$(cat $ENHANCD_DATABASE)
 
     for i in "${delete_candidate[@]}"
     do
         raw_date=$(echo "${raw_date}" | \grep -E -x -v "$i")
     done
-    echo "${raw_date}" >|$ENHANCD_CDLOG
+    echo "${raw_date}" >|$ENHANCD_DATABASE
 }
 
 function enhancd_forward()
@@ -188,9 +188,9 @@ function enhancd_back()
 function enhancd_logview()
 {
     if [ "$1" = '-r' ]; then
-        enhancd_reverse "$ENHANCD_CDLOG" | awk '!colname[$0]++'
+        enhancd_reverse "$ENHANCD_DATABASE" | awk '!colname[$0]++'
     else
-        enhancd_reverse <(enhancd_reverse "$ENHANCD_CDLOG" | awk '!colname[$0]++')
+        enhancd_reverse <(enhancd_reverse "$ENHANCD_DATABASE" | awk '!colname[$0]++')
     fi
 }
 function enhancd_initialize()
@@ -346,20 +346,20 @@ function enhancd_autoaddition()
     while read LINE
     do
         echo "$LINE"
-    done <"$ENHANCD_CDLOG"
+    done <"$ENHANCD_DATABASE"
     )
-    echo "${file[@]}" >|$ENHANCD_CDLOG
+    echo "${file[@]}" >|$ENHANCD_DATABASE
 }
 
 function enhancd_addhistory()
 {
-    touch $ENHANCD_CDLOG
+    touch $ENHANCD_DATABASE
     if [ "$PWD" != "$OLDPWD" ]; then
         OLDPWD=$PWD
         if [ ${ENHANCD_AUTOADD:-true} = 'true' ]; then
             enhancd_autoaddition
         fi
-        pwd >>$ENHANCD_CDLOG
+        pwd >>$ENHANCD_DATABASE
     fi
 }
 
@@ -502,7 +502,7 @@ if is_zsh; then
     _no_arguments()
     {
         local -a _candidates
-        _candidates=(`cat "$ENHANCD_CDLOG" | sort | uniq -c | sort -nr | head -n ${ENHANCD_COMP_LIMIT:-100} | sed 's|.*/||g'`)
+        _candidates=(`cat "$ENHANCD_DATABASE" | sort | uniq -c | sort -nr | head -n ${ENHANCD_COMP_LIMIT:-100} | sed 's|.*/||g'`)
 
         local -a _c
         _c=(
@@ -533,7 +533,7 @@ fi
 
 # Main at startup
 #
-if [ -f $ENHANCD_CDLOG ]; then
+if [ -f $ENHANCD_DATABASE ]; then
     if [ "${ENHANCD_REFRESH_STARTUP:-true}" = 'true' ]; then
         enhancd_refresh
     fi
