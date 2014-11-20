@@ -23,7 +23,7 @@ declare ENHANCD_CDQMAX=${ENHANCD_CDQMAX:=10}
 declare ENHANCD_COMP_LIMIT=${ENHANCD_COMP_LIMIT:=60}
 declare ENHANCD_PECO_BIND=${ENHANCD_PECO_BIND:=^g}
 declare ENHANCD_REFRESH_STARTUP=${ENHANCD_REFRESH_STARTUP:=true}
-declare ENHANCD_ALLWAYS_DISP=${ENHANCD_ALLWAYS_DISP:=false}
+declare ENHANCD_DISP_QUEUE=${ENHANCD_DISP_QUEUE:=false}
 
 ### General utils {{{1
 ###
@@ -122,7 +122,7 @@ function enhancd_history()
             enhancd_del $1
             return 1
         fi
-        if [ ${ENHANCD_ALLWAYS_DISP:-false} = "true" ]; then
+        if [ ${ENHANCD_DISP_QUEUE:-false} = "true" ]; then
             enhancd_disp "${ENHANCD_CDQ[@]}"
         fi
     fi
@@ -166,7 +166,7 @@ function enhancd_forward()
     if ! builtin cd "${ENHANCD_CDQ[0]}"; then
         enhancd_del 0
     fi
-    if [ ${ENHANCD_ALLWAYS_DISP:-false} = "true" ]; then
+    if [ ${ENHANCD_DISP_QUEUE:-false} = "true" ]; then
         enhancd_disp "${ENHANCD_CDQ[@]}"
     fi
 }
@@ -180,7 +180,7 @@ function enhancd_back()
     if ! builtin cd "${ENHANCD_CDQ[0]}"; then
         enhancd_del 0
     fi
-    if [ ${ENHANCD_ALLWAYS_DISP:-false} = "true" ]; then
+    if [ ${ENHANCD_DISP_QUEUE:-false} = "true" ]; then
         enhancd_disp "${ENHANCD_CDQ[@]}"
     fi
 }
