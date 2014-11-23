@@ -13,6 +13,7 @@ uninstall:
 install:
 	${MKPATH} ${PREFIX}/share/man/man1
 	${INSTALLMAN} ${MANPAGES} ${PREFIX}/share/man/man1/${MANPAGES}
+	${INSTALLMAN} ${MANPAGES} ${PREFIX}/share/man/man1/cd.1
 	@echo ""
 	@echo "Put something like this in your ~/.bashrc or ~/.zshrc:"
 	@echo "  source /path/to/enhancd.sh"
