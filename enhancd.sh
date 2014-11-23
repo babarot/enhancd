@@ -326,6 +326,11 @@ function cd()
                     shift
                     cd_internal "$1"
                     return 0
+                elif [[ "$1" == '--sync' ]] || [[ "$1" == '-s' ]]; then
+                    shift
+                    enhancd_initialize
+                    enhancd_history
+                    return 0
                 fi
                 ;;
             *)
@@ -417,9 +422,10 @@ if is_zsh; then
         local ret=1
 
         _arguments -C \
-            '--help[Show help and usage]' \
+            '--help[Show help and usage]: :->_no_arguments' \
             '(-l --list)'{-l,--list}'[Lists all directories]:list:->list' \
             '(-L --list-detail)'{-L,--list-detail}'[Lists all directories in detail]:detail:->detail' \
+            '(-s --sync)'{-s,--sync}'[sync history]: :->_no_arguments' \
             '1: :_no_arguments' \
             '*:: :->args' \
             && ret=0
@@ -541,6 +547,7 @@ if is_zsh; then
         #fi
     }
     autoload -Uz compinit
+    compinit
     compdef _cd cd
     function _cd_org()
     {
@@ -639,7 +646,7 @@ if [ -f $ENHANCD_DATABASE ]; then
         enhancd_refresh
     fi
     enhancd_initialize
-    unset -f enhancd_initialize
+    #unset -f enhancd_initialize
     enhancd_cd $HOME
 else
     enhancd_reset
