@@ -525,7 +525,10 @@ if is_zsh; then
     _no_arguments()
     {
         local -a _candidates
-        _candidates=(`cat "$ENHANCD_DATABASE" | sort | uniq -c | sort -nr | head -n ${ENHANCD_COMP_LIMIT:-100} | sed 's|.*/||g'`)
+        local -i num
+        num=$(($ENHANCD_COMP_LIMIT/2))
+        _candidates+=(`cat "$ENHANCD_DATABASE" | sort | uniq -c | sort -nr | head -n ${num} | sed 's|.*/||g'`)
+        _candidates+=(`enhancd_logview -r | head -n $num | sed 's|.*/||g'`)
 
         local -a _c
         _c=(
