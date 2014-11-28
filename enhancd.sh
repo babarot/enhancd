@@ -331,6 +331,9 @@ function cd() #{{{2
                     enhancd_initialize
                     enhancd_history
                     return 0
+                else
+                    echo "$1: illegal option"
+                    return 1
                 fi
                 ;;
             *)
