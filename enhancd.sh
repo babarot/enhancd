@@ -223,7 +223,7 @@ EOF
 ### Special utils {{{1
 ###
 
-function cd()
+function cd() #{{{2
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
@@ -344,6 +344,7 @@ function cd()
     done
     return 1
 }
+#}}}
 
 function enhancd_autoaddition()
 {
@@ -526,6 +527,7 @@ if is_zsh; then
     {
         local -a _candidates
         local -i num
+        IFS=$'\n'
         num=$(($ENHANCD_COMP_LIMIT/2))
         _candidates+=(`cat "$ENHANCD_DATABASE" | sort | uniq -c | sort -nr | head -n ${num} | sed 's|.*/||g'`)
         _candidates+=(`enhancd_logview -r | head -n $num | sed 's|.*/||g'`)
