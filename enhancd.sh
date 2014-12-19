@@ -28,16 +28,19 @@ declare ENHANCD_DISP_QUEUE=${ENHANCD_DISP_QUEUE:=false}
 ### General utils {{{1
 ###
 
+# enhancd_reset {{{2
 function enhancd_reset()
 {
     ENHANCD_CDQ=("$PWD")
 }
 
+# enhancd_disp {{{2
 function enhancd_disp()
 {
     echo "$*" | sed "s $HOME ~ g"
 }
 
+# enhancd_add {{{2
 function enhancd_add()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -46,6 +49,7 @@ function enhancd_add()
     ENHANCD_CDQ=("$1" "${ENHANCD_CDQ[@]}")
 }
 
+# enhancd_del {{{2
 function enhancd_del()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -63,6 +67,7 @@ function enhancd_del()
     fi
 }
 
+# enhancd_rot {{{2
 function enhancd_rot()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -78,6 +83,7 @@ function enhancd_rot()
     done
 }
 
+# enhancd_cd {{{2
 function enhancd_cd()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -102,6 +108,7 @@ function enhancd_cd()
     fi
 }
 
+# enhancd_history {{{2
 function enhancd_history()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -128,6 +135,7 @@ function enhancd_history()
     fi
 }
 
+# enhancd_refresh {{{2
 function enhancd_refresh()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -157,6 +165,7 @@ function enhancd_refresh()
     echo "${raw_date}" >|$ENHANCD_DATABASE
 }
 
+# enhancd_forward {{{2
 function enhancd_forward()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -171,6 +180,7 @@ function enhancd_forward()
     fi
 }
 
+# enhancd_back {{{2
 function enhancd_back()
 {
     if [ "$ZSH_NAME" = "zsh" ]; then
@@ -185,6 +195,7 @@ function enhancd_back()
     fi
 }
 
+# enhancd_logview {{{2
 function enhancd_logview()
 {
     if [ "$1" = '-r' ]; then
@@ -193,6 +204,8 @@ function enhancd_logview()
         enhancd_reverse <(enhancd_reverse "$ENHANCD_DATABASE" | awk '!colname[$0]++')
     fi
 }
+
+# enhancd_initialize {{{2
 function enhancd_initialize()
 {
     local count
@@ -211,6 +224,7 @@ function enhancd_initialize()
     done
 }
 
+# enhancd_reverse {{{2
 function enhancd_reverse() {
 $(which ex) -s $1 <<-EOF
 g/^/mo0
@@ -228,6 +242,8 @@ function cd() #{{{2
     if [ "$ZSH_NAME" = "zsh" ]; then
         setopt localoptions ksharrays
     fi
+
+    # cd_internal {{{3
     function cd_internal()
     {
         #if [[ "$1" == "--past-only" ]]; then
@@ -349,6 +365,7 @@ function cd() #{{{2
 }
 #}}}
 
+# enhancd_autoaddition {{{2
 function enhancd_autoaddition()
 {
     local i
@@ -377,6 +394,7 @@ function enhancd_autoaddition()
     echo "${file[@]}" >|$ENHANCD_DATABASE
 }
 
+# enhancd_addhistory {{{2
 function enhancd_addhistory()
 {
     touch $ENHANCD_DATABASE
