@@ -23,6 +23,7 @@ declare ENHANCD_CDQMAX=${ENHANCD_CDQMAX:=10}
 declare ENHANCD_COMP_LIMIT=${ENHANCD_COMP_LIMIT:=60}
 declare ENHANCD_PECO_BIND=${ENHANCD_PECO_BIND:=^g}
 declare ENHANCD_REFRESH_STARTUP=${ENHANCD_REFRESH_STARTUP:=true}
+declare ENHANCD_HOME_STARTUP=${ENHANCD_HOME_STARTUP:=true}
 declare ENHANCD_DISP_QUEUE=${ENHANCD_DISP_QUEUE:=false}
 
 ### General utils {{{1
@@ -673,7 +674,10 @@ if [ -f $ENHANCD_DATABASE ]; then
     fi
     enhancd_initialize
     #unset -f enhancd_initialize
-    enhancd_cd $HOME
+    #enhancd_cd $HOME
+    if [ "${ENHANCD_HOME_STARTUP:-true}" = 'true' ]; then
+        enhancd_cd $HOME
+    fi
 else
     enhancd_reset
 fi
