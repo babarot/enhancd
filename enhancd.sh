@@ -347,6 +347,48 @@ function cd() #{{{2
                     shift
                     enhancd_initialize
                     enhancd_history
+                elif [[ "$1" =~ ^--delete ]] || [[ "$1" =~ ^-d ]]; then
+                    #if [[ -n $2 ]]; then
+                    #    sec_arg=$2
+                    #    shift; shift
+                    #else
+                    #    shift;
+                    #    return 11
+                    #fi
+
+                    #if [[ $1 =~ ^--delete= ]]; then
+                    #    sec_arg="${1/--delete=/}"
+                    #    shift
+                    #elif [[ $1 =~ ^-d ]]; then
+                    #    if [[ -n $2 ]] && [[ ! "$2" =~ ^--delete || ! "$2" =~ ^-d ]]; then
+                    #        sec_arg="${2}"
+                    #        shift
+                    #        shift
+                    #    else
+                    #        sec_arg="${1/-d/}"
+                    #        shift
+                    #    fi
+                    #elif [[ -n $2 ]] && [[ ! $2 =~ ^--delete= ]]; then
+                    #    sec_arg="${2}"
+                    #    shift
+                    #elif [[ -n $2 ]] && [[ ! $2 =~ ^-d ]]; then
+                    #    sec_arg="${2}"
+                    #    shift
+                    #fi
+
+                    #echo "$sec_arg"
+                    #raw_date=$(cat $ENHANCD_DATABASE)
+                    #raw_date=$(echo "${raw_date}" | \grep -v -E "/${sec_arg}$")
+                    #echo "${raw_date}" >|$ENHANCD_DATABASE
+
+                    [[ -z $2 ]] && return 11
+                    local item
+                    for item in "$@"
+                    do
+                        raw_date=$(echo "${raw_date}" | \grep -v -E "/$item$")
+                        unset item
+                    done
+                    echo "${raw_date}" >|$ENHANCD_DATABASE
                     return 0
                 else
                     echo "$1: illegal option"
@@ -362,7 +404,6 @@ function cd() #{{{2
                 ;;
         esac
     done
-    return 1
 }
 #}}}
 
@@ -449,9 +490,11 @@ if is_zsh; then
             '(-l --list)'{-l,--list}'[Lists all directories]:list:->list' \
             '(-L --list-detail)'{-L,--list-detail}'[Lists all directories in detail]:detail:->detail' \
             '(-s --sync)'{-s,--sync}'[sync history]: :->_no_arguments' \
+            {-d,--delete}'[delete history]: :->list' \
             '1: :_no_arguments' \
             '*:: :->args' \
             && ret=0
+            #{-d+,--delete=}'[delete history]: :->list' \
 
         IFS=$'\n'
 
@@ -561,7 +604,8 @@ if is_zsh; then
         )
 
         #TODO directory only...
-        _cd_org
+        #_cd_org
+        _files -/
         _describe -t commands "Commands" _c
         _describe -t others "History" _candidates
         #if ls -F -1 | grep -q "/$"; then
