@@ -44,7 +44,7 @@ function enhancd_disp()
 # enhancd_add {{{2
 function enhancd_add()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     ENHANCD_CDQ=("$1" "${ENHANCD_CDQ[@]}")
@@ -53,7 +53,7 @@ function enhancd_add()
 # enhancd_del {{{2
 function enhancd_del()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     local i=${1-0}
@@ -61,7 +61,7 @@ function enhancd_del()
     for ((; i<${#ENHANCD_CDQ[@]}-1; i++)); do
         ENHANCD_CDQ[$i]="${ENHANCD_CDQ[$((i+1))]}"
     done
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         ENHANCD_CDQ=(${ENHANCD_CDQ[0, (($i-1))]})
     else
         unset ENHANCD_CDQ[$i]
@@ -71,7 +71,7 @@ function enhancd_del()
 # enhancd_rot {{{2
 function enhancd_rot()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     local i
@@ -87,7 +87,7 @@ function enhancd_rot()
 # enhancd_cd {{{2
 function enhancd_cd()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     local i f=0
@@ -112,7 +112,7 @@ function enhancd_cd()
 # enhancd_history {{{2
 function enhancd_history()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     local i d
@@ -139,7 +139,7 @@ function enhancd_history()
 # enhancd_refresh {{{2
 function enhancd_refresh()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
 
@@ -169,7 +169,7 @@ function enhancd_refresh()
 # enhancd_forward {{{2
 function enhancd_forward()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     enhancd_rot ${#ENHANCD_CDQ[@]} -${1-1}
@@ -184,7 +184,7 @@ function enhancd_forward()
 # enhancd_back {{{2
 function enhancd_back()
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     enhancd_rot ${#ENHANCD_CDQ[@]} ${1-1}
@@ -213,7 +213,7 @@ function enhancd_initialize()
     local -a log_array
 
     count=0
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
     log_array=( $(enhancd_logview) )
@@ -240,7 +240,7 @@ EOF
 
 function cd() #{{{2
 {
-    if [ "$ZSH_NAME" = "zsh" ]; then
+    if is_zsh; then
         setopt localoptions ksharrays
     fi
 
