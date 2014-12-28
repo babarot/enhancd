@@ -628,22 +628,47 @@ if is_zsh; then
         )
 
         #TODO directory only...
-        #_cd_org
-        _files -/
+        _cd_org
+        #_files -/
         _describe -t commands "Commands" _c
         _describe -t others "History" _candidates
-        #if ls -F -1 | grep -q "/$"; then
-        #    _files -/
-        #    _describe -t commands "Commands" _c
-        #fi
-        #_describe -t others "History" _candidates
-        #if ls -F -1 | grep -qv "/$"; then
-        #    _describe -t commands "Commands" _c
-        #fi
     }
     autoload -Uz compinit
     compinit
     compdef _cd cd
+fi
+
+### Misc {{{1
+
+# Add history
+# Use PROMPT_COMMAND or precmd
+if is_bash; then
+    if echo "$PROMPT_COMMAND" | grep -q -v "enhancd_addhistory"; then
+        PROMPT_COMMAND="enhancd_addhistory;$PROMPT_COMMAND"
+    fi
+elif is_zsh; then
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd enhancd_addhistory
+fi
+
+# Main at startup
+#
+if [ -f $ENHANCD_DATABASE ]; then
+    if [ "${ENHANCD_REFRESH_STARTUP:-true}" = 'true' ]; then
+        enhancd_refresh
+    fi
+    enhancd_initialize
+    #unset -f enhancd_initialize
+    #enhancd_cd $HOME
+    if [ "${ENHANCD_HOME_STARTUP:-true}" = 'true' ]; then
+        enhancd_cd $HOME
+    fi
+else
+    enhancd_reset
+fi
+
+is_bash && return
+    # cd complement {{{2
     function _cd_org()
     {
         _cd_options () {
@@ -718,35 +743,5 @@ if is_zsh; then
             [[ CURRENT -ne 1 ]] && _wanted directories expl directory _path_files $tmpWpath -/ && ret=0
             return ret
         fi
-    }
-fi
-
-### Misc {{{1
-
-# Add history
-# Use PROMPT_COMMAND or precmd
-if is_bash; then
-    if echo "$PROMPT_COMMAND" | grep -q -v "enhancd_addhistory"; then
-        PROMPT_COMMAND="enhancd_addhistory;$PROMPT_COMMAND"
-    fi
-elif is_zsh; then
-    autoload -Uz add-zsh-hook
-    add-zsh-hook precmd enhancd_addhistory
-fi
-
-# Main at startup
-#
-if [ -f $ENHANCD_DATABASE ]; then
-    if [ "${ENHANCD_REFRESH_STARTUP:-true}" = 'true' ]; then
-        enhancd_refresh
-    fi
-    enhancd_initialize
-    #unset -f enhancd_initialize
-    #enhancd_cd $HOME
-    if [ "${ENHANCD_HOME_STARTUP:-true}" = 'true' ]; then
-        enhancd_cd $HOME
-    fi
-else
-    enhancd_reset
-fi
+    } #}}}
 # vim:fdm=marker expandtab fdc=3 ts=4 sw=4 sts=4:
