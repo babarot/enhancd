@@ -528,18 +528,31 @@ if is_zsh; then
     {
         IFS=$'\n'
         local -a _c
-        _c=(
-        '0:'"${ENHANCD_CDQ[1]/$HOME/~}"
-        '1:'"${ENHANCD_CDQ[2]/$HOME/~}"
-        '2:'"${ENHANCD_CDQ[3]/$HOME/~}"
-        '3:'"${ENHANCD_CDQ[4]/$HOME/~}"
-        '4:'"${ENHANCD_CDQ[5]/$HOME/~}"
-        '5:'"${ENHANCD_CDQ[6]/$HOME/~}"
-        '6:'"${ENHANCD_CDQ[7]/$HOME/~}"
-        '7:'"${ENHANCD_CDQ[8]/$HOME/~}"
-        '8:'"${ENHANCD_CDQ[9]/$HOME/~}"
-        '9:'"${ENHANCD_CDQ[10]/$HOME/~}"
-        )
+        #_c=(
+        #'0:'"${ENHANCD_CDQ[1]/$HOME/~}"
+        #'1:'"${ENHANCD_CDQ[2]/$HOME/~}"
+        #'2:'"${ENHANCD_CDQ[3]/$HOME/~}"
+        #'3:'"${ENHANCD_CDQ[4]/$HOME/~}"
+        #'4:'"${ENHANCD_CDQ[5]/$HOME/~}"
+        #'5:'"${ENHANCD_CDQ[6]/$HOME/~}"
+        #'6:'"${ENHANCD_CDQ[7]/$HOME/~}"
+        #'7:'"${ENHANCD_CDQ[8]/$HOME/~}"
+        #'8:'"${ENHANCD_CDQ[9]/$HOME/~}"
+        #'9:'"${ENHANCD_CDQ[10]/$HOME/~}"
+        #)
+
+        _c=()
+        for ((i=0; i<$ENHANCD_CDQMAX; i++))
+        do
+            if is_zsh; then
+                _c+=($i:"${ENHANCD_CDQ[$((i+1))]/$HOME/~}")
+            else
+                _c+=($i:"${ENHANCD_CDQ[i]/$HOME/~}")
+            fi
+            #_c=("${_c[@]}" $i:"${ENHANCD_CDQ[$i+1]/$HOME/~}")
+            #echo $i:"${ENHANCD_CDQ[$i]/$HOME/~}"
+        done
+
         _describe -t commands Commands _c
     }
 
@@ -547,18 +560,29 @@ if is_zsh; then
     {
         IFS=$'\n'
         local -a _c
-        _c=(
-        '0:'"${ENHANCD_CDQ[1]/$HOME/~}"
-        '1:'"${ENHANCD_CDQ[10]/$HOME/~}"
-        '2:'"${ENHANCD_CDQ[9]/$HOME/~}"
-        '3:'"${ENHANCD_CDQ[8]/$HOME/~}"
-        '4:'"${ENHANCD_CDQ[7]/$HOME/~}"
-        '5:'"${ENHANCD_CDQ[6]/$HOME/~}"
-        '6:'"${ENHANCD_CDQ[5]/$HOME/~}"
-        '7:'"${ENHANCD_CDQ[4]/$HOME/~}"
-        '8:'"${ENHANCD_CDQ[3]/$HOME/~}"
-        '9:'"${ENHANCD_CDQ[2]/$HOME/~}"
-        )
+        #_c=(
+        #'1:'"${ENHANCD_CDQ[10]/$HOME/~}"
+        #'2:'"${ENHANCD_CDQ[9]/$HOME/~}"
+        #'3:'"${ENHANCD_CDQ[8]/$HOME/~}"
+        #'4:'"${ENHANCD_CDQ[7]/$HOME/~}"
+        #'5:'"${ENHANCD_CDQ[6]/$HOME/~}"
+        #'6:'"${ENHANCD_CDQ[5]/$HOME/~}"
+        #'7:'"${ENHANCD_CDQ[4]/$HOME/~}"
+        #'8:'"${ENHANCD_CDQ[3]/$HOME/~}"
+        #'9:'"${ENHANCD_CDQ[2]/$HOME/~}"
+        #'0:'"${ENHANCD_CDQ[1]/$HOME/~}"
+        #)
+
+        _c=()
+        local -i count
+        count=$ENHANCD_CDQMAX
+        _c+=("0:${ENHANCD_CDQ[1]/$HOME/~}")
+        for ((i=1; i<$ENHANCD_CDQMAX; i++))
+        do
+             _c+=($i:"${ENHANCD_CDQ[$count]/$HOME/~}")
+             ((count--))
+        done
+
         _describe -t commands Commands _c
     }
 
