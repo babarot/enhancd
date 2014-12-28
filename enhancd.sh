@@ -524,7 +524,7 @@ if is_zsh; then
         return ret
     }
 
-    _buffer_ring_normal()
+    _buffer_ring_normal() #{{{2
     {
         IFS=$'\n'
         local -a _c
@@ -556,7 +556,7 @@ if is_zsh; then
         _describe -t commands Commands _c
     }
 
-    _buffer_ring_reverse()
+    _buffer_ring_reverse() #{{{2
     {
         IFS=$'\n'
         local -a _c
@@ -586,14 +586,14 @@ if is_zsh; then
         _describe -t commands Commands _c
     }
 
-    _listup_history()
+    _listup_history() #{{{2
     {
         local -a _c
         _c=(`enhancd_logview | sed 's|.*/||g'`)
         _describe -t others "History" _c
     }
 
-    _listup_history_in_detail()
+    _listup_history_in_detail() #{{{2
     {
         local -a head
         local -a full
@@ -612,7 +612,7 @@ if is_zsh; then
         _describe -t others "History" _c
     }
 
-    _no_arguments()
+    _no_arguments() #{{{2
     {
         local -a _candidates
         local -i num
