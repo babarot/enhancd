@@ -348,45 +348,17 @@ function cd() #{{{2
                     enhancd_initialize
                     enhancd_history
                 elif [[ "$1" =~ ^--delete ]] || [[ "$1" =~ ^-d ]]; then
-                    #if [[ -n $2 ]]; then
-                    #    sec_arg=$2
-                    #    shift; shift
-                    #else
-                    #    shift;
-                    #    return 11
-                    #fi
-
-                    #if [[ $1 =~ ^--delete= ]]; then
-                    #    sec_arg="${1/--delete=/}"
-                    #    shift
-                    #elif [[ $1 =~ ^-d ]]; then
-                    #    if [[ -n $2 ]] && [[ ! "$2" =~ ^--delete || ! "$2" =~ ^-d ]]; then
-                    #        sec_arg="${2}"
-                    #        shift
-                    #        shift
-                    #    else
-                    #        sec_arg="${1/-d/}"
-                    #        shift
-                    #    fi
-                    #elif [[ -n $2 ]] && [[ ! $2 =~ ^--delete= ]]; then
-                    #    sec_arg="${2}"
-                    #    shift
-                    #elif [[ -n $2 ]] && [[ ! $2 =~ ^-d ]]; then
-                    #    sec_arg="${2}"
-                    #    shift
-                    #fi
-
-                    #echo "$sec_arg"
-                    #raw_date=$(cat $ENHANCD_DATABASE)
-                    #raw_date=$(echo "${raw_date}" | \grep -v -E "/${sec_arg}$")
-                    #echo "${raw_date}" >|$ENHANCD_DATABASE
-
                     [[ -z $2 ]] && return 11
-                    cp -f $ENHANCD_DATABASE ${ENHANCD_DATABASE}.bak
+                    shift
+                    command cp -f $ENHANCD_DATABASE ${ENHANCD_DATABASE}.bak
+
+                    local raw_date
+                    raw_date=$(cat $ENHANCD_DATABASE)
+
                     local item
                     for item in "$@"
                     do
-                        raw_date=$(echo "${raw_date}" | \grep -v -E "/$item$")
+                        raw_date=$(echo "${raw_date}" | \grep -E -v "/\.?$item")
                         unset item
                     done
                     echo "${raw_date}" >|$ENHANCD_DATABASE
