@@ -382,6 +382,7 @@ function cd() #{{{2
                     #echo "${raw_date}" >|$ENHANCD_DATABASE
 
                     [[ -z $2 ]] && return 11
+                    cp -f $ENHANCD_DATABASE ${ENHANCD_DATABASE}.bak
                     local item
                     for item in "$@"
                     do
