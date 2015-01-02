@@ -440,8 +440,15 @@ function enhancd_autoaddition()
 function enhancd_addhistory()
 {
     touch $ENHANCD_DATABASE
-    if [ "$PWD" != "$OLDPWD" ]; then
-        OLDPWD=$PWD
+    if is_bash; then
+        if [ "$PWD" != "$OLDPWD" ]; then
+            OLDPWD=$PWD
+            if [ ${ENHANCD_AUTOADD:-true} = 'true' ]; then
+                enhancd_autoaddition
+            fi
+            pwd >>$ENHANCD_DATABASE
+        fi
+    elif is_zsh; then
         if [ ${ENHANCD_AUTOADD:-true} = 'true' ]; then
             enhancd_autoaddition
         fi
@@ -648,7 +655,9 @@ if is_bash; then
     fi
 elif is_zsh; then
     autoload -Uz add-zsh-hook
-    add-zsh-hook precmd enhancd_addhistory
+    #add-zsh-hook precmd enhancd_addhistory
+    add-zsh-hook chpwd enhancd_addhistory
+    #precmd_functions=($precmd_functions foo bar)
 fi
 
 # Main at startup
