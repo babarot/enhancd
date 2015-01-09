@@ -3,6 +3,10 @@
 
 is_zsh()  { test -n "$ZSH_VERSION"; }
 is_bash() { test -n "$BASH_VERSION"; }
+error_exit() {
+    echo "$1" >/dev/stderr
+    exec return ${2:-1}
+}
 
 # Only shell script for bash and zsh
 if ! is_bash && ! is_zsh; then
