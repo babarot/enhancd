@@ -260,6 +260,27 @@ function cd() #{{{2
         #fi
         if [[ "$1" != "--past-only" ]] && [[ -d "$1" ]]; then
             enhancd_cd "$1" && return 0
+        elif [[ "$1" == "--uniqlize" ]]; then
+            local target
+            if [[ -z $2 ]]; then return 11; fi
+            target=$(echo $2 | sed "s/ /:/" | cut -d: -f2)
+
+            local c i
+            local -a head full
+            head=(`enhancd_logview | sed 's|.*/||g' | nl | awk '{print $2,$1}' | sed "s/ /:/"`)
+            full=(`enhancd_logview`)
+
+            c=$(
+            for ((i=1; i<${#head[@]}; i++))
+            do
+                echo ${head[$i]}:${full[$i]}
+                #if [[ $2 == $head[$i] ]]; then
+                #    c=${2% [0-9]*}
+                #fi
+            done | awk -F: -v num=$target '$2 == num{print $3}'
+            )
+            if [[ -z $c ]]; then return 11; fi
+            enhancd_cd "$c" && return 0
         else
             # Move to ENHANCD_CDQ, directly
             # known isuue:
@@ -345,7 +366,8 @@ function cd() #{{{2
                     return 0
                 elif [[ "$1" == '--list-detail' ]] || [[ "$1" == '-L' ]]; then
                     shift
-                    cd_internal "$1"
+                    if [ -z "$1" ]; then error_exit "too few argument"; fi
+                    cd_internal --uniqlize "$1"
                     return 0
                 elif [[ "$1" == '--sync' ]] || [[ "$1" == '-s' ]]; then
                     shift
@@ -608,7 +630,8 @@ if is_zsh; then
         local -a full
         local -a _c
 
-        head=(`enhancd_logview | sed 's|.*/||g'`)
+        #head=(`enhancd_logview | sed 's|.*/||g'`)
+        head=(`enhancd_logview | sed 's|.*/||g' | nl | awk '{print $2,$1}'`)
         full=(`enhancd_logview`)
 
         local i
