@@ -367,6 +367,10 @@ function cd() #{{{2
                     done
                     echo "${raw_date}" >|$ENHANCD_DATABASE
                     return 0
+                elif [[ "$1" =~ ^--ignore ]] || [[ "$1" =~ ^-i ]]; then
+                    ENHANCD_NOT_RECORD='false'
+                    shift
+                    if [[ -z $1 ]]; then : ${1:=$HOME}; fi
                 else
                     echo "$1: illegal option"
                     return 1
@@ -423,13 +427,15 @@ function enhancd_addhistory()
             if [ ${ENHANCD_AUTOADD:-true} = 'true' ]; then
                 enhancd_autoaddition
             fi
-            pwd >>$ENHANCD_DATABASE
+            [[ $ENHANCD_NOT_RECORD == 'true' ]] && pwd >>$ENHANCD_DATABASE
+            ENHANCD_NOT_RECORD='true'
         fi
     elif is_zsh; then
         if [ ${ENHANCD_AUTOADD:-true} = 'true' ]; then
             enhancd_autoaddition
         fi
-        pwd >>$ENHANCD_DATABASE
+        [[ $ENHANCD_NOT_RECORD == 'true' ]] && pwd >>$ENHANCD_DATABASE
+        ENHANCD_NOT_RECORD='true'
     fi
 }
 
@@ -475,6 +481,7 @@ if is_zsh; then
             '(-L --list-detail)'{-L,--list-detail}'[Lists all directories in detail]:detail:->detail' \
             '(-s --sync)'{-s,--sync}'[sync history]: :->_no_arguments' \
             {-d,--delete}'[delete history]: :->list' \
+            '(-i --ignore)'{-i,--ignore}'[ignoring record]: :->dirs' \
             '1: :_no_arguments' \
             '*:: :->args' \
             && ret=0
@@ -483,6 +490,9 @@ if is_zsh; then
         IFS=$'\n'
 
         case $state in
+            (dirs)
+                _go_to_dir && ret=0
+                ;;
             (list)
                 _listup_history && ret=0
                 ;;
@@ -506,6 +516,21 @@ if is_zsh; then
 
         #IFS=$OLDIFS
         return ret
+    }
+
+    _go_to_dir() # {{{2
+    {
+        local -a _candidates
+        local -i num
+        IFS=$'\n'
+        num=$(($ENHANCD_COMP_LIMIT/2))
+        _candidates+=(`cat "$ENHANCD_DATABASE" | sort | uniq -c | sort -nr | head -n ${num} | sed 's|.*/||g'`)
+        _candidates+=(`enhancd_logview -r | head -n $num | sed 's|.*/||g'`)
+
+        #TODO directory only...
+        _cd_org
+        #_files -/
+        _describe -t others "History" _candidates
     }
 
     _buffer_ring_normal() #{{{2
