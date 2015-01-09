@@ -501,13 +501,12 @@ if is_zsh; then
             '--help[Show help and usage]: :->_no_arguments' \
             '(-l --list)'{-l,--list}'[Lists all directories]:list:->list' \
             '(-L --list-detail)'{-L,--list-detail}'[Lists all directories in detail]:detail:->detail' \
-            '(-s --sync)'{-s,--sync}'[sync history]: :->_no_arguments' \
-            {-d,--delete}'[delete history]: :->list' \
+            '(-s --sync)'{-s,--sync}'[sync history]: :->dirs' \
+            '(-d --delete)'{-d,--delete}'[delete history]: :->list' \
             '(-i --ignore)'{-i,--ignore}'[ignoring record]: :->dirs' \
             '1: :_no_arguments' \
             '*:: :->args' \
             && ret=0
-            #{-d+,--delete=}'[delete history]: :->list' \
 
         IFS=$'\n'
 
