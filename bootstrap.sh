@@ -110,6 +110,8 @@ install_enhancd() {
     git clone "$URL" "$BASE"
     if [ $? -eq 0 ]; then
         ok "enhancd successfully installed."
+        logging INFO 'Put something like this in the config file for your shell'
+        logging INFO "source $BASE/enhancd.{,fi}sh"
     else
         die "Alas, enahancd failed to install correctly."
     fi

@@ -151,4 +151,3 @@ fi
 if [ -n "$ZSH_VERSION" ]; then
     add-zsh-hook chpwd cd:add
 fi
-

@@ -31,10 +31,18 @@
 
 	$ cd <directroy>
 
+The FILTER environment variable specifies the visual filter command such as [this](#requirements) you want to use. It is likely the only environment variable you'll need to set when starting enhancd.
+
+	$ FILTER=peco; export FILTER
+
+Since the `$FILTER` variable can be a list, enhancd will use `$FILTER` to mean the first element unless otherwise specified.
+
+	$ FILTER=fzf:peco:hf:gof
+	$ export FILTER
+
 ## Installation
 
-	$ git clone https://github.com/b4b4r07/cdinterface
-	$ source cdinterface/cdinterface.sh
+	$ curl -L git.io/enhancd | sh
 
 ## License
 
