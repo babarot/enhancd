@@ -2,7 +2,6 @@ log=~/.cdlog
 
 die() {
     echo "$1" 1>&2
-    exit 1
 }
 
 unique() {
@@ -110,10 +109,16 @@ cd::interface()
         wc="$(echo "$res" | grep -c "")"
         case "$wc" in
             0 )
-                die "$1: no such file or directory"
+                die "an fatal error"
+                return 1
                 ;;
             1 )
-                builtin cd "$res"
+                if [ -d "$res" ]; then
+                    builtin cd "$res"
+                else
+                    die "$1: no such file or directory"
+                    return 1
+                fi
                 ;;
             * )
                 dir="$(echo "$res" | eval "$filter")"
@@ -129,6 +134,7 @@ cd() {
     filter="$(available "$FILTER")"
     if empty "$filter"; then
         die '$FILTER not set'
+        return 1
     fi
 
     [ ! -f "$log" ] && touch "$log"

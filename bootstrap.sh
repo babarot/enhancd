@@ -96,6 +96,7 @@ has() {
 install_enhancd() {
     logging TITLE "== Bootstraping enhancd =="
     logging INFO "Installing dependencies..."
+    echo
 
     has "git" || die "The installation requires the git command."
 
@@ -105,6 +106,10 @@ install_enhancd() {
 
     if [ -z "$URL" ]; then
         URL="https://github.com/b4b4r07/enhancd"
+    fi
+
+    if [ -d "$BASE" ]; then
+        update_enhancd "$BASE"
     fi
 
     git clone "$URL" "$BASE"
@@ -119,6 +124,17 @@ install_enhancd() {
 
 update_enhancd() {
     has "git" || die "The installation requires the git command."
+    if [ -z "$1" ]; then
+        return 1
+    fi
+
+    BASE="$1"
+    if cd "$BASE"; then
+        git pull origin master
+        git submodule init
+        git submodule update
+        git submodule foreach git pull origin master
+    fi
 }
 
 if echo "$-" | grep -q "i"; then
