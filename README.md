@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/logo.gif)
 
-:rocket: The next generation of `cd` method with visual filter
+The next generation of `cd` method with visual filter :sparkles:
 
 ## :rocket: Description
 
@@ -27,7 +27,15 @@
 	- [gof](https://github.com/mattn/gof)
 	- [hf](https://github.com/hugows/hf)
 
+	Choose any one from among these.
+
 ## :rocket: Usage
+
+Under Zsh or Bourne shells such as sh and bash, you would use `enhancd.sh`. Under [fish shell](http://fishshell.com), `enhancd.fish`.
+
+	$ source enhancd.{,fi}sh
+
+Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
 
 	$ cd <directroy>
 
@@ -48,6 +56,12 @@ Since the `$FILTER` variable can be a list, enhancd will use `$FILTER` to mean t
 
 Paste that at a Terminal prompt.
 
+***NOTE:***
+
+If you want to use older versions of enhancd ([dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as old and run this command:
+
+	$ curl -L git.io/enhancd | BRANCH=old sh
+
 ## :rocket: License
 
-[MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) © BABAROT (a.k.a. b4b4r07)
+:m: [MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) © BABAROT (a.k.a. b4b4r07)

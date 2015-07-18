@@ -94,11 +94,11 @@ has() {
 }
 
 install_enhancd() {
-    logging TITLE "== Bootstraping enhancd =="
-    logging INFO "Installing dependencies..."
-    echo
-
     has "git" || die "The installation requires the git command."
+
+    if [ -z "$BRANCH" ]; then
+        BRANCH="master"
+    fi
 
     if [ -z "$BASE" ]; then
         BASE="$HOME/.enhancd"
@@ -110,9 +110,14 @@ install_enhancd() {
 
     if [ -d "$BASE" ]; then
         update_enhancd "$BASE"
+        return 0
     fi
 
-    git clone "$URL" "$BASE"
+    logging TITLE "== Bootstraping enhancd =="
+    logging INFO "Installing dependencies..."
+    echo
+
+    git clone -b "$BRANCH" $URL" "$BASE"
     if [ $? -eq 0 ]; then
         ok "enhancd successfully installed."
         logging INFO 'Put something like this in the config file for your shell'
