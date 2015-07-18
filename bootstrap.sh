@@ -117,7 +117,7 @@ install_enhancd() {
     logging INFO "Installing dependencies..."
     echo
 
-    git clone -b "$BRANCH" $URL" "$BASE"
+    git clone -b "$BRANCH" "$URL" "$BASE"
     if [ $? -eq 0 ]; then
         ok "enhancd successfully installed."
         logging INFO 'Put something like this in the config file for your shell'
