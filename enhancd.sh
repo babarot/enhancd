@@ -95,6 +95,12 @@ cd:add()
 
 cd::interface()
 {
+    filter="$(available "$FILTER")"
+    if empty "$filter"; then
+        die '$FILTER not set'
+        return 1
+    fi
+
     if empty "$1"; then
         target=$(
             {
@@ -131,12 +137,6 @@ cd::interface()
 cd() {
     cd::makelog "cd::refresh"
 
-    filter="$(available "$FILTER")"
-    if empty "$filter"; then
-        die '$FILTER not set'
-        return 1
-    fi
-
     [ ! -f "$log" ] && touch "$log"
 
     if [ -p /dev/stdin ]; then
@@ -144,15 +144,15 @@ cd() {
     elif [ -d "$1" ]; then
         builtin cd "$1"
     else
+        if [ -z "$FILTER" ]; then
+            FILTER=fzf:peco:gof:hf
+        fi
+
         cd::interface "$1"
     fi
 
     cd::makelog "cd::assemble"
 }
-
-if [ -z "$FILTER" ]; then
-    FILTER=fzf:peco:gof:hf
-fi
 
 if [ -n "$ZSH_VERSION" ]; then
     add-zsh-hook chpwd cd:add

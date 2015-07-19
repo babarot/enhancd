@@ -1,22 +1,21 @@
 set -g log ~/.cdlog
 
 function enhancd
-    set filter (available $FILTER)
-    if empty $filter
-        die '$FILTER not found'
-    end
-
     test -f $log; or touch $log
 
     if test -d "$argv[1]"
         builtin cd $argv[1]
     else
-        interface $argv
+        cd::interface $argv
     end
 end
-alias cd enhancd
 
-function interface
+function cd::interface
+    set -l filter (available $FILTER)
+    if empty $filter
+        die '$FILTER not found'
+    end
+
     if empty $argv
         begin
             has "ghq"; and ghq list -p
@@ -26,7 +25,7 @@ function interface
 
         not empty $dir; and builtin cd $dir
     else
-        set res (cdnarrow $argv[1])
+        set -l res (cd::narrow "$argv[1]")
         switch (count $res)
             case 0
                 echo "$argv[1]: no such file or directory"
@@ -42,19 +41,15 @@ function interface
     end
 end
 
-function cdlist
+function cd::list
     begin
         cat $log | reverse
         has "ghq"; and ghq list -p
     end | unique
 end
 
-function cdnarrow
-    cdlist | awk '/\/.?'"$argv[1]"'[^\/]*$/{print $0}' ^/dev/null
-end
-
-function cdcount
-    cdnarrow $argv[1] | grep -c ""
+function cd::narrow
+    cd::list | awk '/\/.?'"$argv[1]"'[^\/]*$/{print $0}' ^/dev/null
 end
 
 function unique
@@ -95,7 +90,7 @@ function empty
 end
 
 function cd::add_log --on-variable PWD
-    set file (cat $log)
+    set -l file (cat $log)
     for i in $file
         test -d $i; and echo $i
     end >$log
