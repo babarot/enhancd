@@ -76,7 +76,7 @@ cd::refresh()
 
 cd::makelog()
 {
-    $1 >/tmp/log.$$
+    $1 >/tmp/enhancd.$(date +%d%m%y)$$$RANDOM
     rm "$log"
     mv /tmp/log.$$ "$log"
 }
