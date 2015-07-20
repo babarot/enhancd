@@ -96,8 +96,11 @@ cd:add()
 cd::interface()
 {
     filter="$(available "$FILTER")"
-    if empty "$filter"; then
+    if empty "$FILTER"; then
         die '$FILTER not set'
+        return 1
+    elif empty "$filter"; then
+        die "$FILTER is invalid \$FILTER"
         return 1
     fi
 
