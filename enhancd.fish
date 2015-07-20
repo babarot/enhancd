@@ -3,8 +3,11 @@ set -g log ~/.cdlog
 function enhancd
     test -f $log; or touch $log
 
-    if test -d "$argv[1]"
-        builtin cd $argv[1]
+    if test -p /dev/stdin
+        read dir
+        test -d "$dir"; and builtin cd "$dir"
+    else if test -d "$argv[1]"
+        builtin cd "$argv[1]"
     else
         cd::interface $argv
     end
