@@ -1,5 +1,7 @@
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/logo.gif)
 
+enhancd <sup>v2</sup> is ...
+
 The next generation of `cd` method with visual filter :sparkles:
 
 ## :rocket: Description
@@ -22,6 +24,7 @@ The next generation of `cd` method with visual filter :sparkles:
 ## :rocket: Requirements
 
 - visual filter
+	- [percol](https://github.com/mooz/percol)
 	- [peco](https://github.com/peco/peco)
 	- [fzf](https://github.com/junegunn/fzf)
 	- [gof](https://github.com/mattn/gof)

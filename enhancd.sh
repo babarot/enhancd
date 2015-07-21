@@ -15,6 +15,8 @@ reverse() {
 }
 
 available() {
+    local c i
+
     c="$(echo "$1" | tr ":" "\n")"
     for i in ${c[@]}
     do
@@ -25,6 +27,7 @@ available() {
             continue
         fi
     done
+
     return 1
 }
 
@@ -35,7 +38,7 @@ empty() {
 }
 
 has() {
-    type "$1" >/dev/null
+    type "$1" >/dev/null 2>/dev/null
     return $?
 }
 
@@ -163,7 +166,8 @@ cd() {
         builtin cd "$1"
     else
         if empty "$FILTER"; then
-            FILTER=fzf:peco:percol:gof:hf
+            FILTER="fzf:peco:percol:gof:hf"
+            export FILTER
         fi
 
         cd::interface "$1"
