@@ -33,11 +33,33 @@ The next generation of `cd` method with visual filter :sparkles:
 
 Under Zsh or Bourne shells such as sh and bash, you would use `enhancd.sh`. Under [fish shell](http://fishshell.com), `enhancd.fish`.
 
-	$ source enhancd.{,fi}sh
+	$ sh="$(basename $SHELL)"
+	$ source "$sh"/enhancd."$sh"
+	$ #       ^- with bash, bash/enhancd.bash
+	$ #          with zsh,  zsh/enhancd.zsh
+	$ #          with fish, fish/enhancd.fish
 
 Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
 
+The basic usage of the `cd` command that has been implemented by `enhancd` is the same as the normal builtin `cd` command.
+
 	$ cd <directroy>
+
+If no arguments are given, enhancd `cd` command will display a list of the directory you've visited once, encourage you to filter the directory that you want to move.
+
+	$ cd
+	  ...
+	  /Users/b4b4r07/src/github.com/b4b4r07/enhancd/zsh
+	  /Users/b4b4r07/src/github.com/b4b4r07/gotcha
+	  /Users/b4b4r07/src/github.com/b4b4r07/blog/public
+	  /Users/b4b4r07/src/github.com/b4b4r07/blog
+	  /Users/b4b4r07/src/github.com/b4b4r07/link_test
+	  /Users/b4b4r07/src/github.com/b4b4r07
+	  /Users/b4b4r07/Dropbox/etc/dotfiles
+	  /Users/b4b4r07/src/github.com/b4b4r07/enhancd
+	> /Users/b4b4r07
+	  247/247
+	> _
 
 The FILTER environment variable specifies the visual filter command such as [this](#requirements) you want to use. It is likely the only environment variable you'll need to set when starting enhancd.
 
@@ -64,4 +86,4 @@ If you want to use older versions of enhancd ([dca011aa34](https://github.com/b4
 
 ## :rocket: License
 
-:m: [MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) © BABAROT (a.k.a. b4b4r07)
+[MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) © BABAROT (a.k.a. b4b4r07)
