@@ -1,4 +1,7 @@
-set -g log ~/.cdlog
+set -g basedir ~/.enhancd
+set -g logfile enhancd.log
+set -g log $basedir/$logfile
+
 
 function enhancd
     test -f $log; or touch $log
@@ -9,14 +12,20 @@ function enhancd
     else if test -d "$argv[1]"
         builtin cd "$argv[1]"
     else
+        if empty "$FILTER"
+            set -U FILTER fzf:peco:percol:gof:hf
+        end
+
         cd::interface $argv
     end
 end
 
 function cd::interface
     set -l filter (available $FILTER)
-    if empty $filter
-        die '$FILTER not found'
+    if empty "$FILTER"
+        die '$FILTER not set'
+    else if empty "$filter"
+        die "$FILTER is invalid \$FILTER"
     end
 
     if empty $argv
@@ -93,9 +102,15 @@ function empty
 end
 
 function cd::add_log --on-variable PWD
+    test -d $basedir; or mkdir -p $basedir
+    touch $log
+
     set -l file (cat $log)
+
+    # refresh
     for i in $file
         test -d $i; and echo $i
     end >$log
+
     pwd >>$log
 end

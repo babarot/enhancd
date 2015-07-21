@@ -1,4 +1,6 @@
-log=~/.cdlog
+basedir=~/.enhancd
+logfile=enhancd.log
+log=$basedir/$logfile
 
 die() {
     echo "$1" 1>&2
@@ -66,8 +68,6 @@ cd::enumrate()
 
 cd::refresh()
 {
-    touch "$log"
-
     while read line
     do
         [ -d "$line" ] && echo "$line"
@@ -76,10 +76,26 @@ cd::refresh()
 
 cd::makelog()
 {
-    esc=/tmp/enhancd.$(date +%d%m%y)$$$RANDOM
+    if [ ! -d $basedir ]; then
+        mkdir -p $basedir
+    fi
+
+    # create ~/.enhancd/enhancd.log
+    touch $log
+
+    esc=$basedir/enhancd.$(date +%d%m%y)$$$RANDOM
     $1 >"$esc"
+
+    # backup
+    cp -f "$log" $basedir/enhancd.backup
     rm "$log"
-    mv "$esc" "$log"
+
+    mv "$esc" "$log" 2>/dev/null
+    if [ $? -eq 0 ]; then
+        rm "$basedir"/enhancd.backup
+    else
+        cp -f "$basedir"/enhancd.backup "$log"
+    fi
 }
 
 cd::assemble()
@@ -141,15 +157,13 @@ cd::interface()
 cd() {
     cd::makelog "cd::refresh"
 
-    [ ! -f "$log" ] && touch "$log"
-
     if [ -p /dev/stdin ]; then
         builtin cd $(cat -)
     elif [ -d "$1" ]; then
         builtin cd "$1"
     else
-        if [ -z "$FILTER" ]; then
-            FILTER=fzf:peco:gof:hf
+        if empty "$FILTER"; then
+            FILTER=fzf:peco:percol:gof:hf
         fi
 
         cd::interface "$1"
