@@ -64,14 +64,14 @@ If no arguments are given, enhancd `cd` command will display a list of the direc
 	  247/247
 	> _
 
-The FILTER environment variable specifies the visual filter command such as [this](#requirements) you want to use. It is likely the only environment variable you'll need to set when starting enhancd.
+The ENHANCD_FILTER environment variable specifies the visual filter command such as [this](#requirements) you want to use. It is likely the only environment variable you'll need to set when starting enhancd.
 
-	$ FILTER=peco; export FILTER
+	$ ENHANCD_FILTER=peco; export ENHANCD_FILTER
 
-Since the `$FILTER` variable can be a list, enhancd will use `$FILTER` to mean the first element unless otherwise specified.
+Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_FILTER` to mean the first element unless otherwise specified.
 
-	$ FILTER=fzf:peco:hf:gof
-	$ export FILTER
+	$ ENHANCD_FILTER=fzf:peco:hf:gof
+	$ export ENHANCD_FILTER
 
 ## :rocket: Installation
 

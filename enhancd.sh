@@ -115,12 +115,12 @@ cd:add()
 
 cd::interface()
 {
-    filter="$(available "$FILTER")"
-    if empty "$FILTER"; then
-        die '$FILTER not set'
+    filter="$(available "$ENHANCD_FILTER")"
+    if empty "$ENHANCD_FILTER"; then
+        die '$ENHANCD_FILTER not set'
         return 1
     elif empty "$filter"; then
-        die "$FILTER is invalid \$FILTER"
+        die "$ENHANCD_FILTER is invalid \$ENHANCD_FILTER"
         return 1
     fi
 
@@ -165,9 +165,9 @@ cd() {
     elif [ -d "$1" ]; then
         builtin cd "$1"
     else
-        if empty "$FILTER"; then
-            FILTER="fzf:peco:percol:gof:hf"
-            export FILTER
+        if empty "$ENHANCD_FILTER"; then
+            ENHANCD_FILTER="fzf:peco:percol:gof:hf"
+            export ENHANCD_FILTER
         fi
 
         cd::interface "$1"

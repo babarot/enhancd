@@ -12,8 +12,8 @@ function enhancd
     else if test -d "$argv[1]"
         builtin cd "$argv[1]"
     else
-        if empty "$FILTER"
-            set -U FILTER fzf:peco:percol:gof:hf
+        if empty "$ENHANCD_FILTER"
+            set -U ENHANCD_FILTER fzf:peco:percol:gof:hf
         end
 
         cd::interface $argv
@@ -21,11 +21,11 @@ function enhancd
 end
 
 function cd::interface
-    set -l filter (available $FILTER)
-    if empty "$FILTER"
-        die '$FILTER not set'
+    set -l filter (available $ENHANCD_FILTER)
+    if empty "$ENHANCD_FILTER"
+        die '$ENHANCD_FILTER not set'
     else if empty "$filter"
-        die "$FILTER is invalid \$FILTER"
+        die "$ENHANCD_FILTER is invalid \$ENHANCD_FILTER"
     end
 
     if empty $argv
