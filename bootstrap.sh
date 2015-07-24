@@ -133,7 +133,7 @@ enhancd_download() {
 enhancd_install() {
     local path shell enhancd_sh config_file
 
-    cd enhancd-$BRANCH 2>/dev/null
+    cd "$PREFIX" 2>/dev/null
     if [ ! -f enhancd.sh ]; then
         log_fail "something is wrong"
         exit 1
@@ -142,7 +142,7 @@ enhancd_install() {
     for path in ${PATH//:/ }
     do
         cp "$PREFIX" "$path" 2>/dev/null
-        if [ $? -eq ]; then
+        if [ $? -eq 0 ]; then
             log_pass "installed enhancd.sh to $path"
             break
         fi
