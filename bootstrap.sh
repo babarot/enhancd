@@ -151,15 +151,15 @@ enhancd_install() {
     shell="$(basename "$SHELL")"
     case "$shell" in
         bash)
-            enhancd_sh=$PREFIX/bash/enhancd.bash
+            enhancd_sh="$PREFIX"/bash/enhancd.bash
             config_file=~/.bashrc
             ;;
         zsh)
-            enhancd_sh=$PREFIX/zsh/enhancd.zsh
+            enhancd_sh="$PREFIX"/zsh/enhancd.zsh
             config_file=~/.zshrc
             ;;
         fish)
-            enhancd_sh=$PREFIX/fish/enhancd.fish
+            enhancd_sh="$PREFIX"/fish/enhancd.fish
             config_file=~/.config/fish/config.fish
             ;;
         *)
@@ -172,9 +172,19 @@ enhancd_install() {
         exit 1
     fi
 
+    if [ "$BRANCH" = "v1" ]; then
+        if [ "$shell" = "fish" ]; then
+            log_fail "sorry, enhancd v1 does not support fish"
+            exit 1
+        fi
+        config_file="$PREFIX"/enhancd.sh
+    fi
+
     cat <<EOM >>"$config_file"
-    # enhancd
-    [ -f "$enhancd_sh" ] && source "$enhancd_sh"
+# enhancd
+if [ -f "$enhancd_sh" ]; then
+    source "$enhancd_sh"
+fi
 EOM
 
     if [ $? -eq 0 ]; then
