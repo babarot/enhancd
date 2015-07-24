@@ -28,7 +28,8 @@ The next generation of `cd` method with visual filter :sparkles:
 	- [peco](https://github.com/peco/peco)
 	- [fzf](https://github.com/junegunn/fzf)
 	- [gof](https://github.com/mattn/gof)
-	- [hf](https://github.com/hugows/hf)
+	- [hf](https://github.com/hugows/hf) (ummm)
+	- ...
 
 	Choose any one from among these.
 
@@ -70,7 +71,7 @@ The ENHANCD_FILTER environment variable specifies the visual filter command such
 
 Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_FILTER` to mean the first element unless otherwise specified.
 
-	$ ENHANCD_FILTER=fzf:peco:hf:gof
+	$ ENHANCD_FILTER=fzf:peco:gof
 	$ export ENHANCD_FILTER
 
 ## :rocket: Installation
@@ -87,6 +88,20 @@ If you want to use older versions of enhancd ([dca011aa34](https://github.com/b4
 
 	$ curl -L git.io/enhancd | BRANCH=old sh
 
+## :rocket: References
+
+The "visual filter" is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
+
+- **percol** :point_right: [percol adds flavor of interactive selection to the traditional pipe concept on UNIX](https://github.com/mooz/percol)
+- **peco** :point_right: [Simplistic interactive filtering tool](https://github.com/peco/peco)
+- **hf** :point_right: [hf is a command line utility to quickly find files and execute a command](https://github.com/hugows/hf)
+- **fzf** :point_right: [fzf is a blazing fast command-line fuzzy finder written in Go](https://github.com/junegunn/fzf)
+- **gof** :point_right: [gof - Go Fuzzy](https://github.com/mattn/gof)
+- **selecta** :point_right: [Selecta is a fuzzy text selector for files and anything else you need to select](https://github.com/garybernhardt/selecta/)
+- **pick** :point_right: [Pick is "just like Selecta, but faster"](https://robots.thoughtbot.com/announcing-pick)
+- **icebick** :point_right: [icepick is a reimplementation of Selecta in Rust](https://github.com/felipesere/icepick)
+- **sentaku** :point_right: [Utility to make sentaku (selection, 選択(sentaku)) window with shell command](https://github.com/rcmdnk/sentaku)
+
 ## :rocket: License
 
-[MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) © BABAROT (a.k.a. b4b4r07)
+[MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) :copyright: BABAROT (a.k.a. b4b4r07)

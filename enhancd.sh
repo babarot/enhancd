@@ -166,7 +166,7 @@ cd() {
         builtin cd "$1"
     else
         if empty "$ENHANCD_FILTER"; then
-            ENHANCD_FILTER="fzf:peco:percol:gof:hf"
+            ENHANCD_FILTER="fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
             export ENHANCD_FILTER
         fi
 
