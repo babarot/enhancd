@@ -101,7 +101,7 @@ has() {
 }
 
 enhancd_download() {
-    local tarball
+    local tarball pd
 
     if has "git"; then
         git clone -b "$BRANCH" "$URL" "$PREFIX"
@@ -115,6 +115,14 @@ enhancd_download() {
             wget -O - "$tarball"
 
         fi | tar xv -
+
+        # check if dir exists
+        # e.g., PREFIX=~/non/exists/dir
+        pd="$(dirname "$PREFIX")"
+        if [ ! -d "$pd" ]; then
+            mkdir -p "$pd"
+        fi
+
         mv -f enhancd-$BRANCH "$PREFIX"
 
     else
@@ -138,15 +146,6 @@ enhancd_install() {
         log_fail "something is wrong"
         exit 1
     fi
-
-    for path in ${PATH//:/ }
-    do
-        cp "$PREFIX" "$path" 2>/dev/null
-        if [ $? -eq 0 ]; then
-            log_pass "installed enhancd.sh to $path"
-            break
-        fi
-    done
 
     shell="$(basename "$SHELL")"
     case "$shell" in
@@ -188,7 +187,7 @@ fi
 EOM
 
     if [ $? -eq 0 ]; then
-        log_pass "successfully completed the enhancd installation"
+        log_pass "installed enhancd"
     else
         log_info "Put something like this in $config_file"
         log_info "  source $enhancd_sh"
@@ -227,7 +226,7 @@ enhancd_main() {
     enhancd_download
     enhancd_install
 
-    log_echo "ok"
+    log_pass "successfully completed the enhancd installation"
 }
 
 enhancd_update() {

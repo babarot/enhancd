@@ -81,15 +81,24 @@ Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_F
 
 Paste that at a Terminal prompt.
 
+To specify installation location for enhancd:
+
+	$ curl -L git.io/enhancd | PREFIX=~/somewhere sh
+
+PREFIX defaults to "`~/.enhancd`".
+
 ### What's inside?
 
 1. Grab enhancd.sh from github.com by using `git`, `curl` or `wget`
-2. Install(copy) it to $PATH
-3. Add `source /path/to/enhancd.sh` to each config files
+2. Add `source /path/to/enhancd.sh` to config file whose you use as the login shell
+
+### Uninstallation
+
+	$ rm -r ~/.enhancd
 
 ***NOTE:***
 
-If you want to use older versions of enhancd ([dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as old and run this command:
+If you want to use older versions of enhancd (v1: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as old and run this command:
 
 	$ curl -L git.io/enhancd | BRANCH=v1 sh
 
