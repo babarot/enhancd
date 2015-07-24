@@ -28,7 +28,6 @@ The next generation of `cd` method with visual filter :sparkles:
 	- [peco](https://github.com/peco/peco)
 	- [fzf](https://github.com/junegunn/fzf)
 	- [gof](https://github.com/mattn/gof)
-	- [hf](https://github.com/hugows/hf) (ummm)
 	- ...
 
 	Choose any one from among these.
@@ -82,11 +81,17 @@ Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_F
 
 Paste that at a Terminal prompt.
 
+### What's inside?
+
+1. Grab enhancd.sh from github.com by using `git`, `curl` or `wget`
+2. Install(copy) it to $PATH
+3. Add `source /path/to/enhancd.sh` to each config files
+
 ***NOTE:***
 
 If you want to use older versions of enhancd ([dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as old and run this command:
 
-	$ curl -L git.io/enhancd | BRANCH=old sh
+	$ curl -L git.io/enhancd | BRANCH=v1 sh
 
 ## :rocket: References
 
