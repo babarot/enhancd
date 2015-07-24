@@ -79,66 +79,161 @@ logging() {
     timestamp; ink "$color" "$text"; echo
 }
 
-ok() {
+log_pass() {
     logging SUCCESS "$1"
 }
 
-die() {
+log_fail() {
     logging ERROR "$1" 1>&2
-    exit 1
+}
+
+log_info() {
+    logging INFO "$1"
+}
+
+log_echo() {
+    logging TITLE "$1"
 }
 
 has() {
-    type "$1" >/dev/null
+    which "$1" >/dev/null 2>&1
     return $?
 }
 
-install_enhancd() {
-    has "git" || die "The installation requires the git command."
+enhancd_download() {
+    local tarball
+
+    if has "git"; then
+        git clone -b "$BRANCH" "$URL" "$PREFIX"
+    elif has "curl" || has "wget"; then
+        # curl or wget
+        local tarball="https://github.com/b4b4r07/enhancd/archive/${BRANCH}.tar.gz"
+        if has "curl"; then
+            curl -L "$tarball"
+
+        elif has "wget"; then
+            wget -O - "$tarball"
+
+        fi | tar xv -
+        mv -f enhancd-$BRANCH "$PREFIX"
+
+    else
+        log_fail "curl or wget required"
+        exit 1
+    fi
+
+    if [ -d "$PREFIX" ]; then
+        log_pass "downloaded enhancd"
+    else
+        log_fail "something is wrong"
+        exit 1
+    fi
+}
+
+enhancd_install() {
+    local path shell enhancd_sh config_file
+
+    cd enhancd-$BRANCH 2>/dev/null
+    if [ ! -f enhancd.sh ]; then
+        log_fail "something is wrong"
+        exit 1
+    fi
+
+    for path in ${PATH//:/ }
+    do
+        cp "$PREFIX" "$path" 2>/dev/null
+        if [ $? -eq ]; then
+            log_pass "installed enhancd.sh to $path"
+            break
+        fi
+    done
+
+    shell="$(basename "$SHELL")"
+    case "$shell" in
+        bash)
+            enhancd_sh=$PREFIX/bash/enhancd.bash
+            config_file=~/.bashrc
+            ;;
+        zsh)
+            enhancd_sh=$PREFIX/zsh/enhancd.zsh
+            config_file=~/.zshrc
+            ;;
+        fish)
+            enhancd_sh=$PREFIX/fish/enhancd.fish
+            config_file=~/.config/fish/config.fish
+            ;;
+        *)
+            config_file="unknown"
+            ;;
+    esac
+
+    if [ "$config_file" = "unknown" ]; then
+        log_fail "enhancd supports only bash, zsh and fish"
+        exit 1
+    fi
+
+    cat <<EOM >>"$config_file"
+    # enhancd
+    [ -f "$enhancd_sh" ] && source "$enhancd_sh"
+EOM
+
+    if [ $? -eq 0 ]; then
+        log_pass "successfully completed the enhancd installation"
+    else
+        log_info "Put something like this in $config_file"
+        log_info "  source $enhancd_sh"
+    fi
+
+    log_info "Then, restart your shell to start enhancd!"
+}
+
+enhancd_main() {
+    log_echo "== Bootstraping enhancd =="
+    log_info "Installing dependencies..."
+    echo
 
     if [ -z "$BRANCH" ]; then
         BRANCH="master"
     fi
 
-    if [ -z "$BASE" ]; then
-        BASE="$HOME/.enhancd"
+    if [ -z "$PREFIX" ]; then
+        PREFIX="$HOME/.enhancd"
     fi
 
     if [ -z "$URL" ]; then
         URL="https://github.com/b4b4r07/enhancd"
     fi
 
-    if [ -d "$BASE" ]; then
-        update_enhancd "$BASE"
-        return 0
+    if [ -d "$PREFIX" ]; then
+        enhancd_update
+        if [ $? -eq 0 ]; then
+            exit 0
+        else
+            log_fail "couldn't update enhancd"
+            exit 1
+        fi
     fi
 
-    logging TITLE "== Bootstraping enhancd =="
-    logging INFO "Installing dependencies..."
-    echo
+    enhancd_download
+    enhancd_install
 
-    git clone -b "$BRANCH" "$URL" "$BASE"
-    if [ $? -eq 0 ]; then
-        ok "enhancd successfully installed."
-        logging INFO 'Put something like this in the config file for your shell'
-        logging INFO "source $BASE/enhancd.{,fi}sh"
-    else
-        die "Alas, enahancd failed to install correctly."
-    fi
+    log_echo "ok"
 }
 
-update_enhancd() {
-    has "git" || die "The installation requires the git command."
-    if [ -z "$1" ]; then
-        return 1
+enhancd_update() {
+    if ! has "git"; then
+        log_fail "The installation requires the git command"
+        exit 1
     fi
 
-    BASE="$1"
-    if cd "$BASE"; then
+    if cd "$PREFIX" 2>/dev/null; then
         git pull origin master
         git submodule init
         git submodule update
         git submodule foreach git pull origin master
+    else
+        log_fail "something is wrong"
+        exit 1
     fi
 }
 
@@ -157,7 +252,7 @@ else
     fi
 
     if [ -n "${BASH_EXECUTION_STRING:-}" ] || [ -p /dev/stdin ]; then
-        trap "die 'terminated'; exit 1" INT ERR
+        trap "log_fail 'terminated'; exit 1" INT ERR
         # -> cat a.sh | bash
         # -> bash -c "$(cat a.sh)"
         install_enhancd
