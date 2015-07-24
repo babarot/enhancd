@@ -247,14 +247,13 @@ else
     # -> bash a.sh
     if [ "$0" = "${BASH_SOURCE:-}" ]; then
         # -> bash a.sh
-        update_enhancd
         exit
     fi
 
     if [ -n "${BASH_EXECUTION_STRING:-}" ] || [ -p /dev/stdin ]; then
-        trap "log_fail 'terminated'; exit 1" INT ERR
+        trap "log_fail 'terminated $0'; exit 1" INT ERR
         # -> cat a.sh | bash
         # -> bash -c "$(cat a.sh)"
-        install_enhancd
+        enhancd_main
     fi
 fi
