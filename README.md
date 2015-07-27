@@ -98,7 +98,7 @@ PREFIX defaults to "`~/.enhancd`".
 
 ***NOTE:***
 
-If you want to use older versions of enhancd (v1: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as old and run this command:
+If you want to use older versions of enhancd (enhancd <sup>v1</sup>: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as v1 and run this command:
 
 	$ curl -L git.io/enhancd | BRANCH=v1 sh
 
@@ -113,7 +113,7 @@ The "visual filter" is what is called "Interactive Grep Tool" according to [perc
 - **gof** :point_right: [gof - Go Fuzzy](https://github.com/mattn/gof)
 - **selecta** :point_right: [Selecta is a fuzzy text selector for files and anything else you need to select](https://github.com/garybernhardt/selecta/)
 - **pick** :point_right: [Pick is "just like Selecta, but faster"](https://robots.thoughtbot.com/announcing-pick)
-- **icebick** :point_right: [icepick is a reimplementation of Selecta in Rust](https://github.com/felipesere/icepick)
+- **icepick** :point_right: [icepick is a reimplementation of Selecta in Rust](https://github.com/felipesere/icepick)
 - **sentaku** :point_right: [Utility to make sentaku (selection, 選択(sentaku)) window with shell command](https://github.com/rcmdnk/sentaku)
 
 ## :rocket: License
