@@ -2,11 +2,15 @@
 
 enhancd <sup>v2</sup> is ...
 
-The next generation of `cd` method with visual filter :sparkles:
+A next-generation `cd` command with an interactive filter :sparkles:
 
 ## :rocket: Description
 
-`cd` command is one of the frequently used commands. Nevertheless, it is very inconvenient. `cd` interpret path (`/home/john/dir1`, `../../dir2`) only. `cd` does not accept the directory name (`dir3`). The new `cd` command I have to hack interpret this. Take the log every time that you want to move, and to complement the directory path based on that log.
+`cd` command is one of the frequently used commands. 
+
+Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in /home/lisa, dir is /home/lisa/work/dir) to `cd` command.
+
+The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER variable in order to narrow it down to one.
 
 :warning: [`cdinterface`](https://github.com/b4b4r07/cdinterface) is deprecated and was merged into this enhancd. 
 
@@ -14,16 +18,17 @@ The next generation of `cd` method with visual filter :sparkles:
 
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/demo.gif)
 
+BTW, enhancd
+
 ## :rocket: Features
 
-- It is possible to go to the directory where you have visited in the past.
-- If a directory name is duplicated, it can be selected interactively with visual filter such as [peco](https://github.com/peco/peco).
-- If the argument is not given, it is possible to select the directory where you want to go.
+- Go to the visited directory in the past
+- Easy to filter, using your favorite filter
 - Work on Bash, Zsh and Fish :fish:
 
 ## :rocket: Requirements
 
-- visual filter
+- an interactive filter
 	- [percol](https://github.com/mooz/percol)
 	- [peco](https://github.com/peco/peco)
 	- [fzf](https://github.com/junegunn/fzf)
@@ -38,9 +43,9 @@ Under Zsh or Bourne shells such as sh and bash, you would use `enhancd.sh`. Unde
 
 	$ sh="$(basename $SHELL)"
 	$ source "$sh"/enhancd."$sh"
-	$ #       ^- with bash, bash/enhancd.bash
-	$ #          with zsh,  zsh/enhancd.zsh
-	$ #          with fish, fish/enhancd.fish
+	$       # ^- with bash, bash/enhancd.bash
+	$       #    with zsh,  zsh/enhancd.zsh
+	$       #    with fish, fish/enhancd.fish
 
 Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
 
@@ -64,7 +69,9 @@ If no arguments are given, enhancd `cd` command will display a list of the direc
 	  247/247
 	> _
 
-The ENHANCD_FILTER environment variable specifies the visual filter command such as [this](#requirements) you want to use. It is likely the only environment variable you'll need to set when starting enhancd.
+The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#requirements) separated by colon (:) characters.
+
+It is likely the only environment variable you'll need to set when starting enhancd.
 
 	$ ENHANCD_FILTER=peco; export ENHANCD_FILTER
 
@@ -83,24 +90,65 @@ Paste that at a Terminal prompt.
 
 To specify installation location for enhancd:
 
-	$ curl -L git.io/enhancd | PREFIX=~/somewhere sh
+	$ curl -L git.io/enhancd | PREFIX=/path/to/dir sh
 
-PREFIX defaults to "`~/.enhancd`".
+PREFIX defaults to `~/.enhancd`.
 
 ### What's inside?
 
 1. Grab enhancd.sh from github.com by using `git`, `curl` or `wget`
 2. Add `source /path/to/enhancd.sh` to config file whose you use as the login shell
 
-### Uninstallation
+The above and below are almost the same.
 
-	$ rm -r ~/.enhancd
+	$ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
+	$ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
 
 ***NOTE:***
 
 If you want to use older versions of enhancd (enhancd <sup>v1</sup>: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as v1 and run this command:
 
 	$ curl -L git.io/enhancd | BRANCH=v1 sh
+
+
+### Uninstallation
+
+Are you sure? To uninstall enhancd, paste the command below in a terminal prompt.
+
+	$ rm -r ~/.enhancd
+
+## :rocket: Configuration
+
+### ENHANCD_DIR
+
+The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
+
+### ENHANCD_FILTER
+
+1. What is ENHANCD_FILTER?
+
+	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using ':'.
+
+2. How to set the ENHANCD_FILTER variable?      
+
+	Setting the ENHANCD_FILTER variable is exactly like setting the PATH variable. For example:
+
+		$ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
+
+	This above command will hold good till the session is closed. In order to make this change permanent, we need to put this command in the appropriate profile file. The ENHANCD_FILTER command in this example is set with 3 components: `/usr/local/bin/peco` followed by `fzf` and the `not-existing-filter`.
+
+	enhancd narrows the ENHANCD_FILTER variable down to one. However, the command does not exist can not be the candidate.
+	
+	Let us try to test this ENHANCD_FILTER variable.
+
+		$ cd
+
+	If cd command does not return error, the settings of ENHANCD_FILTER is success.
+	
+3. How to find the value of the ENHANCD_FILTER variable?
+
+		$ echo $ENHANCD_FILTER
+		/usr/local/bin/peco:fzf:non-existing-filter
 
 ## :rocket: References
 
