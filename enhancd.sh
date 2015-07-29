@@ -8,9 +8,10 @@
 #   this enhancd.sh supports bash and zsh only
 #
 
-basedir=~/.enhancd
-logfile=enhancd.log
-log=$basedir/$logfile
+ENHANCD_DIR=~/.enhancd
+ENHANCD_LOG=$ENHANCD_DIR/enhancd.log
+export ENHANCD_DIR
+export ENHANCD_LOG
 
 # die puts a string to stderr
 die() {
@@ -57,7 +58,7 @@ empty() {
 
 # has returns true if $1 exists in the PATH environment variable
 has() {
-    if [ -z "$1" ]; then
+    if empty "$1"; then
         return 1
     fi
 
@@ -72,7 +73,7 @@ cd::list()
     if [ -p /dev/stdin ]; then
         cat -
     else
-        cat $log
+        cat "$ENHANCD_LOG"
     fi | reverse | unique
     #    ^- needs to be inverted before unique
 }
@@ -110,34 +111,34 @@ cd::enumrate()
 # cd::makelog carefully open/close the log
 cd::makelog()
 {
-    if [ ! -d "$basedir" ]; then
-        mkdir -p "$basedir"
+    if [ ! -d "$ENHANCD_DIR" ]; then
+        mkdir -p "$ENHANCD_DIR"
     fi
 
     local esc
 
     # Create ~/.enhancd/enhancd.log
-    touch "$log"
+    touch "$ENHANCD_LOG"
 
     # Prepare a temporary file for overwriting
-    esc="$basedir"/enhancd."$(date +%d%m%y)"$$$RANDOM
+    esc="$ENHANCD_DIR"/enhancd."$(date +%d%m%y)"$$$RANDOM
 
     # $1 should be a function name
     # Run $1 process, and puts to the temporary file
     $1 >"$esc"
 
     # Create a backup in preparation for the failure of the overwriting
-    cp -f "$log" $basedir/enhancd.backup
-    rm "$log"
+    cp -f "$ENHANCD_LOG" $ENHANCD_DIR/enhancd.backup
+    rm "$ENHANCD_LOG"
 
     # Run the overwrite process
-    mv "$esc" "$log" 2>/dev/null
+    mv "$esc" "$ENHANCD_LOG" 2>/dev/null
 
     # Restore from the backup if overwriting fails
     if [ $? -eq 0 ]; then
-        rm "$basedir"/enhancd.backup
+        rm "$ENHANCD_DIR"/enhancd.backup
     else
-        cp -f "$basedir"/enhancd.backup "$log"
+        cp -f "$ENHANCD_DIR"/enhancd.backup "$ENHANCD_LOG"
     fi
 }
 
@@ -147,14 +148,14 @@ cd::refresh()
     while read line
     do
         [ -d "$line" ] && echo "$line"
-    done <"$log"
+    done <"$ENHANCD_LOG"
 }
 
 # cd::assemble returns the assembled log
 cd::assemble()
 {
     cd::enumrate
-    cat "$log"
+    cat "$ENHANCD_LOG"
     pwd
 }
 
@@ -162,11 +163,11 @@ cd::assemble()
 cd::add()
 {
     # No overlaps and no underlaps in the log
-    if [ ! -f "$log" -o "$(tail -n 1 "$log")" = "$PWD" ]; then
+    if [ ! -f "$ENHANCD_LOG" -o "$(tail -n 1 "$ENHANCD_LOG")" = "$PWD" ]; then
         return 0
     fi
 
-    pwd >>"$log"
+    pwd >>"$ENHANCD_LOG"
 }
 
 # cd::interface searches the directory that in the given list, 
@@ -192,19 +193,24 @@ cd::interface()
         return 1
     fi
 
+    # The list should be a directory list separated by a newline (\n).
+    # e.g.,
+    #   /home/lisa/src
+    #   /home/lisa/work/temp
     local list
     list="$1"
 
     # If no argument is given to cd::interface
-    if [ -z "$list" ]; then
+    if empty "$list"; then
         die "cd::interface requires an argument at least"
         return 1
     fi
 
-    # list should be a directory list
     # Count lines in the list
     local wc
     wc="$(echo "$list" | grep -c "")"
+
+    # 
     case "$wc" in
         0 )
             die "$LINENO: something is wrong"
@@ -234,28 +240,52 @@ cd::interface()
 }
 
 # cd is redefined shell builtin cd function and is overrided
+#
+# SYNOPSIS
+#     cd [-] [DIR]
+#
+# DESCRIPTION
+#     Change the current directory to DIR. The default DIR is all directories that
+#     you visited in the past in the value of the ENHANCD_LOG shell variable
+#
+#     The variable ENHANCD_FILTER defines a visual filter command you want to use
+#     The visual filter such as peco and fzf in ENHANCD_FILTER are separated by a colon (:)
+#
+#     Options:
+#         -	latest 10 histories that do not include the current directory
+#
+#     Exit Status:
+#     Returns 0 if the directory is changed; non-zero otherwise
+#
 cd() {
+    # t is an argument of the list for cd::interface
+    local t
+
     cd::makelog "cd::refresh"
 
-    # Check if stdin
+    # Supports stdin
+    # echo $HOME | cd
     if [ -p /dev/stdin ]; then
         builtin cd "$(cat -)"
     else
-        # Check a hyphen
+        # If a hyphen is passed as the argument,
+        # list latest 10 histories from the log
         if [ "$1" = "-" ]; then
-            local t
             t="$(cd::list | grep -v "^$PWD$" | head | cd::narrow "$2")"
-            cd::interface "$t"
+            cd::interface "${t:-$2}"
             return
         fi
 
-        # A regular action
+        # Process a regular argument
+        # If a given argument is a directory,
+        # call builtin cd function; cd::interface otherwise
         if [ -d "$1" ]; then
             builtin cd "$1"
         else
-            local t
-            if [ -z "$1" ]; then
-                t="$({ cat "$log"; echo "$HOME"; } | cd::list)"
+            # If no argument is given, imitate builtin cd command and rearrange
+            # the history so that the HOME environment variable could be latest
+            if empty "$1"; then
+                t="$({ cat "$ENHANCD_LOG"; echo "$HOME"; } | cd::list)"
             else
                 t="$(cd::list | cd::narrow "$1")"
             fi
@@ -267,51 +297,12 @@ cd() {
     cd::makelog "cd::assemble"
 }
 
+# For zsh
 if [ -n "$ZSH_VERSION" ]; then
     add-zsh-hook chpwd cd::add
 fi
 
+# For bash
 if [ -n "$BASH_VERSION" ]; then
     PROMPT_COMMAND="cd::add; $PROMPT_COMMAND"
 fi
-
-# builtin cd
-#
-# NAME
-#     cd - Change the shell working directory.
-# 
-# SYNOPSIS
-#     cd [-L|-P] [dir]
-# 
-# DESCRIPTION
-#     Change the shell working directory.
-#     
-#     Change the current directory to DIR.  The default DIR is the value of the
-#     HOME shell variable.
-#     
-#     The variable CDPATH defines the search path for the directory containing
-#     DIR.  Alternative directory names in CDPATH are separated by a colon (:).
-#     A null directory name is the same as the current directory.  If DIR begins
-#     with a slash (/), then CDPATH is not used.
-#     
-#     If the directory is not found, and the shell option `cdable_vars' is set,
-#     the word is assumed to be  a variable name.  If that variable has a value,
-#     its value is used for DIR.
-#     
-#     Options:
-#         -L	force symbolic links to be followed
-#         -P	use the physical directory structure without following symbolic
-#     	links
-#     
-#     The default is to follow symbolic links, as if `-L' were specified.
-#     
-#     Exit Status:
-#     Returns 0 if the directory is changed; non-zero otherwise.
-# 
-# SEE ALSO
-#     bash(1)
-# 
-# IMPLEMENTATION
-#     GNU bash, version 4.1.5(1)-release (i486-pc-linux-gnu)
-#     Copyright (C) 2009 Free Software Foundation, Inc.
-#     License GPLv3+: GNU GPL version 3 or later 
