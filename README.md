@@ -1,10 +1,10 @@
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/logo.gif)
 
-enhancd <sup>v2</sup> is ...
+:rocket: enhancd <sup>v2</sup> is ...
 
 A next-generation `cd` command with an interactive filter :sparkles:
 
-## :rocket: Description
+## :memo: Description
 
 `cd` command is one of the frequently used commands. 
 
@@ -12,13 +12,13 @@ Nevertheless, it is not so easy to handle unfortunately. A directory path given 
 
 The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER variable in order to narrow it down to one.
 
+Thanks to that mechanism, the user can intuitively and easily change the directory where you want to go to.
+
 :warning: [`cdinterface`](https://github.com/b4b4r07/cdinterface) is deprecated and was merged into this enhancd. 
 
 ***DEMO:***
 
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/demo.gif)
-
-BTW, enhancd
 
 ## :rocket: Features
 
@@ -26,7 +26,7 @@ BTW, enhancd
 - Easy to filter, using your favorite filter
 - Work on Bash, Zsh and Fish :fish:
 
-## :rocket: Requirements
+## :gem: Requirements
 
 - an interactive filter
 	- [percol](https://github.com/mooz/percol)
@@ -37,35 +37,31 @@ BTW, enhancd
 
 	Choose any one from among these.
 
-## :rocket: Usage
+## :mag: Usage
 
 Under Zsh or Bourne shells such as sh and bash, you would use `enhancd.sh`. Under [fish shell](http://fishshell.com), `enhancd.fish`.
 
-	$ sh="$(basename $SHELL)"
-	$ source "$sh"/enhancd."$sh"
-	$       # ^- with bash, bash/enhancd.bash
-	$       #    with zsh,  zsh/enhancd.zsh
-	$       #    with fish, fish/enhancd.fish
+	$ source ./enhancd.sh
 
 Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
 
 The basic usage of the `cd` command that has been implemented by `enhancd` is the same as the normal builtin `cd` command.
 
-	$ cd <directroy>
+	$ cd [-|.] <directroy>
 
 If no arguments are given, enhancd `cd` command will display a list of the directory you've visited once, encourage you to filter the directory that you want to move.
 
 	$ cd
 	  ...
-	  /Users/b4b4r07/src/github.com/b4b4r07/enhancd/zsh
-	  /Users/b4b4r07/src/github.com/b4b4r07/gotcha
-	  /Users/b4b4r07/src/github.com/b4b4r07/blog/public
-	  /Users/b4b4r07/src/github.com/b4b4r07/blog
-	  /Users/b4b4r07/src/github.com/b4b4r07/link_test
-	  /Users/b4b4r07/src/github.com/b4b4r07
-	  /Users/b4b4r07/Dropbox/etc/dotfiles
-	  /Users/b4b4r07/src/github.com/b4b4r07/enhancd
-	> /Users/b4b4r07
+	  /home/lisa/src/github.com/b4b4r07/enhancd/zsh
+	  /home/lisa/src/github.com/b4b4r07/gotcha
+	  /home/lisa/src/github.com/b4b4r07/blog/public
+	  /home/lisa/src/github.com/b4b4r07/blog
+	  /home/lisa/src/github.com/b4b4r07/link_test
+	  /home/lisa/src/github.com/b4b4r07
+	  /home/lisa/Dropbox/etc/dotfiles
+	  /home/lisa/src/github.com/b4b4r07/enhancd
+	> /home/lisa
 	  247/247
 	> _
 
@@ -80,9 +76,55 @@ Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_F
 	$ ENHANCD_FILTER=fzf:peco:gof
 	$ export ENHANCD_FILTER
 
-## :rocket: Installation
+### Options
+
+- Hyphen (`-`)
+
+	When enhancd takes a hyphen (`-`) string as an argument, it searchs from the last 10 directory items in the log. With it, you can search easily the directory you used last.
+	
+	```console
+	$ cd -
+	...
+	  /home/lisa/Dropbox/etc/dotfiles
+	  /home/lisa/Dropbox
+	  /home/lisa/src/github.com
+	  /home/lisa/src/github.com/b4b4r07/cli
+	  /home
+	  /home/lisa/src
+	  /home/lisa/src/github.com/b4b4r07/enhancd
+	  /home/lisa/src/github.com/b4b4r07/gotcha
+	  /home/lisa/src/github.com/b4b4r07
+	> /home/lisa/src/github.com/b4b4r07/portfolio
+	  10/10
+	> _	
+	```
+	
+	Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` ($PWD is /home/lisa, $OLDPWD is /home/lisa/src/github.com/b4b4r07/portfolio).
+
+- Dot (`.`) :warning: *Experimental*
+
+	When enhancd takes a dot (`.`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
+	
+	For example, when you are in /home/lisa/src/github.com/b4b4r07/enhancd, type `cd .` in your terminal:
+	
+	```console
+	$ cd .
+	...
+	  enhancd
+	  b4b4r07
+	  github.com
+	  src
+	  lisa
+	> home
+	  6/6
+	> _
+	```
+
+## :package: Installation
 
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/installation.png)
+
+Give me a trial!
 
 	$ curl -L git.io/enhancd | sh
 
@@ -117,7 +159,7 @@ Are you sure? To uninstall enhancd, paste the command below in a terminal prompt
 
 	$ rm -r ~/.enhancd
 
-## :rocket: Configuration
+## :wrench: Configuration
 
 ### ENHANCD_DIR
 
@@ -150,7 +192,7 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 		$ echo $ENHANCD_FILTER
 		/usr/local/bin/peco:fzf:non-existing-filter
 
-## :rocket: References
+## :books: References
 
 The "visual filter" is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
 
@@ -164,6 +206,6 @@ The "visual filter" is what is called "Interactive Grep Tool" according to [perc
 - **icepick** :point_right: [icepick is a reimplementation of Selecta in Rust](https://github.com/felipesere/icepick)
 - **sentaku** :point_right: [Utility to make sentaku (selection, 選択(sentaku)) window with shell command](https://github.com/rcmdnk/sentaku)
 
-## :rocket: License
+## :ticket: License
 
 [MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) :copyright: BABAROT (a.k.a. b4b4r07)

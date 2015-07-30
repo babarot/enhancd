@@ -1,6 +1,6 @@
 # enhancd - A enhanced cd shell function wrapper
 
-# Version:    v2.1.0
+# Version:    v2.1.1
 # Repository: https://github.com/b4b4r07/enhancd
 # Author:     b4b4r07 (BABAROT)
 # License:    MIT
@@ -193,6 +193,13 @@ cd::interface()
         return 1
     fi
 
+    # check if options are specified
+    if [ "$1" = "." ]; then
+        shift
+        local flag_dot
+        flag_dot="enable"
+    fi
+
     # The list should be a directory list separated by a newline (\n).
     # e.g.,
     #   /home/lisa/src
@@ -210,13 +217,17 @@ cd::interface()
     local wc
     wc="$(echo "$list" | grep -c "")"
 
-    # 
     case "$wc" in
         0 )
             die "$LINENO: something is wrong"
             return 1
             ;;
         1 )
+            if [ "$flag_dot" = "enable" ]; then
+                builtin cd "$(echo $PWD | grep -o "^.*/$list")"
+                return $?
+            fi
+
             if [ -d "$list" ]; then
                 builtin cd "$list"
             else
@@ -228,6 +239,11 @@ cd::interface()
             local t
             t="$(echo "$list" | eval "$filter")"
             if ! empty "$t"; then
+                if [ "$flag_dot" = "enable" ]; then
+                    builtin cd "$(echo $PWD | grep -o "^.*/$t")"
+                    return $?
+                fi
+
                 if [ -d "$t" ]; then
                     builtin cd "$t"
                 else
@@ -280,7 +296,14 @@ cd() {
         if [ "$1" = "-" ]; then
             t="$(cd::list | grep -v "^$PWD$" | head | cd::narrow "$2")"
             cd::interface "${t:-$2}"
-            return
+            return $?
+        fi
+
+        if [ "$1" = "." ]; then
+            local i
+            t="$(for i in $(echo $PWD | tr "/" " "); do echo "$i"; done | grep "$2")"
+            cd::interface "." "${t:-$2}"
+            return $?
         fi
 
         # Process a regular argument
