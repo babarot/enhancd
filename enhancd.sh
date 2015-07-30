@@ -145,6 +145,9 @@ cd::makelog()
 # cd::refresh returns the result of removing a directory that does not exist from the log
 cd::refresh()
 {
+    local line
+
+    # Remove all to a directory that does not exist
     while read line
     do
         [ -d "$line" ] && echo "$line"
@@ -193,7 +196,8 @@ cd::interface()
         return 1
     fi
 
-    # check if options are specified
+    # Check if options are specified
+    # If you pass a dot (.) as an argument to cd::interface
     if [ "$1" = "." ]; then
         shift
         local flag_dot
@@ -219,15 +223,18 @@ cd::interface()
 
     case "$wc" in
         0 )
+            # Unbelievable branch
             die "$LINENO: something is wrong"
             return 1
             ;;
         1 )
+            # If you pass a dot (.) as an argument to cd::interface
             if [ "$flag_dot" = "enable" ]; then
                 builtin cd "$(echo $PWD | grep -o "^.*/$list")"
                 return $?
             fi
 
+            # A regular behavior
             if [ -d "$list" ]; then
                 builtin cd "$list"
             else
@@ -239,11 +246,13 @@ cd::interface()
             local t
             t="$(echo "$list" | eval "$filter")"
             if ! empty "$t"; then
+                # If you pass a dot (.) as an argument to cd::interface
                 if [ "$flag_dot" = "enable" ]; then
                     builtin cd "$(echo $PWD | grep -o "^.*/$t")"
                     return $?
                 fi
 
+                # A regular behavior
                 if [ -d "$t" ]; then
                     builtin cd "$t"
                 else
@@ -269,6 +278,7 @@ cd::interface()
 #
 #     Options:
 #         -	latest 10 histories that do not include the current directory
+#         .	behave like zsh-bd
 #
 #     Exit Status:
 #     Returns 0 if the directory is changed; non-zero otherwise
@@ -284,6 +294,7 @@ cd() {
     if [ -p /dev/stdin ]; then
         local stdin
         stdin="$(cat -)"
+
         if [ -d "$stdin" ]; then
             builtin cd "$stdin"
         else
@@ -292,13 +303,17 @@ cd() {
         fi
     else
         # If a hyphen is passed as the argument,
-        # list latest 10 histories from the log
+        # searchs from the last 10 directory items in the log
         if [ "$1" = "-" ]; then
             t="$(cd::list | grep -v "^$PWD$" | head | cd::narrow "$2")"
             cd::interface "${t:-$2}"
             return $?
         fi
 
+        # If a dot is passed as the argument,
+        # it behaves like a zsh-bd plugin
+        # In short, you can jump back to a specific directory,
+        # without doing `cd ../../..`
         if [ "$1" = "." ]; then
             local i
             t="$(for i in $(echo $PWD | tr "/" " "); do echo "$i"; done | grep "$2")"

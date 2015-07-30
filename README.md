@@ -20,15 +20,15 @@ Thanks to that mechanism, the user can intuitively and easily change the directo
 
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/demo.gif)
 
-## :rocket: Features
+## :trollface: Features
 
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
 - Work on Bash, Zsh and Fish :fish:
 
-## :gem: Requirements
+## :heartbeat: Requirements
 
-- an interactive filter
+- An interactive filter
 	- [percol](https://github.com/mooz/percol)
 	- [peco](https://github.com/peco/peco)
 	- [fzf](https://github.com/junegunn/fzf)
@@ -41,40 +41,50 @@ Thanks to that mechanism, the user can intuitively and easily change the directo
 
 Under Zsh or Bourne shells such as sh and bash, you would use `enhancd.sh`. Under [fish shell](http://fishshell.com), `enhancd.fish`.
 
-	$ source ./enhancd.sh
+```console
+$ source ./enhancd.sh
+```
 
 Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
 
 The basic usage of the `cd` command that has been implemented by `enhancd` is the same as the normal builtin `cd` command.
 
-	$ cd [-|.] <directroy>
+```console
+$ cd [-|.] <directroy>
+```
 
 If no arguments are given, enhancd `cd` command will display a list of the directory you've visited once, encourage you to filter the directory that you want to move.
 
-	$ cd
-	  ...
-	  /home/lisa/src/github.com/b4b4r07/enhancd/zsh
-	  /home/lisa/src/github.com/b4b4r07/gotcha
-	  /home/lisa/src/github.com/b4b4r07/blog/public
-	  /home/lisa/src/github.com/b4b4r07/blog
-	  /home/lisa/src/github.com/b4b4r07/link_test
-	  /home/lisa/src/github.com/b4b4r07
-	  /home/lisa/Dropbox/etc/dotfiles
-	  /home/lisa/src/github.com/b4b4r07/enhancd
-	> /home/lisa
-	  247/247
-	> _
+```console
+$ cd
+  ...
+  /home/lisa/src/github.com/b4b4r07/enhancd/zsh
+  /home/lisa/src/github.com/b4b4r07/gotcha
+  /home/lisa/src/github.com/b4b4r07/blog/public
+  /home/lisa/src/github.com/b4b4r07/blog
+  /home/lisa/src/github.com/b4b4r07/link_test
+  /home/lisa/src/github.com/b4b4r07
+  /home/lisa/Dropbox/etc/dotfiles
+  /home/lisa/src/github.com/b4b4r07/enhancd
+> /home/lisa
+  247/247
+> _
+```
 
 The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#requirements) separated by colon (:) characters.
 
 It is likely the only environment variable you'll need to set when starting enhancd.
 
-	$ ENHANCD_FILTER=peco; export ENHANCD_FILTER
+```console
+$ ENHANCD_FILTER=peco; export ENHANCD_FILTER
+```
 
 Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_FILTER` to mean the first element unless otherwise specified.
 
-	$ ENHANCD_FILTER=fzf:peco:gof
-	$ export ENHANCD_FILTER
+```console
+$ ENHANCD_FILTER=fzf:peco:gof
+$ export ENHANCD_FILTER
+```
 
 ### Options
 
@@ -126,13 +136,17 @@ Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_F
 
 Give me a trial!
 
-	$ curl -L git.io/enhancd | sh
+```console
+$ curl -L git.io/enhancd | sh
+```
 
 Paste that at a Terminal prompt.
 
 To specify installation location for enhancd:
 
-	$ curl -L git.io/enhancd | PREFIX=/path/to/dir sh
+```console
+$ curl -L git.io/enhancd | PREFIX=/path/to/dir sh
+```
 
 PREFIX defaults to `~/.enhancd`.
 
@@ -143,21 +157,26 @@ PREFIX defaults to `~/.enhancd`.
 
 The above and below are almost the same.
 
-	$ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
-	$ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
+```console
+$ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
+$ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc ```
 
 ***NOTE:***
 
 If you want to use older versions of enhancd (enhancd <sup>v1</sup>: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as v1 and run this command:
 
-	$ curl -L git.io/enhancd | BRANCH=v1 sh
+```console
+$ curl -L git.io/enhancd | BRANCH=v1 sh
+```
 
 
 ### Uninstallation
 
 Are you sure? To uninstall enhancd, paste the command below in a terminal prompt.
 
-	$ rm -r ~/.enhancd
+```console
+$ rm -r ~/.enhancd
+```
 
 ## :wrench: Configuration
 
@@ -175,7 +194,9 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
 	Setting the ENHANCD_FILTER variable is exactly like setting the PATH variable. For example:
 
-		$ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
+	```console
+	$ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
+	```
 
 	This above command will hold good till the session is closed. In order to make this change permanent, we need to put this command in the appropriate profile file. The ENHANCD_FILTER command in this example is set with 3 components: `/usr/local/bin/peco` followed by `fzf` and the `not-existing-filter`.
 
@@ -183,14 +204,18 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 	
 	Let us try to test this ENHANCD_FILTER variable.
 
-		$ cd
+	```console
+	$ cd
+	```
 
 	If cd command does not return error, the settings of ENHANCD_FILTER is success.
 	
 3. How to find the value of the ENHANCD_FILTER variable?
 
-		$ echo $ENHANCD_FILTER
-		/usr/local/bin/peco:fzf:non-existing-filter
+	```console
+	$ echo $ENHANCD_FILTER
+	/usr/local/bin/peco:fzf:non-existing-filter
+	```
 
 ## :books: References
 

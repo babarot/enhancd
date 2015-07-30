@@ -1,0 +1,6 @@
+Tue Jul 30 14:09:00 2015  BABAROT  <b4b4r07@gmail.com>
+
+	* enhancd.sh: add a dot option
+	  When enhancd takes a dot (`.`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../...`.
+
+	* README.md: add some documentations
