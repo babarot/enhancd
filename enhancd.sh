@@ -266,7 +266,14 @@ cd() {
     # Supports stdin
     # echo $HOME | cd
     if [ -p /dev/stdin ]; then
-        builtin cd "$(cat -)"
+        local stdin
+        stdin="$(cat -)"
+        if [ -d "$stdin" ]; then
+            builtin cd "$stdin"
+        else
+            die "$stdin: no such file or directory"
+            return 1
+        fi
     else
         # If a hyphen is passed as the argument,
         # list latest 10 histories from the log
