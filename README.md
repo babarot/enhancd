@@ -159,7 +159,8 @@ The above and below are almost the same.
 
 ```console
 $ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
-$ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc ```
+$ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
+```
 
 ***NOTE:***
 

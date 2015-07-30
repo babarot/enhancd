@@ -32,6 +32,8 @@ reverse() {
 available() {
     local c i list
 
+    # list should be a list value
+    # like this => val="a:b:c:d"
     list="$1"
 
     # Replace a colon with a newline
@@ -115,6 +117,7 @@ cd::makelog()
         mkdir -p "$ENHANCD_DIR"
     fi
 
+    # an temporary variable
     local esc
 
     # Create ~/.enhancd/enhancd.log
@@ -221,6 +224,7 @@ cd::interface()
     local wc
     wc="$(echo "$list" | grep -c "")"
 
+    # main conditional branch
     case "$wc" in
         0 )
             # Unbelievable branch
