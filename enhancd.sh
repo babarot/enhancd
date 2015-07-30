@@ -287,7 +287,7 @@ cd::interface()
 #     Exit Status:
 #     Returns 0 if the directory is changed; non-zero otherwise
 #
-cd() {
+cd::cd() {
     # t is an argument of the list for cd::interface
     local t
 
@@ -355,3 +355,5 @@ fi
 if [ -n "$BASH_VERSION" ]; then
     PROMPT_COMMAND="cd::add; $PROMPT_COMMAND"
 fi
+
+alias cd=cd::cd

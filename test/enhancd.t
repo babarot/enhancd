@@ -1,5 +1,6 @@
 Move into some directories
 
+  $ cd ~
   $ mkdir -p a/b/c/d
   $ cd a/b/c/d
 
