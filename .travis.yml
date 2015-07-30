@@ -7,7 +7,7 @@ before_script:
     - "sudo apt-get install zsh"
 
 install:
-    - "curl -L git.io/cli | L=peco/peco sh"
+    - "curl -L git.io/cli | L=peco/peco bash"
     - "sudo pip install cram"
 
 script:
