@@ -1,0 +1,14 @@
+language: python
+
+python:
+    - "3.3"
+
+before_script:
+    - "sudo apt-get install zsh"
+
+install:
+    - "curl -L git.io/cli | L=peco/peco sh"
+    - "sudo pip install cram"
+
+script:
+    - "make test"
