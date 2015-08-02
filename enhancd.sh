@@ -13,6 +13,82 @@ ENHANCD_LOG=$ENHANCD_DIR/enhancd.log
 export ENHANCD_DIR
 export ENHANCD_LOG
 
+split() {
+    local arg
+
+    awk -v arg="$1" '
+    BEGIN {
+        s = substr(arg, 2)
+        num = split(s, arr, "/")
+        
+        print substr(arg, 1, 1)
+        for (i = 1; i < num; i++) {
+            print arr[i]
+        }
+    }' 2>/dev/null
+}
+split_path() {
+    local uniq
+    uniq="$(split "$1" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
+    if [ "$uniq" -ne 1 ]; then
+        split "$1" | awk '{ printf("%d: %s\n", NR, $1); }'
+    else
+        split "$1"
+    fi
+}
+
+get_subpath() {
+    local cwd dir
+    cwd="$(dirname "$1")"
+
+    local num c
+
+    if echo "$2" | grep -q "[0-9]:"; then
+        num="$(echo "$2" | cut -d: -f1)"
+        if [ -n "$num" ]; then
+            c=2
+            for ((i=1; i<${#1}+1; i++)); do
+                [ "$i" -eq 1 ] && echo 1:${1:0:1}
+                if [[ ${1:0:$i+1} =~ /$ ]]; then
+                    echo $c:${1:0:$i}
+                    c=$((c+1))
+                fi
+            done | grep "^$num" | cut -d: -f2
+        fi
+    else
+        awk -v cwd="$cwd" -v dir="$2" '
+        function erase(str, pos) {
+            return substr(str, 1, pos-1)
+        }
+
+        function rindex(string, find, k, ns, nf) {
+            ns = length(string)
+            nf = length(find)
+            for (k = ns+1-nf; k >= 1; k--) {
+                if (substr(string, k, nf) == find) {
+                    return k
+                }
+            }
+            return 0
+        }
+
+        BEGIN {
+            if (dir == "/") {
+                print "/"
+                exit
+            }
+
+            pos = rindex(cwd, dir)
+            if (pos == 0) {
+                print cwd
+                exit
+            }
+
+            print erase(cwd, pos+length(dir))
+        }' 2>/dev/null
+    fi
+}
+
 # die puts a string to stderr
 die() {
     echo "$1" 1>&2
@@ -201,7 +277,7 @@ cd::interface()
 
     # Check if options are specified
     # If you pass a dot (.) as an argument to cd::interface
-    if [ "$1" = "." ]; then
+    if [ "$1" = ".." ]; then
         shift
         local flag_dot
         flag_dot="enable"
@@ -234,7 +310,7 @@ cd::interface()
         1 )
             # If you pass a dot (.) as an argument to cd::interface
             if [ "$flag_dot" = "enable" ]; then
-                builtin cd "$(echo $PWD | grep -o "^.*/$list")"
+                builtin cd "$(get_subpath "$PWD" "$list")"
                 return $?
             fi
 
@@ -252,7 +328,7 @@ cd::interface()
             if ! empty "$t"; then
                 # If you pass a dot (.) as an argument to cd::interface
                 if [ "$flag_dot" = "enable" ]; then
-                    builtin cd "$(echo $PWD | grep -o "^.*/$t")"
+                    builtin cd "$(get_subpath "$PWD" "$t")"
                     return $?
                 fi
 
@@ -318,10 +394,9 @@ cd::cd() {
         # it behaves like a zsh-bd plugin
         # In short, you can jump back to a specific directory,
         # without doing `cd ../../..`
-        if [ "$1" = "." ]; then
-            local i
-            t="$(for i in $(echo $PWD | tr "/" " "); do echo "$i"; done | grep "$2")"
-            cd::interface "." "${t:-$2}"
+        if [ "$1" = ".." ]; then
+            t="$(split_path "$PWD" | reverse | grep "$2")"
+            cd::interface ".." "${t:-$2}"
             return $?
         fi
 
