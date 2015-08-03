@@ -144,15 +144,17 @@ $ export ENHANCD_FILTER
 	```console
 	$ cd ..
 	...
-	  enhancd
-	  b4b4r07
-	  github.com
-	  src
+	  /
+	  home
 	  lisa
-	> home
+	  src
+	  github.com
+	> b4b4r07
 	  6/6
 	> _
 	```
+	
+	When moving to the parent directory, the current directory is removed from the candidate.
 
 ## :package: Installation
 

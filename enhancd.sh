@@ -9,99 +9,9 @@
 #
 
 ENHANCD_DIR=~/.enhancd
-ENHANCD_LOG=$ENHANCD_DIR/enhancd.log
+ENHANCD_LOG="$ENHANCD_DIR"/enhancd.log
 export ENHANCD_DIR
 export ENHANCD_LOG
-
-# split_path decomposes the path with a slash as a delimiter
-split_path() {
-    local arg
-
-    awk -v arg="$1" '
-    BEGIN {
-        s = substr(arg, 2)
-        num = split(s, arr, "/")
-        
-        print substr(arg, 1, 1)
-        for (i = 1; i < num; i++) {
-            print arr[i]
-        }
-    }' 2>/dev/null
-}
-
-# get_dirname returns the divided directory name with a slash
-get_dirname() {
-    local uniq
-    uniq="$(split_path "$1" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
-    if [ "$uniq" -ne 1 ]; then
-        split_path "$1" | awk '{ printf("%d: %s\n", NR, $1); }'
-    else
-        split_path "$1"
-    fi
-}
-
-# get_dirname regains the path from the divided directory name with a slash
-get_abspath() {
-    local cwd dir
-    cwd="$(dirname "$1")"
-
-    local num c
-
-    # It searches the directory name from the rear of the PWD,
-    # and returns the path to where it was found
-    if echo "$2" | grep -q "[0-9]:"; then
-        # When decomposing the PWD with a slash,
-        # put the number to it if there is the same directory name.
-
-        # num is a number for identification
-        num="$(echo "$2" | cut -d: -f1)"
-
-        if [ -n "$num" ]; then
-            # c is a line number
-            c=2
-            # It is listed path stepwise
-            for ((i=1; i<${#1}+1; i++)); do
-                [ "$i" -eq 1 ] && echo 1:${1:0:1}
-                if [[ ${1:0:$i+1} =~ /$ ]]; then
-                    echo $c:${1:0:$i}
-                    c=$((c+1))
-                fi
-            done | grep "^$num" | cut -d: -f2
-        fi
-    else
-        # If there are no duplicate directory name
-        awk -v cwd="$cwd" -v dir="$2" '
-        function erase(str, pos) {
-            return substr(str, 1, pos-1)
-        }
-
-        function rindex(string, find, k, ns, nf) {
-            ns = length(string)
-            nf = length(find)
-            for (k = ns+1-nf; k >= 1; k--) {
-                if (substr(string, k, nf) == find) {
-                    return k
-                }
-            }
-            return 0
-        }
-
-        BEGIN {
-            if (dir == "/") {
-                print "/"
-                exit
-            }
-
-            pos = rindex(cwd, dir)
-            if (pos == 0) {
-                print cwd
-                exit
-            }
-
-            print erase(cwd, pos+length(dir))
-        }' 2>/dev/null
-    fi
-}
 
 # die puts a string to stderr
 die() {
@@ -123,7 +33,7 @@ available() {
     local c i list
 
     # list should be a list value
-    # like this => val="a:b:c:d"
+    # Like this => val="a:b:c:d"
     list="$1"
 
     # Replace a colon with a newline
@@ -156,6 +66,110 @@ has() {
 
     type "$1" >/dev/null 2>/dev/null
     return $?
+}
+
+# cd::split_path decomposes the path with a slash as a delimiter
+cd::split_path() {
+    local arg
+
+    awk -v arg="$1" '
+    BEGIN {
+        s = substr(arg, 2)
+        num = split(s, arr, "/")
+        
+        print substr(arg, 1, 1)
+        for (i = 1; i < num; i++) {
+            print arr[i]
+        }
+    }' 2>/dev/null
+}
+
+# cd::get_dirname returns the divided directory name with a slash
+cd::get_dirname() {
+    local uniq
+
+    # uniq is the variable that checks whether there is
+    # the duplicate directory in the PWD environment variable
+    uniq="$(cd::split_path "$1" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
+
+    if [ "$uniq" -ne 1 ]; then
+        # There is an overlap
+        cd::split_path "$1" | awk '{ printf("%d: %s\n", NR, $1); }'
+    else
+        cd::split_path "$1"
+    fi
+}
+
+# cd::get_abspath regains the path from the divided directory name with a slash
+cd::get_abspath() {
+    local cwd dir
+    cwd="$(dirname "$1")"
+
+    local num c
+
+    # It searches the directory name from the rear of the PWD,
+    # and returns the path to where it was found
+    if echo "$2" | grep -q "[0-9]:"; then
+        # When decomposing the PWD with a slash,
+        # put the number to it if there is the same directory name.
+
+        # num is a number for identification
+        num="$(echo "$2" | cut -d: -f1)"
+
+        if [ -n "$num" ]; then
+            # c is a line number
+            c=2
+            # It is listed path stepwise
+            for ((i=1; i<${#1}+1; i++)); do
+                [ "$i" -eq 1 ] && echo 1:${1:0:1}
+                if [[ ${1:0:$i+1} =~ /$ ]]; then
+                    echo $c:${1:0:$i}
+                    c=$((c+1))
+                fi
+            done | grep "^$num" | cut -d: -f2
+        fi
+    else
+        # If there are no duplicate directory name
+        awk -v cwd="$cwd" -v dir="$2" '
+        # erase erases the part of the path
+        function erase(str, pos) {
+            return substr(str, 1, pos-1)
+        }
+
+        # rindex returns the index of the last instance of find in string,
+        # or 0 if find is not present
+        function rindex(string, find, k, ns, nf) {
+            ns = length(string)
+            nf = length(find)
+            for (k = ns+1-nf; k >= 1; k--) {
+                if (substr(string, k, nf) == find) {
+                    return k
+                }
+            }
+            return 0
+        }
+
+        BEGIN {
+            # If dir is a slash, return a slash and exit
+            if (dir == "/") {
+                print "/"
+                exit
+            }
+
+            # pos is a position of dir in cwd
+            pos = rindex(cwd, dir)
+
+            # If it is not find the dir in the cwd, then exit
+            if (pos == 0) {
+                print cwd
+                exit
+            }
+
+            # convert the divided directory name to the absolute path
+            # that the directory name is contained
+            print erase(cwd, pos+length(dir))
+        }' 2>/dev/null
+    fi
 }
 
 # cd::list returns a directory list for changing directory of enhancd
@@ -324,7 +338,7 @@ cd::interface()
         1 )
             # If you pass a dot (.) as an argument to cd::interface
             if [ "$flag_dot" = "enable" ]; then
-                builtin cd "$(get_abspath "$PWD" "$list")"
+                builtin cd "$(cd::get_abspath "$PWD" "$list")"
                 return $?
             fi
 
@@ -342,7 +356,7 @@ cd::interface()
             if ! empty "$t"; then
                 # If you pass a dot (.) as an argument to cd::interface
                 if [ "$flag_dot" = "enable" ]; then
-                    builtin cd "$(get_abspath "$PWD" "$t")"
+                    builtin cd "$(cd::get_abspath "$PWD" "$t")"
                     return $?
                 fi
 
@@ -371,8 +385,8 @@ cd::interface()
 #     The visual filter such as peco and fzf in ENHANCD_FILTER are separated by a colon (:)
 #
 #     Options:
-#         -	latest 10 histories that do not include the current directory
-#         .	behave like zsh-bd
+#         -     latest 10 histories that do not include the current directory
+#         ..    like zsh-bd
 #
 #     Exit Status:
 #     Returns 0 if the directory is changed; non-zero otherwise
@@ -381,9 +395,12 @@ cd::cd() {
     # t is an argument of the list for cd::interface
     local t
 
+    # First of all, this cd::makelog and cd::refresh function creates it
+    # if the enhancd history file does not exist
+    # Then, remove non existing directories from the history and refresh it
     cd::makelog "cd::refresh"
 
-    # Supports stdin
+    # Supports the standard input
     # echo $HOME | cd
     if [ -p /dev/stdin ]; then
         local stdin
@@ -409,13 +426,13 @@ cd::cd() {
         # In short, you can jump back to a specific directory,
         # without doing `cd ../../..`
         if [ "$1" = ".." ]; then
-            t="$(get_dirname "$PWD" | reverse | grep "$2")"
+            t="$(cd::get_dirname "$PWD" | reverse | grep "$2")"
             cd::interface ".." "${t:-$2}"
             return $?
         fi
 
         # Process a regular argument
-        # If a given argument is a directory,
+        # If a given argument is a directory that exists already,
         # call builtin cd function; cd::interface otherwise
         if [ -d "$1" ]; then
             builtin cd "$1"
@@ -427,11 +444,13 @@ cd::cd() {
             else
                 t="$(cd::list | cd::narrow "$1")"
             fi
+
             # If the t is empty, pass $1 to cd::interface instead of the t
             cd::interface "${t:-$1}"
         fi
     fi
 
+    # Finally, assemble the cd history
     cd::makelog "cd::assemble"
 }
 
@@ -445,4 +464,4 @@ if [ -n "$BASH_VERSION" ]; then
     PROMPT_COMMAND="cd::add; $PROMPT_COMMAND"
 fi
 
-alias cd=cd::cd
+alias cd="cd::cd"
