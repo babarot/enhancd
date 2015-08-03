@@ -13,7 +13,8 @@ ENHANCD_LOG=$ENHANCD_DIR/enhancd.log
 export ENHANCD_DIR
 export ENHANCD_LOG
 
-split() {
+# split_path decomposes the path with a slash as a delimiter
+split_path() {
     local arg
 
     awk -v arg="$1" '
@@ -27,26 +28,38 @@ split() {
         }
     }' 2>/dev/null
 }
-split_path() {
+
+# get_dirname returns the divided directory name with a slash
+get_dirname() {
     local uniq
-    uniq="$(split "$1" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
+    uniq="$(split_path "$1" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
     if [ "$uniq" -ne 1 ]; then
-        split "$1" | awk '{ printf("%d: %s\n", NR, $1); }'
+        split_path "$1" | awk '{ printf("%d: %s\n", NR, $1); }'
     else
-        split "$1"
+        split_path "$1"
     fi
 }
 
-get_subpath() {
+# get_dirname regains the path from the divided directory name with a slash
+get_abspath() {
     local cwd dir
     cwd="$(dirname "$1")"
 
     local num c
 
+    # It searches the directory name from the rear of the PWD,
+    # and returns the path to where it was found
     if echo "$2" | grep -q "[0-9]:"; then
+        # When decomposing the PWD with a slash,
+        # put the number to it if there is the same directory name.
+
+        # num is a number for identification
         num="$(echo "$2" | cut -d: -f1)"
+
         if [ -n "$num" ]; then
+            # c is a line number
             c=2
+            # It is listed path stepwise
             for ((i=1; i<${#1}+1; i++)); do
                 [ "$i" -eq 1 ] && echo 1:${1:0:1}
                 if [[ ${1:0:$i+1} =~ /$ ]]; then
@@ -56,6 +69,7 @@ get_subpath() {
             done | grep "^$num" | cut -d: -f2
         fi
     else
+        # If there are no duplicate directory name
         awk -v cwd="$cwd" -v dir="$2" '
         function erase(str, pos) {
             return substr(str, 1, pos-1)
@@ -310,7 +324,7 @@ cd::interface()
         1 )
             # If you pass a dot (.) as an argument to cd::interface
             if [ "$flag_dot" = "enable" ]; then
-                builtin cd "$(get_subpath "$PWD" "$list")"
+                builtin cd "$(get_abspath "$PWD" "$list")"
                 return $?
             fi
 
@@ -328,7 +342,7 @@ cd::interface()
             if ! empty "$t"; then
                 # If you pass a dot (.) as an argument to cd::interface
                 if [ "$flag_dot" = "enable" ]; then
-                    builtin cd "$(get_subpath "$PWD" "$t")"
+                    builtin cd "$(get_abspath "$PWD" "$t")"
                     return $?
                 fi
 
@@ -395,7 +409,7 @@ cd::cd() {
         # In short, you can jump back to a specific directory,
         # without doing `cd ../../..`
         if [ "$1" = ".." ]; then
-            t="$(split_path "$PWD" | reverse | grep "$2")"
+            t="$(get_dirname "$PWD" | reverse | grep "$2")"
             cd::interface ".." "${t:-$2}"
             return $?
         fi

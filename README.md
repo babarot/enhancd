@@ -74,7 +74,7 @@ Because enhancd functions must be executed in the context of the current shell, 
 The basic usage of the `cd` command that has been implemented by `enhancd` is the same as the normal builtin `cd` command.
 
 ```console
-$ cd [-|.] <directroy>
+$ cd [-|..] <directroy>
 ```
 
 If no arguments are given, enhancd `cd` command will display a list of the directory you've visited once, encourage you to filter the directory that you want to move.
@@ -135,14 +135,14 @@ $ export ENHANCD_FILTER
 	
 	Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` ($PWD is /home/lisa, $OLDPWD is /home/lisa/src/github.com/b4b4r07/portfolio).
 
-- Dot (`.`) :warning: *Experimental*
+- Double-dot (`..`) :warning: *Experimental*
 
-	When enhancd takes a dot (`.`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
+	From the beginning, `..` means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (`..`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
 	
-	For example, when you are in /home/lisa/src/github.com/b4b4r07/enhancd, type `cd .` in your terminal:
+	For example, when you are in /home/lisa/src/github.com/b4b4r07/enhancd, type `cd ..` in your terminal:
 	
 	```console
-	$ cd .
+	$ cd ..
 	...
 	  enhancd
 	  b4b4r07
