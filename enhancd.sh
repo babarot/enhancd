@@ -1,6 +1,6 @@
 # enhancd - A enhanced cd shell function wrapper
 
-# Version:    v2.1.1
+# Version:    v2.1.2
 # Repository: https://github.com/b4b4r07/enhancd
 # Author:     b4b4r07 (BABAROT)
 # License:    MIT
@@ -69,15 +69,20 @@ has() {
 }
 
 # cd::split_path decomposes the path with a slash as a delimiter
-cd::split_path() {
+cd::split_path()
+{
     local arg
 
     awk -v arg="$1" '
     BEGIN {
+        # except the beginning of the slash
         s = substr(arg, 2)
         num = split(s, arr, "/")
-        
+
+        # display the beginning of the path
         print substr(arg, 1, 1)
+
+        # decompose the path by a slash
         for (i = 1; i < num; i++) {
             print arr[i]
         }
@@ -85,7 +90,8 @@ cd::split_path() {
 }
 
 # cd::get_dirname returns the divided directory name with a slash
-cd::get_dirname() {
+cd::get_dirname()
+{
     local uniq
 
     # uniq is the variable that checks whether there is
@@ -101,7 +107,14 @@ cd::get_dirname() {
 }
 
 # cd::get_abspath regains the path from the divided directory name with a slash
-cd::get_abspath() {
+cd::get_abspath()
+{
+    # cd::get_abspath requires two arguments
+    if [ $# -lt 2 ]; then
+        return 1
+    fi
+
+    # $1 is cwd, $2 is dir
     local cwd dir
     cwd="$(dirname "$1")"
 

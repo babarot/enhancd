@@ -1,6 +1,17 @@
-Tue Jul 30 14:09:00 2015  BABAROT  <b4b4r07@gmail.com>
+2015-08-06  BABAROT <b4b4r07@gmail.com>
+
+	* v2.1.2 RELEASE
+
+	* enhancd.sh: change dot option to double-dot option and became a formal
+	option.
+	* README.md: add some documentations and gif animations
+
+2015-07-31  BABAROT  <b4b4r07@gmail.com>
+
+	* v2.1.1
 
 	* enhancd.sh: add a dot option
-	  When enhancd takes a dot (`.`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../...`.
-
+	  When enhancd takes a dot (`.`) string as an argument, it behaves like
+	  a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you
+	  can jump back to a specific directory, without doing `cd ../../...`.
 	* README.md: add some documentations

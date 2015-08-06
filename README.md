@@ -12,7 +12,7 @@
 <b><a href="#heartbeat-requirements">Requirements</a></b>
 |
 <b><a href="#mag-usage">Usage</a></b>
-|
+<br>
 <b><a href="#package-installation">Installation</a></b>
 |
 <b><a href="#wrench-configuration">Configuration</a></b>
@@ -32,7 +32,7 @@ A next-generation `cd` command with an interactive filter :sparkles:
 
 `cd` command is one of the frequently used commands. 
 
-Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in /home/lisa, dir is /home/lisa/work/dir) to `cd` command.
+Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in `/home/lisa`, dir is `/home/lisa/work/dir`) to `cd` command.
 
 The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER variable in order to narrow it down to one.
 
@@ -95,7 +95,7 @@ $ cd
 > _
 ```
 
-The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#requirements) separated by colon (:) characters.
+The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#requirements) separated by colon (`:`) characters.
 
 It is likely the only environment variable you'll need to set when starting enhancd.
 
@@ -133,13 +133,13 @@ $ export ENHANCD_FILTER
 	> _	
 	```
 	
-	Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` ($PWD is /home/lisa, $OLDPWD is /home/lisa/src/github.com/b4b4r07/portfolio).
+	Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` (`$PWD` is `/home/lisa`, `$OLDPWD` is `/home/lisa/src/github.com/b4b4r07/portfolio`).
 
-- Double-dot (`..`) :warning: *Experimental*
+- Double-dot (`..`)
 
 	From the beginning, `..` means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (`..`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
 	
-	For example, when you are in /home/lisa/src/github.com/b4b4r07/enhancd, type `cd ..` in your terminal:
+	For example, when you are in `/home/lisa/src/github.com/b4b4r07/enhancd`, type `cd ..` in your terminal:
 	
 	```console
 	$ cd ..
@@ -155,6 +155,8 @@ $ export ENHANCD_FILTER
 	```
 	
 	When moving to the parent directory, the current directory is removed from the candidate.
+	
+	![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/bd.gif)
 
 ## :package: Installation
 
@@ -188,6 +190,8 @@ $ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
 $ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
 ```
 
+**All you need to do is to source `enhancd.zsh`.**
+
 ***NOTE:***
 
 If you want to use older versions of enhancd (enhancd <sup>v1</sup>: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as v1 and run this command:
@@ -195,7 +199,6 @@ If you want to use older versions of enhancd (enhancd <sup>v1</sup>: [dca011aa34
 ```console
 $ curl -L git.io/enhancd | BRANCH=v1 sh
 ```
-
 
 ### Uninstallation
 
