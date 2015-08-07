@@ -1,6 +1,14 @@
+2015-08-07  BABAROT <b4b4r07@gmail.com>
+
+	* v2.1.3 Fuzzy search
+
+	* enhancd.sh: implemented fuzzy search
+	option.
+	* README.md: add gif animations
+
 2015-08-06  BABAROT <b4b4r07@gmail.com>
 
-	* v2.1.2 RELEASE
+	* v2.1.2 Double-dot option
 
 	* enhancd.sh: change dot option to double-dot option and became a formal
 	option.

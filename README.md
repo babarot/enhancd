@@ -49,6 +49,14 @@ Thanks to that mechanism, the user can intuitively and easily change the directo
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
 - Work on Bash, Zsh and Fish :fish:
+- Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
+- Fuzzy search in a similar name directory
+
+### Fuzzy search
+
+You can fuzzy-search a directory name you want to run `cd`. For example, a word "text" is expand to "test" and "txt".
+
+![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/fuzzy.gif)
 
 ## :heartbeat: Requirements
 
