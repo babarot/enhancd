@@ -129,9 +129,11 @@ cd::get_abspath()
         # num is a number for identification
         num="$(echo "$2" | cut -d: -f1)"
 
+        local i
         if [ -n "$num" ]; then
             # c is a line number
             c=2
+
             # It is listed path stepwise
             for ((i=1; i<${#1}+1; i++)); do
                 [ "$i" -eq 1 ] && echo 1:${1:0:1}
@@ -323,7 +325,11 @@ cd::makelog()
 
     # $1 should be a function name
     # Run $1 process, and puts to the temporary file
-    $1 >"$esc"
+    if [ -z "$1" ]; then
+        cd::list | reverse >"$esc"
+    else
+        $1 >"$esc"
+    fi
 
     # Create a backup in preparation for the failure of the overwriting
     cp -f "$ENHANCD_LOG" $ENHANCD_DIR/enhancd.backup
@@ -488,6 +494,7 @@ cd::cd() {
 
     # First of all, this cd::makelog and cd::refresh function creates it
     # if the enhancd history file does not exist
+    cd::makelog
     # Then, remove non existing directories from the history and refresh it
     cd::makelog "cd::refresh"
 
