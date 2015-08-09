@@ -1,6 +1,6 @@
 # enhancd - A enhanced cd shell function wrapper
 
-# Version:    v2.1.2
+# Version:    v2.1.3
 # Repository: https://github.com/b4b4r07/enhancd
 # Author:     b4b4r07 (BABAROT)
 # License:    MIT
@@ -20,12 +20,38 @@ die() {
 
 # unique uniques a stdin contents
 unique() {
-    awk '!a[$0]++' "${1:--}"
+    if [ -z "$1" ]; then
+        cat <&0
+    else
+        cat "$1"
+    fi | awk '!a[$0]++' 2>/dev/null
 }
 
 # reverse reverses a stdin contents
 reverse() {
-    perl -e 'print reverse <>'
+    if [ -z "$1" ]; then
+        cat <&0
+    else
+        cat "$1"
+    fi | awk '
+    BEGIN {
+        sort_exe = "sort -t \"\034\" -nr"
+    }
+
+    {
+        printf("%d\034%s\n", NR, $0) |& sort_exe;
+    }
+
+    END {
+        close(sort_exe, "to");
+
+        while ((sort_exe |& getline var) > 0) {
+            split(var, arr, /\034/);
+
+            print arr[2];
+        }
+        close(sort_exe);
+    }' 2>/dev/null
 }
 
 # available narrows list down to one
@@ -67,6 +93,48 @@ has() {
 
     type "$1" >/dev/null 2>/dev/null
     return $?
+}
+
+# nl reads lines from the named file or the standard input if the file argument is ommitted,
+# applies a configurable line numbering filter operation and writes the result to the standard output
+nl() {
+    # d in awk's argument is a delimiter
+    if [ -z "$1" ]; then
+        cat <&0
+    else
+        cat "$1"
+    fi | awk -v d="${1:-": "}" '
+    BEGIN {
+        i = 1
+    }
+    {
+        print i d $0
+        i++
+    }' 2>/dev/null
+}
+
+# cd::get_dirstep returns a list of stepwise path
+cd::get_dirstep() {
+    # cd::get_dirstep requires $1 that should be a path
+    if [ -z "$1" ]; then
+        die "too few arguments"
+        return 1
+    fi
+
+    local str c cwd
+    str=$(echo "$1" | sed -e 's@[^/]@@g')
+    # c is a length of all slash(s) in $1
+    c="${#str}"
+
+    # Print a stepwise path
+    while [ "$c" -ne -1 ]
+    do
+        echo "${cwd:=$1}"
+        # refresh cwd
+        cwd="$(dirname "$cwd")"
+        # count down slash
+        c="$(expr "$c" - 1)"
+    done
 }
 
 # cd::split_path decomposes the path with a slash as a delimiter
@@ -137,13 +205,7 @@ cd::get_abspath()
             c=2
 
             # It is listed path stepwise
-            for ((i=1; i<${#1}+1; i++)); do
-                [ "$i" -eq 1 ] && echo 1:${1:0:1}
-                if [[ ${1:0:$i+1} =~ /$ ]]; then
-                    echo $c:${1:0:$i}
-                    c=$((c+1))
-                fi
-            done | grep "^$num" | cut -d: -f2
+            cd::get_dirstep "$1" | reverse | nl ":" | grep "^$num" | cut -d: -f2
         fi
     else
         # If there are no duplicate directory name
@@ -294,19 +356,8 @@ cd::narrow()
 # -> /home/lisa/src/github.com
 cd::enumrate()
 {
-    local file i
-
-    file=$(
-    for ((i=1; i<${#PWD}+1; i++))
-    do
-        if [[ ${PWD:0:$i+1} =~ /$ ]]; then
-            echo ${PWD:0:$i}
-        fi
-    done
-    find $PWD -maxdepth 1 -type d | grep -v "\/\."
-    )
-
-    echo "${file[@]}"
+    cd::get_dirstep "$PWD" | reverse
+    find "$PWD" -maxdepth 1 -type d | grep -v "\/\."
 }
 
 # cd::makelog carefully open/close the log
