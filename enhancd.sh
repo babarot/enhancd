@@ -99,11 +99,7 @@ has() {
 # applies a configurable line numbering filter operation and writes the result to the standard output
 nl() {
     # d in awk's argument is a delimiter
-    if [ -z "$1" ]; then
-        cat <&0
-    else
-        cat "$1"
-    fi | awk -v d="${1:-": "}" '
+    awk -v d="${1:-": "}" '
     BEGIN {
         i = 1
     }
