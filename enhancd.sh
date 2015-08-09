@@ -30,17 +30,18 @@ reverse() {
 
 # available narrows list down to one
 available() {
-    local c i list
+    local i list
 
-    # list should be a list value
+    # list should be a list splitted by colon
     # Like this => val="a:b:c:d"
     list="$1"
 
-    # Replace a colon with a newline
-    c="$(echo "$list" | tr ":" "\n")"
+    # Replace a colon with IFS space
+    list=$(echo "$list" | sed -e "s/:/ /g")
 
     # Loop until has function returns true
-    for i in ${c[@]}
+    # Note: Do not enclose the $list variable in double quotes!
+    for i in $list
     do
         if has "$i"; then
             echo "$i"
@@ -73,9 +74,9 @@ cd::split_path()
 {
     local arg
 
-    awk -v arg="$1" '
+    awk -v arg="${1:-$PWD}" '
     BEGIN {
-        # except the beginning of the slash
+        # except for the beginning of the slash
         s = substr(arg, 2)
         num = split(s, arr, "/")
 
@@ -111,6 +112,7 @@ cd::get_abspath()
 {
     # cd::get_abspath requires two arguments
     if [ $# -lt 2 ]; then
+        die "too few arguments"
         return 1
     fi
 
@@ -401,7 +403,7 @@ cd::interface()
     fi
 
     # Check if options are specified
-    # If you pass a dot (.) as an argument to cd::interface
+    # If you pass a double-dot (..) as an argument to cd::interface
     if [ "$1" = ".." ]; then
         shift
         local flag_dot
@@ -433,7 +435,7 @@ cd::interface()
             return 1
             ;;
         1 )
-            # If you pass a dot (.) as an argument to cd::interface
+            # If you pass a double-dot (..) as an argument to cd::interface
             if [ "$flag_dot" = "enable" ]; then
                 builtin cd "$(cd::get_abspath "$PWD" "$list")"
                 return $?
@@ -451,7 +453,7 @@ cd::interface()
             local t
             t="$(echo "$list" | eval "$filter")"
             if ! empty "$t"; then
-                # If you pass a dot (.) as an argument to cd::interface
+                # If you pass a double-dot (..) as an argument to cd::interface
                 if [ "$flag_dot" = "enable" ]; then
                     builtin cd "$(cd::get_abspath "$PWD" "$t")"
                     return $?
@@ -502,7 +504,7 @@ cd::cd() {
     # echo $HOME | cd
     if [ -p /dev/stdin ]; then
         local stdin
-        stdin="$(cat -)"
+        stdin="$(cat <&0)"
 
         if [ -d "$stdin" ]; then
             builtin cd "$stdin"
@@ -519,7 +521,7 @@ cd::cd() {
             return $?
         fi
 
-        # If a dot is passed as the argument,
+        # If a double-dot is passed as the argument,
         # it behaves like a zsh-bd plugin
         # In short, you can jump back to a specific directory,
         # without doing `cd ../../..`
