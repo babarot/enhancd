@@ -1,6 +1,6 @@
 # enhancd - A enhanced cd shell function wrapper
 
-# Version:    v2.1.3
+# Version:    v2.1.4
 # Repository: https://github.com/b4b4r07/enhancd
 # Author:     b4b4r07 (BABAROT)
 # License:    MIT
@@ -541,7 +541,11 @@ cd::interface()
 #     Exit Status:
 #     Returns 0 if the directory is changed; non-zero otherwise
 #
-cd::cd() {
+cd::cd()
+{
+    # Add $PWD to the enhancd log
+    cd::add()
+
     # t is an argument of the list for cd::interface
     local t
 
@@ -604,15 +608,5 @@ cd::cd() {
     # Finally, assemble the cd history
     cd::makelog "cd::assemble"
 }
-
-# For zsh
-if [ -n "$ZSH_VERSION" ]; then
-    add-zsh-hook chpwd cd::add
-fi
-
-# For bash
-if [ -n "$BASH_VERSION" ]; then
-    PROMPT_COMMAND="cd::add; $PROMPT_COMMAND"
-fi
 
 alias cd="cd::cd"
