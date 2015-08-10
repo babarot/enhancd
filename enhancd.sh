@@ -20,7 +20,7 @@ die() {
 
 # unique uniques a stdin contents
 unique() {
-    if [ -z "$1" ]; then
+    if empty "$1"; then
         cat <&0
     else
         cat "$1"
@@ -29,7 +29,7 @@ unique() {
 
 # reverse reverses a stdin contents
 reverse() {
-    if [ -z "$1" ]; then
+    if empty "$1"; then
         cat <&0
     else
         cat "$1"
@@ -112,18 +112,18 @@ nl() {
 # cd::get_dirstep returns a list of stepwise path
 cd::get_dirstep() {
     # cd::get_dirstep requires $1 that should be a path
-    if [ -z "$1" ]; then
+    if empty "$1"; then
         die "too few arguments"
         return 1
     fi
 
-    local str c cwd
-    str=$(echo "$1" | sed -e 's@[^/]@@g')
+    local slash c cwd
+    slash="$(echo "$1" | sed -e 's@[^/]@@g')"
     # c is a length of all slash(s) in $1
-    c="${#str}"
+    c="${#slash}"
 
     # Print a stepwise path
-    while [ "$c" -ne -1 ]
+    while [ "$c" -ge 0 ]
     do
         echo "${cwd:=$1}"
         # refresh cwd
@@ -139,7 +139,26 @@ cd::split_path()
     local arg
 
     awk -v arg="${1:-$PWD}" '
+    # has_prefix tests whether the string s begins with pre.
+    function has_prefix(s, pre,        pre_len, s_len) {
+        pre_len = length(pre)
+        s_len   = length(s)
+
+        return pre_len <= s_len && substr(s, 1, pre_len) == pre
+    }
+
+    # isabs returns true if the path is absolute.
+    function isabs(pathname) {
+        return length(pathname) > 0 && has_prefix(pathname, "/")
+    }
+
     BEGIN {
+        # check if arg is an valid path
+        if (!isabs(arg)) {
+            print "split_path requires an absolute path begins with a slash" >"/dev/stderr"
+            exit 1
+        }
+
         # except for the beginning of the slash
         s = substr(arg, 2)
         num = split(s, arr, "/")
@@ -151,23 +170,28 @@ cd::split_path()
         for (i = 1; i < num; i++) {
             print arr[i]
         }
-    }' 2>/dev/null
+    }'
 }
 
 # cd::get_dirname returns the divided directory name with a slash
 cd::get_dirname()
 {
-    local uniq
+    local is_uniq dir
+
+    # dir is a target directory that defaults to the PWD
+    dir="${1:-$PWD}"
 
     # uniq is the variable that checks whether there is
     # the duplicate directory in the PWD environment variable
-    uniq="$(cd::split_path "$1" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
+    is_uniq="$(cd::split_path "$dir" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')"
 
-    if [ "$uniq" -ne 1 ]; then
-        # There is an overlap
-        cd::split_path "$1" | awk '{ printf("%d: %s\n", NR, $1); }'
+    # Tests whether is_uniq is true or false
+    if [ "$is_uniq" -eq 1 ]; then
+        # is_uniq is true
+        cd::split_path "$dir"
     else
-        cd::split_path "$1"
+        # is_uniq is false
+        cd::split_path "$dir" | awk '{ printf("%d: %s\n", NR, $1); }'
     fi
 }
 
@@ -334,8 +358,10 @@ cd::narrow()
 {
     local stdin m
 
+    # Save stdin
     stdin="$(cat <&0)"
     m="$(echo "$stdin" | awk '/\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
+
     if empty "$m"; then
         echo "$stdin" | cd::fuzzy "$1"
     else
@@ -370,11 +396,11 @@ cd::makelog()
     touch "$ENHANCD_LOG"
 
     # Prepare a temporary file for overwriting
-    esc="$ENHANCD_DIR"/enhancd."$(date +%d%m%y)"$$$RANDOM
+    esc="$ENHANCD_DIR"/enhancd."$(date +%d%m%y%H%M%S)"$$$RANDOM
 
     # $1 should be a function name
     # Run $1 process, and puts to the temporary file
-    if [ -z "$1" ]; then
+    if empty "$1"; then
         cd::list | reverse >"$esc"
     else
         $1 >"$esc"
@@ -382,14 +408,14 @@ cd::makelog()
 
     # Create a backup in preparation for the failure of the overwriting
     cp -f "$ENHANCD_LOG" $ENHANCD_DIR/enhancd.backup
-    rm "$ENHANCD_LOG"
+    rm -f "$ENHANCD_LOG"
 
     # Run the overwrite process
     mv "$esc" "$ENHANCD_LOG" 2>/dev/null
 
     # Restore from the backup if overwriting fails
     if [ $? -eq 0 ]; then
-        rm "$ENHANCD_DIR"/enhancd.backup
+        rm -f "$ENHANCD_DIR"/enhancd.backup
     else
         cp -f "$ENHANCD_DIR"/enhancd.backup "$ENHANCD_LOG"
     fi
