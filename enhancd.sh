@@ -574,7 +574,7 @@ cd::cd()
 
     # First of all, this cd::makelog and cd::refresh function creates it
     # if the enhancd history file does not exist
-    cd::makelog
+    #cd::makelog
     # Then, remove non existing directories from the history and refresh it
     cd::makelog "cd::refresh"
 
