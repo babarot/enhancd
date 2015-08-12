@@ -566,7 +566,7 @@ cd::interface()
 cd::cd()
 {
     # Add $PWD to the enhancd log
-    cd::add()
+    cd::add
 
     # t is an argument of the list for cd::interface
     local t
