@@ -569,9 +569,6 @@ cd::interface()
 #
 cd::cd()
 {
-    # Add $PWD to the enhancd log
-    cd::add
-
     # t is an argument of the list for cd::interface
     local t
 
@@ -633,6 +630,9 @@ cd::cd()
 
     # Finally, assemble the cd history
     cd::makelog "cd::assemble"
+
+    # Add $PWD to the enhancd log
+    cd::add
 }
 
 alias cd="cd::cd"
