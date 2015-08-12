@@ -298,7 +298,9 @@ cd::fuzzy()
 
     {
         # calculates the degree of similarity
-        if ( (1 - leven_dist($NF, search_string) / (length($NF) + length(search_string))) * 100 >= 75 ) {
+        if ( (1 - leven_dist($NF, search_string) / (length($NF) + length(search_string))) * 100 >= 70 ) {
+            # When the degree of similarity of search_string is greater than or equal to 70%,
+            # to display the candidate path
             print $0
         }
     }
@@ -338,6 +340,7 @@ cd::fuzzy()
         return m[lena,lenb]
     }
 
+    # min returns the smaller of x, y or z
     function min(a, b, c) {
         result = a
 
@@ -362,6 +365,7 @@ cd::narrow()
     stdin="$(cat <&0)"
     m="$(echo "$stdin" | awk '/\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
 
+    # If m is empty, do fuzzy-search; otherwise puts m
     if empty "$m"; then
         echo "$stdin" | cd::fuzzy "$1"
     else
