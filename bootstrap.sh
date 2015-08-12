@@ -103,6 +103,11 @@ has() {
 enhancd_download() {
     local tarball pd
 
+    if [ -d "$PREFIX" ]; then
+        log_fail "$PREFIX: old version already exists; remove that"
+        exit 1
+    fi
+
     if has "git"; then
         git clone -b "$BRANCH" "$URL" "$PREFIX"
     elif has "curl" || has "wget"; then
