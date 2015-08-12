@@ -30,6 +30,8 @@ A next-generation `cd` command with an interactive filter :sparkles:
 
 ## :memo: Description
 
+[![Join the chat at https://gitter.im/b4b4r07/enhancd](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/b4b4r07/enhancd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 `cd` command is one of the frequently used commands. 
 
 Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in `/home/lisa`, dir is `/home/lisa/work/dir`) to `cd` command.
