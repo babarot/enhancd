@@ -569,6 +569,10 @@ cd::interface()
 #
 cd::cd()
 {
+    if has "setopt"; then
+        setopt localoptions SH_WORD_SPLIT
+    fi
+
     # t is an argument of the list for cd::interface
     local t
 
