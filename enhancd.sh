@@ -578,54 +578,40 @@ cd::cd()
     # Then, remove non existing directories from the history and refresh it
     cd::makelog "cd::refresh"
 
-    # Supports the standard input
-    # echo $HOME | cd
-    if [ -p /dev/stdin ]; then
-        local stdin
-        stdin="$(cat <&0)"
+    # If a hyphen is passed as the argument,
+    # searchs from the last 10 directory items in the log
+    if [ "$1" = "-" ]; then
+        t="$(cd::list | grep -v "^$PWD$" | head | cd::narrow "$2")"
+        cd::interface "${t:-$2}"
+        return $?
+    fi
 
-        if [ -d "$stdin" ]; then
-            builtin cd "$stdin"
-        else
-            die "$stdin: no such file or directory"
-            return 1
-        fi
+    # If a double-dot is passed as the argument,
+    # it behaves like a zsh-bd plugin
+    # In short, you can jump back to a specific directory,
+    # without doing `cd ../../..`
+    if [ "$1" = ".." ]; then
+        t="$(cd::get_dirname "$PWD" | reverse | grep "$2")"
+        cd::interface ".." "${t:-$2}"
+        return $?
+    fi
+
+    # Process a regular argument
+    # If a given argument is a directory that exists already,
+    # call builtin cd function; cd::interface otherwise
+    if [ -d "$1" ]; then
+        builtin cd "$1"
     else
-        # If a hyphen is passed as the argument,
-        # searchs from the last 10 directory items in the log
-        if [ "$1" = "-" ]; then
-            t="$(cd::list | grep -v "^$PWD$" | head | cd::narrow "$2")"
-            cd::interface "${t:-$2}"
-            return $?
-        fi
-
-        # If a double-dot is passed as the argument,
-        # it behaves like a zsh-bd plugin
-        # In short, you can jump back to a specific directory,
-        # without doing `cd ../../..`
-        if [ "$1" = ".." ]; then
-            t="$(cd::get_dirname "$PWD" | reverse | grep "$2")"
-            cd::interface ".." "${t:-$2}"
-            return $?
-        fi
-
-        # Process a regular argument
-        # If a given argument is a directory that exists already,
-        # call builtin cd function; cd::interface otherwise
-        if [ -d "$1" ]; then
-            builtin cd "$1"
+        # If no argument is given, imitate builtin cd command and rearrange
+        # the history so that the HOME environment variable could be latest
+        if empty "$1"; then
+            t="$({ cd::cat_log; echo "$HOME"; } | cd::list)"
         else
-            # If no argument is given, imitate builtin cd command and rearrange
-            # the history so that the HOME environment variable could be latest
-            if empty "$1"; then
-                t="$({ cd::cat_log; echo "$HOME"; } | cd::list)"
-            else
-                t="$(cd::list | cd::narrow "$1")"
-            fi
-
-            # If the t is empty, pass $1 to cd::interface instead of the t
-            cd::interface "${t:-$1}"
+            t="$(cd::list | cd::narrow "$1")"
         fi
+
+        # If the t is empty, pass $1 to cd::interface instead of the t
+        cd::interface "${t:-$1}"
     fi
 
     # Finally, assemble the cd history
