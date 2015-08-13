@@ -1,3 +1,13 @@
+[![](https://img.shields.io/badge/project-maintained-yellow.svg?style=flat-square)][stillmaintained]
+[![](https://img.shields.io/badge/dependencies-nawk-orange.svg?style=flat-square)][awk]
+[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
+
+[awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
+[license]: http://b4b4r07.mit-license.org
+[stillmaintained]: https://stillmaintained.com/b4b4r07/enhancd
+
+<!--[![](https://stillmaintained.com/b4b4r07/enhancd.png)][stillmaintained]-->
+
 <a href="top"></a>
 
 <p align="center">
@@ -70,6 +80,8 @@ You can fuzzy-search a directory name you want to run `cd`. For example, a word 
 	- ...
 
 	Choose any one from among these.
+
+- AWK (`nawk` or `gawk`)
 
 ## :mag: Usage
 
