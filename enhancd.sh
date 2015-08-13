@@ -34,23 +34,13 @@ reverse() {
     else
         cat "$1"
     fi | awk '
-    BEGIN {
-        sort_exe = "sort -t \"\034\" -nr"
-    }
-
     {
-        printf("%d\034%s\n", NR, $0) |& sort_exe;
+        line[NR] = $0
     }
-
     END {
-        close(sort_exe, "to");
-
-        while ((sort_exe |& getline var) > 0) {
-            split(var, arr, /\034/);
-
-            print arr[2];
+        for (i = NR; i > 0; i--) {
+            print line[i]
         }
-        close(sort_exe);
     }' 2>/dev/null
 }
 
