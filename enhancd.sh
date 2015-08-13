@@ -123,6 +123,16 @@ cd::get_dirstep() {
     done
 }
 
+# cd::cat_log outputs the content of the log file or empty line to stdin
+cd::cat_log()
+{
+    if [ -s "$ENHANCD_LOG" ]; then
+        cat "$ENHANCD_LOG"
+    else
+        echo
+    fi
+}
+
 # cd::split_path decomposes the path with a slash as a delimiter
 cd::split_path()
 {
@@ -268,7 +278,7 @@ cd::list()
     if [ -p /dev/stdin ]; then
         cat <&0
     else
-        cat "$ENHANCD_LOG"
+        cd::cat_log
     fi | reverse | unique
     #    ^- needs to be inverted before unique
 }
@@ -431,7 +441,7 @@ cd::refresh()
 cd::assemble()
 {
     cd::enumrate
-    cat "$ENHANCD_LOG"
+    cd::cat_log
     pwd
 }
 
@@ -564,7 +574,7 @@ cd::cd()
 
     # First of all, this cd::makelog and cd::refresh function creates it
     # if the enhancd history file does not exist
-    #cd::makelog
+    cd::makelog
     # Then, remove non existing directories from the history and refresh it
     cd::makelog "cd::refresh"
 
@@ -608,7 +618,7 @@ cd::cd()
             # If no argument is given, imitate builtin cd command and rearrange
             # the history so that the HOME environment variable could be latest
             if empty "$1"; then
-                t="$({ cat "$ENHANCD_LOG"; echo "$HOME"; } | cd::list)"
+                t="$({ cd::cat_log; echo "$HOME"; } | cd::list)"
             else
                 t="$(cd::list | cd::narrow "$1")"
             fi
