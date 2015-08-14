@@ -569,7 +569,14 @@ cd::interface()
 #
 cd::cd()
 {
-    if has "setopt"; then
+    # In zsh it will cause field splitting to be performed
+    # on unquoted parameter expansions.
+    if has "setopt" && ! empty "$ZSH_VERSION"; then
+        # Note in particular the fact that words of unquoted parameters are not
+        # automatically split on whitespace unless the option SH_WORD_SPLIT is set;
+        # see references to this option below for more details.
+        # This is an important difference from other shells.
+        # (Zsh Manual 14.3 Parameter Expansion)
         setopt localoptions SH_WORD_SPLIT
     fi
 
