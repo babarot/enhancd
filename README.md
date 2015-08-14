@@ -269,6 +269,27 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 	/usr/local/bin/peco:fzf:non-existing-filter
 	```
 
+### ENHANCD_COMMAND
+
+The ENHANCD_COMMAND environment variable is method for flexible change of enhancd cd calling sequence. It defaults to `cd`.
+
+When the calling sequence is changed, you should set new method to ENHANCD_COMMAND, export it and restart your shell (reload enhancd.sh).
+
+```console
+$ echo $ENHANCD_COMMAND
+cd
+$ export ENHANCD_COMMAND=ecd
+$ source /path/to/enhancd.sh
+```
+
+The ENHANCD_COMMAND may only hold one method. Thus, in the previous example, it is true that enhancd cd calling sequence is `ecd`, but it is not `cd` (`cd` is turned into original `builtin cd`).
+
+Besides putting a setting such as this one in your `~/.bash_profile` or `.zshenv` would be a good idea:
+
+```bash
+ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
+```
+
 ## :books: References
 
 The "visual filter" is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
