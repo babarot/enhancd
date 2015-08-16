@@ -46,21 +46,20 @@ reverse() {
 
 # available narrows list down to one
 available() {
-    local i list
+    local x candidates
 
-    # list should be a list splitted by colon
-    # Like this => val="a:b:c:d"
-    list="$1"
+    # candidates should be list like "a:b:c" concatenated by a colon
+    candidates="$1:"
 
-    # Replace a colon with IFS space
-    list=$(echo "$list" | sed -e "s/:/ /g")
+    while [ -n "$candidates" ]; do
+        # the first remaining entry
+        x=${candidates%%:*}
+        # reset candidates
+        candidates=${candidates#*:}
 
-    # Loop until has function returns true
-    # Note: Do not enclose the $list variable in double quotes!
-    for i in $list
-    do
-        if has "$i"; then
-            echo "$i"
+        # check if x is available
+        if has "$x"; then
+            echo "$x"
             return 0
         else
             continue
