@@ -579,6 +579,19 @@ cd::cd()
         setopt localoptions SH_WORD_SPLIT
     fi
 
+    # Read from standard input
+    if [ -p /dev/stdin ]; then
+        local stdin
+        stdin="$(cat <&0)"
+        if [ -d "$stdin" ]; then
+            builtin cd "$stdin"
+            return $?
+        else
+            die "$stdin: no such file or directory"
+            return 1
+        fi
+    fi
+
     # t is an argument of the list for cd::interface
     local t
 

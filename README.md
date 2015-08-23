@@ -47,7 +47,7 @@ Nevertheless, it is not so easy to handle unfortunately. A directory path given 
 
 The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER environment variable in order to narrow it down to one directory.
 
-Thanks to that mechanism, the user can intuitively and easily change the directory you want to go.
+Thanks to this mechanism, the user can intuitively and easily change the directory you want to go.
 
 ***DEMO:***
 
@@ -60,6 +60,7 @@ Thanks to that mechanism, the user can intuitively and easily change the directo
 - Work on Bash, Zsh and Fish :fish:
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
+- Support standard input (`echo $HOME | cd` is ok)
 
 ### Fuzzy search
 
@@ -195,9 +196,9 @@ To specify installation location for enhancd:
 $ curl -L git.io/enhancd | PREFIX=/path/to/dir sh
 ```
 
-PREFIX defaults to `~/.enhancd`.
+The PREFIX defaults to `~/.enhancd`.
 
-### What's inside?
+#### What's inside?
 
 1. Grab enhancd.sh from github.com by using `git`, `curl` or `wget`
 2. Add `source /path/to/enhancd.sh` to config file whose you use as the login shell
@@ -209,7 +210,7 @@ $ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
 $ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
 ```
 
-**All you need to do is to source `enhancd.zsh`.**
+All you need to do is to source `enhancd.sh`.
 
 ***NOTE:***
 
@@ -217,6 +218,14 @@ If you want to use older versions of enhancd ([enhancd <sup>v1</sup>](https://gi
 
 ```console
 $ curl -L git.io/enhancd | BRANCH=v1 sh
+```
+
+### Antigen
+
+For zsh and antigen users, put a setting such as this one in your `~/.zshrc`.
+
+```zsh
+antigen-bundle b4b4r07/enhancd
 ```
 
 ### Uninstallation
@@ -237,7 +246,7 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
 1. What is ENHANCD_FILTER?
 
-	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using ':'.
+	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using '`:`'.
 
 2. How to set the ENHANCD_FILTER variable?      
 
@@ -289,7 +298,7 @@ ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
 
 ## :books: References
 
-The "visual filter" is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
+The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
 
 - **percol** :point_right: [percol adds flavor of interactive selection to the traditional pipe concept on UNIX](https://github.com/mooz/percol)
 - **peco** :point_right: [Simplistic interactive filtering tool](https://github.com/peco/peco)
