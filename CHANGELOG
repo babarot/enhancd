@@ -1,3 +1,11 @@
+2015-08-23  BABAROT <b4b4r07@gmail.com>
+
+	* v2.1.5 Supports stdin
+
+	* enhancd.sh: `echo /path/to/dir | cd` is ok
+	and some bugs fixed
+	* README.md: Updated
+
 2015-08-09  BABAROT <b4b4r07@gmail.com>
 
 	* v2.1.4 [deprecated] PROMPT_CMD and chpwd

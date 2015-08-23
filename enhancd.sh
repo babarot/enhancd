@@ -46,21 +46,20 @@ reverse() {
 
 # available narrows list down to one
 available() {
-    local i list
+    local x candidates
 
-    # list should be a list splitted by colon
-    # Like this => val="a:b:c:d"
-    list="$1"
+    # candidates should be list like "a:b:c" concatenated by a colon
+    candidates="$1:"
 
-    # Replace a colon with IFS space
-    list=$(echo "$list" | sed -e "s/:/ /g")
+    while [ -n "$candidates" ]; do
+        # the first remaining entry
+        x=${candidates%%:*}
+        # reset candidates
+        candidates=${candidates#*:}
 
-    # Loop until has function returns true
-    # Note: Do not enclose the $list variable in double quotes!
-    for i in $list
-    do
-        if has "$i"; then
-            echo "$i"
+        # check if x is available
+        if has "$x"; then
+            echo "$x"
             return 0
         else
             continue
@@ -212,7 +211,7 @@ cd::get_abspath()
 
     # It searches the directory name from the rear of the PWD,
     # and returns the path to where it was found
-    if echo "$2" | grep -q "[0-9]:"; then
+    if echo "$2" | command grep -q "[0-9]:"; then
         # When decomposing the PWD with a slash,
         # put the number to it if there is the same directory name.
 
@@ -225,7 +224,7 @@ cd::get_abspath()
             c=2
 
             # It is listed path stepwise
-            cd::get_dirstep "$1" | reverse | nl ":" | grep "^$num" | cut -d: -f2
+            cd::get_dirstep "$1" | reverse | nl ":" | command grep "^$num" | cut -d: -f2
         fi
     else
         # If there are no duplicate directory name
@@ -383,7 +382,7 @@ cd::narrow()
 cd::enumrate()
 {
     cd::get_dirstep "$PWD" | reverse
-    find "$PWD" -maxdepth 1 -type d | grep -v "\/\."
+    find "$PWD" -maxdepth 1 -type d | command grep -v "\/\."
 }
 
 # cd::makelog carefully open/close the log
@@ -502,7 +501,7 @@ cd::interface()
 
     # Count lines in the list
     local wc
-    wc="$(echo "$list" | grep -c "")"
+    wc="$(echo "$list" | command grep -c "")"
 
     # main conditional branch
     case "$wc" in
@@ -580,6 +579,19 @@ cd::cd()
         setopt localoptions SH_WORD_SPLIT
     fi
 
+    # Read from standard input
+    if [ -p /dev/stdin ]; then
+        local stdin
+        stdin="$(cat <&0)"
+        if [ -d "$stdin" ]; then
+            builtin cd "$stdin"
+            return $?
+        else
+            die "$stdin: no such file or directory"
+            return 1
+        fi
+    fi
+
     # t is an argument of the list for cd::interface
     local t
 
@@ -592,7 +604,7 @@ cd::cd()
     # If a hyphen is passed as the argument,
     # searchs from the last 10 directory items in the log
     if [ "$1" = "-" ]; then
-        t="$(cd::list | grep -v "^$PWD$" | head | cd::narrow "$2")"
+        t="$(cd::list | command grep -v "^$PWD$" | head | cd::narrow "$2")"
         cd::interface "${t:-$2}"
         return $?
     fi
@@ -602,7 +614,7 @@ cd::cd()
     # In short, you can jump back to a specific directory,
     # without doing `cd ../../..`
     if [ "$1" = ".." ]; then
-        t="$(cd::get_dirname "$PWD" | reverse | grep "$2")"
+        t="$(cd::get_dirname "$PWD" | reverse | command grep "$2")"
         cd::interface ".." "${t:-$2}"
         return $?
     fi
@@ -620,6 +632,9 @@ cd::cd()
         else
             t="$(cd::list | cd::narrow "$1")"
         fi
+
+        # trim PWD
+        t="$(echo "$t" | command grep -v "^$PWD$")"
 
         # If the t is empty, pass $1 to cd::interface instead of the t
         cd::interface "${t:-$1}"

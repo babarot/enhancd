@@ -1,10 +1,11 @@
-[![](https://img.shields.io/badge/project-maintained-yellow.svg?style=flat-square)][stillmaintained]
+[![](https://img.shields.io/badge/project-maintained-yellowgreen.svg?style=flat-square)][stillmaintained]
 [![](https://img.shields.io/badge/dependencies-nawk-orange.svg?style=flat-square)][awk]
 [![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 
 [awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license]: http://b4b4r07.mit-license.org
 [stillmaintained]: https://stillmaintained.com/b4b4r07/enhancd
+[gitter]: https://gitter.im/b4b4r07/enhancd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 <!--[![](https://stillmaintained.com/b4b4r07/enhancd.png)][stillmaintained]-->
 
@@ -40,17 +41,13 @@ A next-generation `cd` command with an interactive filter :sparkles:
 
 ## :memo: Description
 
-[![Join the chat at https://gitter.im/b4b4r07/enhancd](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/b4b4r07/enhancd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 `cd` command is one of the frequently used commands. 
 
 Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in `/home/lisa`, dir is `/home/lisa/work/dir`) to `cd` command.
 
-The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER variable in order to narrow it down to one.
+The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER environment variable in order to narrow it down to one directory.
 
-Thanks to that mechanism, the user can intuitively and easily change the directory where you want to go to.
-
-:warning: [`cdinterface`](https://github.com/b4b4r07/cdinterface) is deprecated and was merged into this enhancd. 
+Thanks to this mechanism, the user can intuitively and easily change the directory you want to go.
 
 ***DEMO:***
 
@@ -63,6 +60,7 @@ Thanks to that mechanism, the user can intuitively and easily change the directo
 - Work on Bash, Zsh and Fish :fish:
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
+- Support standard input (`echo $HOME | cd` is ok)
 
 ### Fuzzy search
 
@@ -140,7 +138,6 @@ $ export ENHANCD_FILTER
 	
 	```console
 	$ cd -
-	...
 	  /home/lisa/Dropbox/etc/dotfiles
 	  /home/lisa/Dropbox
 	  /home/lisa/src/github.com
@@ -156,6 +153,8 @@ $ export ENHANCD_FILTER
 	```
 	
 	Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` (`$PWD` is `/home/lisa`, `$OLDPWD` is `/home/lisa/src/github.com/b4b4r07/portfolio`).
+	
+	![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/cd_hyphen.gif)
 
 - Double-dot (`..`)
 
@@ -165,7 +164,6 @@ $ export ENHANCD_FILTER
 	
 	```console
 	$ cd ..
-	...
 	  /
 	  home
 	  lisa
@@ -198,9 +196,9 @@ To specify installation location for enhancd:
 $ curl -L git.io/enhancd | PREFIX=/path/to/dir sh
 ```
 
-PREFIX defaults to `~/.enhancd`.
+The PREFIX defaults to `~/.enhancd`.
 
-### What's inside?
+#### What's inside?
 
 1. Grab enhancd.sh from github.com by using `git`, `curl` or `wget`
 2. Add `source /path/to/enhancd.sh` to config file whose you use as the login shell
@@ -212,14 +210,22 @@ $ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
 $ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
 ```
 
-**All you need to do is to source `enhancd.zsh`.**
+All you need to do is to source `enhancd.sh`.
 
 ***NOTE:***
 
-If you want to use older versions of enhancd (enhancd <sup>v1</sup>: [dca011aa34](https://github.com/b4b4r07/enhancd/tree/dca011aa34957bf88ea6edbdf7c84b8a5b0157b5)), set BRANCH as v1 and run this command:
+If you want to use older versions of enhancd ([enhancd <sup>v1</sup>](https://github.com/b4b4r07/enhancd/tree/v1)), set BRANCH as v1 and run this command:
 
 ```console
 $ curl -L git.io/enhancd | BRANCH=v1 sh
+```
+
+### Antigen
+
+For zsh and antigen users, put a setting such as this one in your `~/.zshrc`.
+
+```zsh
+antigen-bundle b4b4r07/enhancd
 ```
 
 ### Uninstallation
@@ -240,7 +246,7 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
 1. What is ENHANCD_FILTER?
 
-	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using ':'.
+	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using '`:`'.
 
 2. How to set the ENHANCD_FILTER variable?      
 
@@ -269,9 +275,30 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 	/usr/local/bin/peco:fzf:non-existing-filter
 	```
 
+### ENHANCD_COMMAND
+
+The ENHANCD_COMMAND environment variable is to change the command name of enhancd `cd`. It defaults to `cd`.
+
+When the command name is changed, you should set new command name to ENHANCD_COMMAND, export it and restart your shell (reload `enhancd.sh`).
+
+```console
+$ echo $ENHANCD_COMMAND
+cd
+$ export ENHANCD_COMMAND=ecd
+$ source /path/to/enhancd.sh
+```
+
+The ENHANCD_COMMAND may only hold one command name. Thus, in the previous example, it is true that enhancd `cd` command name is `ecd`, but it is not `cd` (`cd` is turned into original `builtin cd`).
+
+Besides putting a setting such as this one in your `~/.bash_profile` or `.zshenv` would be a good idea:
+
+```bash
+ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
+```
+
 ## :books: References
 
-The "visual filter" is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
+The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
 
 - **percol** :point_right: [percol adds flavor of interactive selection to the traditional pipe concept on UNIX](https://github.com/mooz/percol)
 - **peco** :point_right: [Simplistic interactive filtering tool](https://github.com/peco/peco)
@@ -285,4 +312,6 @@ The "visual filter" is what is called "Interactive Grep Tool" according to [perc
 
 ## :ticket: License
 
-[MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) :copyright: BABAROT (a.k.a. b4b4r07)
+[MIT][license] :copyright: BABAROT (a.k.a. b4b4r07)
+
+[![](https://badges.gitter.im/Join%20Chat.svg)][gitter]
