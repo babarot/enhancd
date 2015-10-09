@@ -1,116 +1,180 @@
-set -g basedir ~/.enhancd
-set -g logfile enhancd.log
-set -g log $basedir/$logfile
+set -xg ENHANCD_DIR ~/.enhancd
+set -xg ENHANCD_LOG $ENHANCD_DIR/enhancd.log
 
-
-function enhancd
-    test -f $log; or touch $log
-
-    if test -p /dev/stdin
-        read dir
-        test -d "$dir"; and builtin cd "$dir"
-    else if test -d "$argv[1]"
-        builtin cd "$argv[1]"
+function reverse
+    if test -z "$argv[1]"
+        cat <&0
     else
-        if empty "$ENHANCD_FILTER"
-            set -U ENHANCD_FILTER fzf:peco:percol:gof:hf
-        end
-
-        cd::interface $argv
-    end
+        cat "$argv[1]"
+    end | awk '
+    {
+        line[NR] = $0
+    }
+    END {
+        for (i = NR; i > 0; i--) {
+            print line[i]
+        }
+    }' 2>/dev/null
 end
 
-function cd::interface
-    set -l filter (available $ENHANCD_FILTER)
-    if empty "$ENHANCD_FILTER"
-        die '$ENHANCD_FILTER not set'
-    else if empty "$filter"
-        die "$ENHANCD_FILTER is invalid \$ENHANCD_FILTER"
-    end
-
-    if empty $argv
-        begin
-            has "ghq"; and ghq list -p
-            cat $log
-            echo $HOME
-        end | reverse | unique | eval $filter | read dir
-
-        not empty $dir; and builtin cd $dir
+function unique
+    if test -z "$argv[1]"
+        cat <&0
     else
-        set -l res (cd::narrow "$argv[1]")
-        switch (count $res)
-            case 0
-                echo "$argv[1]: no such file or directory"
-                return 1
-            case 1
-                builtin cd $res
-            case '*'
-                for i in $res
-                    echo $i
-                end | eval $filter | read dir
-                builtin cd $dir
-        end
+        cat "$argv[1]"
+    end | awk '!a[$0]++' 2>/dev/null
+end
+
+function cd::add --on-variable PWD
+    pwd >>"$ENHANCD_LOG"
+end
+
+function cd::cat_log
+    if test -s "$ENHANCD_LOG"
+        cat "$ENHANCD_LOG"
+    else
+        echo
     end
 end
 
 function cd::list
-    begin
-        cat $log | reverse
-        has "ghq"; and ghq list -p
-    end | unique
+    if not tty >/dev/null
+        cat <&0
+    else
+        cd::cat_log
+    end | reverse | unique
 end
 
 function cd::narrow
-    cd::list | awk '/\/.?'"$argv[1]"'[^\/]*$/{print $0}' ^/dev/null
+    cat <&0 | cd::fuzzy "$argv[1]"
 end
 
-function unique
-    awk '!a[$0]++' -
+function cd::fuzzy
+    if test -z "$argv[1]"
+        echo "too few arguments" 1>&2
+        return 1
+    end
+
+    awk -v search_string="$argv[1]" '
+    BEGIN {
+        FS = "/";
+    }
+
+    {
+        # calculates the degree of similarity
+        if ( (1 - leven_dist($NF, search_string) / (length($NF) + length(search_string))) * 100 >= 70 ) {
+            # When the degree of similarity of search_string is greater than or equal to 70%,
+            # to display the candidate path
+            print $0
+        }
+    }
+
+    # leven_dist returns the Levenshtein distance two text string
+    function leven_dist(a, b) {
+        lena = length(a);
+        lenb = length(b);
+
+        if (lena == 0) {
+            return lenb;
+        }
+        if (lenb == 0) {
+            return lena;
+        }
+
+        for (row = 1; row <= lena; row++) {
+            m[row,0] = row
+        }
+        for (col = 1; col <= lenb; col++) {
+            m[0,col] = col
+        }
+
+        for (row = 1; row <= lena; row++) {
+            ai = substr(a, row, 1)
+            for (col = 1; col <= lenb; col++) {
+                bi = substr(b, col, 1)
+                if (ai == bi) {
+                    cost = 0
+                } else {
+                    cost = 1
+                }
+                m[row,col] = min(m[row-1,col]+1, m[row,col-1]+1, m[row-1,col-1]+cost)
+            }
+        }
+
+        return m[lena,lenb]
+    }
+
+    # min returns the smaller of x, y or z
+    function min(a, b, c) {
+        result = a
+
+        if (b < result) {
+            result = b
+        }
+
+        if (c < result) {
+            result = c
+        }
+
+        return result
+    }' 2>/dev/null
 end
 
-function reverse
-    perl -e 'print reverse <>'
+function cd::interface
+    set -l filter "fzf"
+
+    switch (count $argv)
+        case 0
+            echo "something is wrong" 1>&2
+            return 1
+        case 1
+            if test -d "$argv[1]"
+                builtin cd "$argv[1]"
+            else
+                echo "$argv[1]: no such file or directory" 1>&2
+                return 1
+            end
+        case '*'
+            for i in $argv
+                echo "$i"
+            end | eval "$filter" | read t
+
+            if test -n "$t"
+                if test -d "$t"
+                    builtin cd "$t"
+                else
+                    echo "$t: no such file or directory" 1>&2
+                    return 1
+                end
+            end
+    end
 end
 
-function has
-    type -q $argv[1]
-end
-
-function die
-    # TODO:
-    echo "$argv"
-    exit 1
-end
-
-function available
-    echo $argv | read -a ary
-    for i in $ary
-        if has $i
-            echo $i
-            return 0
+function cd::cd
+    if not tty >/dev/null
+        set -l stdin
+        read stdin
+        if test -d "$stdin"
+            builtin cd "$stdin"
+            return $status
         else
-            continue
+            echo "$stdin: no such file or directory" 1>&2
+            return 1
         end
     end
-end
 
-function empty
-    if test (count $argv) = 0
-        return 0
+    if test -d "$argv[1]"
+        builtin cd "$argv[1]"
+    else
+        if test -z "$argv[1]"
+            set t (begin; cd::cat_log; echo "$HOME"; end | cd::list)
+        else
+            set t (cd::list | cd::narrow "$argv[1]")
+        end
+
+        if test -z "$t"
+            set t $argv[1]
+        end
+        cd::interface $t
     end
-    test -z $argv[1]
-end
-
-function cd::add_log --on-variable PWD
-    test -d $basedir; or mkdir -p $basedir
-    touch $log
-
-    set -l file (cat $log)
-
-    # refresh
-    for i in $file
-        test -d $i; and echo $i
-    end >$log
-
-    pwd >>$log
 end
