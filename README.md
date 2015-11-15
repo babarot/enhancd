@@ -1,14 +1,14 @@
-[![](https://img.shields.io/badge/project-maintained-yellowgreen.svg?style=flat-square)][stillmaintained]
+[![](https://travis-ci.org/b4b4r07/enhancd.svg?branch=master)][travis]
+
+<!--
 [![](https://img.shields.io/badge/dependencies-nawk-orange.svg?style=flat-square)][awk]
 [![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
+-->
 
+[travis]: https://travis-ci.org/b4b4r07/enhancd
 [awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license]: http://b4b4r07.mit-license.org
-[stillmaintained]: https://stillmaintained.com/b4b4r07/enhancd
-[gitter]: https://gitter.im/b4b4r07/enhancd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-
-<!--[![](https://stillmaintained.com/b4b4r07/enhancd.png)][stillmaintained]-->
-
+[gitter]: https://gitter.im/b4b4r07/enhancd
 <a href="top"></a>
 
 <p align="center">
