@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 
 # definition
 fzf() { :; }
@@ -6,7 +6,7 @@ fzf() { :; }
 true=0
 false=1
 
-. "${0%/*}"/enhancd.t
+. "${0%/*}"/enhancd.t || exit 1
 
 test_text="$(cat <<EOF
 aaa
