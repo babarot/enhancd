@@ -3,7 +3,7 @@
 true=0
 false=1
 
-. enhancd.t
+. "${0%/*}"/enhancd.t
 
 test_text="$(cat <<EOF
 aaa
