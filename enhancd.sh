@@ -381,8 +381,13 @@ cd::narrow()
 # -> /home/lisa/src/github.com
 cd::enumrate()
 {
-    cd::get_dirstep "$PWD" | reverse
-    find "$PWD" -maxdepth 1 -type d | command grep -v "\/\."
+    local dir
+    dir="${1:-$PWD}"
+
+    cd::get_dirstep "$dir" | reverse
+    if [ -d "$dir" ]; then
+        find "$dir" -maxdepth 1 -type d | command grep -v "\/\."
+    fi
 }
 
 # cd::makelog carefully open/close the log
