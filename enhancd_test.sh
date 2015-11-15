@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+# definition
+fzf() { :; }
+
 true=0
 false=1
 
