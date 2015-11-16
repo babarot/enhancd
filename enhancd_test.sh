@@ -43,7 +43,11 @@ EOF
     end
 
     it "available"
-      assert equal $(available notfunc:fzf:peco) fzf
+      assert equal "$(available "notfunc:fzf:peco")" "fzf"
+    end
+
+    it "available (space)"
+      assert equal "$(available "notfunc:fzf --select-1:peco")" "fzf --select-1"
     end
 
     it "empty"
