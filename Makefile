@@ -11,8 +11,8 @@ init:
 
 test:
 	@test -f $(TEST_FILE) || sed -e 's/::/_/g' enhancd.sh >$(TEST_FILE)
-	./shpec $(PWD)/enhancd_test.sh
-	@rm -f $(PWD)/$(TEST_FILE) $(PWD)/shpec
+	./shpec ./test/enhancd_test.sh
+	@rm -rf ./$(TEST_FILE) ./shpec
 
 clean:
-	rm -rf $(PWD)/$(TEST_FILE) $(PWD)/shpec
+	rm -rf ./$(TEST_FILE) ./shpec
