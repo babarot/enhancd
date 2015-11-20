@@ -104,20 +104,16 @@ EOF
     end
 
     it "cd::get_abspath"
-#devided_path="$(
-#/
-#home
-#lisa
-#work
-#dir
-#)"
-##expect="$(cat <<EOF
-##/home/lisa/work
-##EOF
-##)"
-#expect="/home/lisa/work"
-#actual="$(cd::get_abspath work "$devided_path")"
-#      assert equal "$expect" "$actual"
+    end
+
+    it "cd::list"
+      expect="$(cat <<EOF
+ccc
+aaa
+bbb
+)"
+      actual="$(echo "$test_text" | cd::list)"
+      assert equal "$expect" "$actual"
     end
 
     it "cd::fuzzy"
@@ -155,6 +151,46 @@ EOF
       )"
       actual="$(cd::enumrate /home/lisa/src/github.com)"
       assert equal "$expect" "$actual"
+    end
+
+    it "cd::interface"
+      # before
+      list="$(cat <<EOF
+$HOME/enhancd_testA
+$HOME/enhancd_testB
+EOF)"
+      mkdir -p ~/enhancd_test{A,B}
+      fzf() { head -n 1; }
+      export ENHANCD_FILTER=fzf
+
+      # test
+      expect="$HOME/enhancd_testA"
+      actual="$(cd::interface "$list" && pwd)"
+      assert equal "$expect" "$actual"
+
+      # after
+      rmdir ~/enhancd_test{A,B}
+    end
+
+    it "cd::interface .."
+      # before
+      list="$(cat <<EOF
+a
+b
+c
+EOF)"
+      mkdir -p ~/enhancd_test/a/b/c/d/e/f
+      builtin cd ~/enhancd_test/a/b/c/d/e/f
+      fzf() { head -n 2 | tail -n 1; }
+      export ENHANCD_FILTER=fzf
+
+      # test
+      expect="$HOME/enhancd_test/a/b"
+      actual="$(cd::interface ".." "$list" && pwd)"
+      assert equal "$expect" "$actual"
+
+      # after
+      rm -r ~/enhancd_test
     end
 
   end
