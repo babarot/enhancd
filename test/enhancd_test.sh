@@ -72,7 +72,7 @@ describe "enhancd"
 /home
 /
 EOF
-      )"
+)"
       actual="$(cd::get_dirstep /home/lisa/work/dir/someA)"
       assert equal "$expect" "$actual"
     end
@@ -85,7 +85,7 @@ lisa
 work
 dir
 EOF
-      )"
+)"
       actual="$(cd::split_path /home/lisa/work/dir/someA)"
       assert equal "$expect" "$actual"
     end
@@ -98,7 +98,7 @@ lisa
 work
 dir
 EOF
-      )"
+)"
       actual="$(cd::get_dirname /home/lisa/work/dir/someA)"
       assert equal "$expect" "$actual"
     end
@@ -122,7 +122,7 @@ bbb
 /home/lisa/work/dir/abcd
 /home/lisa/work/dir/efgh
 EOF
-      )"
+)"
       expect="/home/lisa/work/dir/test"
       actual="$(echo "$text" | cd::fuzzy post)"
       assert equal "$expect" "$actual"
@@ -134,7 +134,7 @@ EOF
 /home/lisa/work/dir/abcd
 /home/lisa/work/dir/efgh
 EOF
-      )"
+)"
       expect="/home/lisa/work/dir/abcd"
       actual="$(echo "$text" | cd::narrow a)"
       assert equal "$expect" "$actual"
@@ -148,7 +148,7 @@ EOF
 /home/lisa/src
 /home/lisa/src/github.com
 EOF
-      )"
+)"
       actual="$(cd::enumrate /home/lisa/src/github.com)"
       assert equal "$expect" "$actual"
     end
@@ -158,7 +158,8 @@ EOF
       list="$(cat <<EOF
 $HOME/enhancd_testA
 $HOME/enhancd_testB
-EOF)"
+EOF
+)"
       mkdir -p ~/enhancd_test{A,B}
       fzf() { head -n 1; }
       export ENHANCD_FILTER=fzf
@@ -178,7 +179,8 @@ EOF)"
 a
 b
 c
-EOF)"
+EOF
+)"
       mkdir -p ~/enhancd_test/a/b/c/d/e/f
       builtin cd ~/enhancd_test/a/b/c/d/e/f
       fzf() { head -n 2 | tail -n 1; }
