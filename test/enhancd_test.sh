@@ -111,6 +111,7 @@ EOF
 ccc
 aaa
 bbb
+EOF
 )"
       actual="$(echo "$test_text" | cd::list)"
       assert equal "$expect" "$actual"
