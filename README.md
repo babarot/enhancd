@@ -180,63 +180,24 @@ $ export ENHANCD_FILTER
 
 ## :package: Installation
 
-![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/installation.png)
-
 Give me a trial!
 
-```console
-$ curl -L git.io/enhancd | sh
-```
+- Install with [zplug](https://github.com/b4b4r07/zplug):
 
-Paste that at a Terminal prompt.
+	enhancd can be installed by adding following to your `.zshrc` file in the same function you're doing your other `zplug load` calls in.
 
-To specify installation location for enhancd:
+	```console
+	$ zplug "b4b4r07/enhancd", of:enhancd.sh
+	```
 
-```console
-$ curl -L git.io/enhancd | PREFIX=/path/to/dir sh
-```
+- Install with `git clone`:
 
-The PREFIX defaults to `~/.enhancd`.
+	```console
+	$ git clone https://github.com/b4b4r07/enhancd
+	$ source /path/to/enhancd/enhancd.sh
+	```
 
-#### What's inside?
-
-1. Grab enhancd.sh from github.com by using `git`, `curl` or `wget`
-2. Add `source /path/to/enhancd.sh` to config file whose you use as the login shell
-
-The above and below are almost the same.
-
-```console
-$ git clone https://github.com/b4b4r07/enhancd ~/.enhancd
-$ echo "source ~/.enhancd/bash/enhancd.bash" >> ~/.bashrc
-```
-
-All you need to do is to source `enhancd.sh`.
-
-***NOTE:***
-
-If you want to use older versions of enhancd ([enhancd <sup>v1</sup>](https://github.com/b4b4r07/enhancd/tree/v1)), set BRANCH as v1 and run this command:
-
-```console
-$ curl -L git.io/enhancd | BRANCH=v1 sh
-```
-
-### Antigen
-
-For zsh and antigen users, put a setting such as this one in your `~/.zshrc`.
-
-```zsh
-antigen-bundle b4b4r07/enhancd
-```
-
-### Uninstallation
-
-Are you sure? To uninstall enhancd, paste the command below in a terminal prompt.
-
-```console
-$ rm -r ~/.enhancd
-```
-
-## :wrench: Configuration
+## :wrench: Configurations
 
 ### ENHANCD_DIR
 
