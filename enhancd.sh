@@ -241,7 +241,11 @@ cd::get_abspath()
             nf = length(find)
             for (k = ns+1-nf; k >= 1; k--) {
                 if (substr(string, k, nf) == find) {
-                    return k
+                    if (k > 1 && substr(string, k-1, 1) == "/") {
+                        return k
+                    } else if (k == 1) {
+                        return k
+                    }
                 }
             }
             return 0
