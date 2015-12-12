@@ -196,5 +196,28 @@ EOF
       rm -r ~/enhancd_test
     end
 
+
+    it "cd::interface .. w/ dup"
+      # before
+      list="$(cat <<EOF
+a
+b
+c
+EOF
+)"
+      mkdir -p ~/enhancd_test/a/b/c/d.c/e/f
+      builtin cd ~/enhancd_test/a/b/c/d.c/e/f
+      fzf() { tail -n 1; }
+      export ENHANCD_FILTER=fzf
+
+      # test
+      expect="$HOME/enhancd_test/a/b/c"
+      actual="$(cd::interface ".." "$list" && pwd)"
+      assert equal "$expect" "$actual"
+
+      # after
+      rm -r ~/enhancd_test
+    end
+
   end
 end
