@@ -19,45 +19,45 @@ EOF
 describe "enhancd"
   describe "normal function"
 
-    it "unique"
+    it "__unique"
       expect="aaa\nbbb\nccc"
-      actual="$(echo "$test_text" | unique)"
+      actual="$(echo "$test_text" | __unique)"
       assert equal "$expect" "$actual"
     end
 
-    it "reverse"
+    it "__reverse"
       expect="ccc\naaa\nbbb\naaa"
-      actual="$(echo "$test_text" | reverse)"
+      actual="$(echo "$test_text" | __reverse)"
       assert equal "$expect" "$actual"
     end
 
-    it "available"
-      assert equal "$(available "notfunc:fzf:peco")" "fzf"
+    it "__available"
+      assert equal "$(__available "notfunc:fzf:peco")" "fzf"
     end
 
-    it "available (space)"
-      assert equal "$(available "notfunc:fzf --select-1:peco")" "fzf --select-1"
+    it "__available (space)"
+      assert equal "$(__available "notfunc:fzf --select-1:peco")" "fzf --select-1"
     end
 
-    it "empty"
-      empty ""
+    it "__empty"
+      __empty ""
       assert equal $? $true
     end
 
-    it "has"
-      has "ls"
+    it "__has"
+      __has "ls"
       assert equal $? $true
     end
 
-    it "nl 1"
+    it "__nl 1"
       expect="1: aaa\n2: bbb\n3: aaa\n4: ccc"
-      actual="$(echo "$test_text" | nl)"
+      actual="$(echo "$test_text" | __nl)"
       assert equal "$expect" "$actual"
     end
 
-    it "nl 2"
+    it "__nl 2"
       expect="1-aaa\n2-bbb\n3-aaa\n4-ccc"
-      actual="$(echo "$test_text" | nl "-")"
+      actual="$(echo "$test_text" | __nl "-")"
       assert equal "$expect" "$actual"
     end
   end
