@@ -1,5 +1,3 @@
-# enhancd - A enhanced cd shell function wrapper
-
 # Version:    v2.1.4
 # Repository: https://github.com/b4b4r07/enhancd
 # Author:     b4b4r07 (BABAROT)
@@ -13,23 +11,23 @@ ENHANCD_LOG="$ENHANCD_DIR"/enhancd.log
 export ENHANCD_DIR
 export ENHANCD_LOG
 
-# die puts a string to stderr
-die() {
+# __die puts a string to stderr
+__die() {
     echo "$1" 1>&2
 }
 
-# unique uniques a stdin contents
-unique() {
-    if empty "$1"; then
+# __unique uniques a stdin contents
+__unique() {
+    if __empty "$1"; then
         cat <&0
     else
         cat "$1"
     fi | awk '!a[$0]++' 2>/dev/null
 }
 
-# reverse reverses a stdin contents
-reverse() {
-    if empty "$1"; then
+# __reverse reverses a stdin contents
+__reverse() {
+    if __empty "$1"; then
         cat <&0
     else
         cat "$1"
@@ -44,8 +42,8 @@ reverse() {
     }' 2>/dev/null
 }
 
-# available narrows list down to one
-available() {
+# __available narrows list down to one
+__available() {
     local x candidates
 
     # candidates should be list like "a:b:c" concatenated by a colon
@@ -57,8 +55,8 @@ available() {
         # reset candidates
         candidates=${candidates#*:}
 
-        # check if x is available
-        if has "${x%% *}"; then
+        # check if x is __available
+        if __has "${x%% *}"; then
             echo "$x"
             return 0
         else
@@ -69,24 +67,24 @@ available() {
     return 1
 }
 
-# empty returns true if $1 is empty value
-empty() {
+# __empty returns true if $1 is __empty value
+__empty() {
     [ -z "$1" ]
 }
 
-# has returns true if $1 exists in the PATH environment variable
-has() {
-    if empty "$1"; then
+# __has returns true if $1 exists in the PATH environment variable
+__has() {
+    if __empty "$1"; then
         return 1
     fi
 
-    type "$1" >/dev/null 2>/dev/null
+    type "$1" >/dev/null 2>&1
     return $?
 }
 
-# nl reads lines from the named file or the standard input if the file argument is ommitted,
+# __nl reads lines from the named file or the standard input if the file argument is ommitted,
 # applies a configurable line numbering filter operation and writes the result to the standard output
-nl() {
+__nl() {
     # d in awk's argument is a delimiter
     awk -v d="${1:-": "}" '
     BEGIN {
@@ -101,8 +99,8 @@ nl() {
 # cd::get_dirstep returns a list of stepwise path
 cd::get_dirstep() {
     # cd::get_dirstep requires $1 that should be a path
-    if empty "$1"; then
-        die "too few arguments"
+    if __empty "$1"; then
+        __die "too few arguments"
         return 1
     fi
 
@@ -122,7 +120,7 @@ cd::get_dirstep() {
     done
 }
 
-# cd::cat_log outputs the content of the log file or empty line to stdin
+# cd::cat_log outputs the content of the log file or __empty line to stdin
 cd::cat_log()
 {
     if [ -s "$ENHANCD_LOG" ]; then
@@ -199,7 +197,7 @@ cd::get_abspath()
 {
     # cd::get_abspath requires two arguments
     if [ $# -lt 2 ]; then
-        die "too few arguments"
+        __die "too few arguments"
         return 1
     fi
 
@@ -224,7 +222,7 @@ cd::get_abspath()
             c=2
 
             # It is listed path stepwise
-            cd::get_dirstep "$1" | reverse | nl ":" | command grep "^$num" | cut -d: -f2
+            cd::get_dirstep "$1" | __reverse | __nl ":" | command grep "^$num" | cut -d: -f2
         fi
     else
         # If there are no duplicate directory name
@@ -282,15 +280,15 @@ cd::list()
         cat <&0
     else
         cd::cat_log
-    fi | reverse | unique
-    #    ^- needs to be inverted before unique
+    fi | __reverse | __unique
+    #    ^- needs to be inverted before __unique
 }
 
 # cd::fuzzy returns a list of hits in the fuzzy search
 cd::fuzzy()
 {
-    if empty "$1"; then
-        die "too few arguments"
+    if __empty "$1"; then
+        __die "too few arguments"
         return 1
     fi
 
@@ -368,8 +366,8 @@ cd::narrow()
     stdin="$(cat <&0)"
     m="$(echo "$stdin" | awk '/\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
 
-    # If m is empty, do fuzzy-search; otherwise puts m
-    if empty "$m"; then
+    # If m is __empty, do fuzzy-search; otherwise puts m
+    if __empty "$m"; then
         echo "$stdin" | cd::fuzzy "$1"
     else
         echo "$m"
@@ -388,7 +386,7 @@ cd::enumrate()
     local dir
     dir="${1:-$PWD}"
 
-    cd::get_dirstep "$dir" | reverse
+    cd::get_dirstep "$dir" | __reverse
     if [ -d "$dir" ]; then
         find "$dir" -maxdepth 1 -type d | command grep -v "\/\."
     fi
@@ -412,8 +410,8 @@ cd::makelog()
 
     # $1 should be a function name
     # Run $1 process, and puts to the temporary file
-    if empty "$1"; then
-        cd::list | reverse >"$esc"
+    if __empty "$1"; then
+        cd::list | __reverse >"$esc"
     else
         $1 >"$esc"
     fi
@@ -465,12 +463,12 @@ cd::add()
 }
 
 # cd::interface searches the directory that in the given list, 
-# and extracts with the filter if the list has several paths, 
+# and extracts with the filter if the list __has several paths, 
 # otherwise, call cd::builtin function
 cd::interface()
 {
-    # Sets default values to ENHANCD_FILTER if it is empty
-    if empty "$ENHANCD_FILTER"; then
+    # Sets default values to ENHANCD_FILTER if it is __empty
+    if __empty "$ENHANCD_FILTER"; then
         ENHANCD_FILTER="fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
         export ENHANCD_FILTER
     fi
@@ -478,12 +476,12 @@ cd::interface()
     # Narrows the ENHANCD_FILTER environment variables down to one
     # and sets it to the variables filter
     local filter
-    filter="$(available "$ENHANCD_FILTER")"
-    if empty "$ENHANCD_FILTER"; then
-        die '$ENHANCD_FILTER not set'
+    filter="$(__available "$ENHANCD_FILTER")"
+    if __empty "$ENHANCD_FILTER"; then
+        __die '$ENHANCD_FILTER not set'
         return 1
-    elif empty "$filter"; then
-        die "$ENHANCD_FILTER is invalid \$ENHANCD_FILTER"
+    elif __empty "$filter"; then
+        __die "$ENHANCD_FILTER is invalid \$ENHANCD_FILTER"
         return 1
     fi
 
@@ -503,8 +501,8 @@ cd::interface()
     list="$1"
 
     # If no argument is given to cd::interface
-    if empty "$list"; then
-        die "cd::interface requires an argument at least"
+    if __empty "$list"; then
+        __die "cd::interface requires an argument at least"
         return 1
     fi
 
@@ -516,7 +514,7 @@ cd::interface()
     case "$wc" in
         0 )
             # Unbelievable branch
-            die "$LINENO: something is wrong"
+            __die "$LINENO: something is wrong"
             return 1
             ;;
         1 )
@@ -530,14 +528,14 @@ cd::interface()
             if [ -d "$list" ]; then
                 builtin cd "$list"
             else
-                die "$list: no such file or directory"
+                __die "$list: no such file or directory"
                 return 1
             fi
             ;;
         * )
             local t
             t="$(echo "$list" | eval "$filter")"
-            if ! empty "$t"; then
+            if ! __empty "$t"; then
                 # If you pass a double-dot (..) as an argument to cd::interface
                 if [ "$flag_dot" = "enable" ]; then
                     builtin cd "$(cd::get_abspath "$PWD" "$t")"
@@ -548,7 +546,7 @@ cd::interface()
                 if [ -d "$t" ]; then
                     builtin cd "$t"
                 else
-                    die "$t: no such file or directory"
+                    __die "$t: no such file or directory"
                     return 1
                 fi
             fi
@@ -579,7 +577,7 @@ cd::cd()
 {
     # In zsh it will cause field splitting to be performed
     # on unquoted parameter expansions.
-    if has "setopt" && ! empty "$ZSH_VERSION"; then
+    if __has "setopt" && ! __empty "$ZSH_VERSION"; then
         # Note in particular the fact that words of unquoted parameters are not
         # automatically split on whitespace unless the option SH_WORD_SPLIT is set;
         # see references to this option below for more details.
@@ -596,7 +594,7 @@ cd::cd()
             builtin cd "$stdin"
             return $?
         else
-            die "$stdin: no such file or directory"
+            __die "$stdin: no such file or directory"
             return 1
         fi
     fi
@@ -623,7 +621,7 @@ cd::cd()
     # In short, you can jump back to a specific directory,
     # without doing `cd ../../..`
     if [ "$1" = ".." ]; then
-        t="$(cd::get_dirname "$PWD" | reverse | command grep "$2")"
+        t="$(cd::get_dirname "$PWD" | __reverse | command grep "$2")"
         cd::interface ".." "${t:-$2}"
         return $?
     fi
@@ -636,7 +634,7 @@ cd::cd()
     else
         # If no argument is given, imitate builtin cd command and rearrange
         # the history so that the HOME environment variable could be latest
-        if empty "$1"; then
+        if __empty "$1"; then
             t="$({ cd::cat_log; echo "$HOME"; } | cd::list)"
         else
             t="$(cd::list | cd::narrow "$1")"
@@ -645,7 +643,7 @@ cd::cd()
         # trim PWD
         t="$(echo "$t" | command grep -v "^$PWD$")"
 
-        # If the t is empty, pass $1 to cd::interface instead of the t
+        # If the t is __empty, pass $1 to cd::interface instead of the t
         cd::interface "${t:-$1}"
     fi
 
@@ -661,4 +659,3 @@ export ENHANCD_COMMAND
 if [ "$ENHANCD_COMMAND" != "cd" ]; then
     unalias cd 2>/dev/null
 fi
-
