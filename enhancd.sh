@@ -6,10 +6,10 @@
 #   this enhancd.sh supports bash and zsh only
 #
 
-ENHANCD_DIR=${ENHANCD_DIR:-~/.enhancd}
-ENHANCD_LOG=${ENHANCD_LOG:-"$ENHANCD_DIR"/enhancd.log}
-export ENHANCD_DIR
-export ENHANCD_LOG
+export ENHANCD_DIR=${ENHANCD_DIR:-~/.enhancd}
+export ENHANCD_LOG=${ENHANCD_LOG:-"$ENHANCD_DIR"/enhancd.log}
+export ENHANCD_DISABLE_DOT=${ENHANCD_DISABLE_DOT:-0}
+export ENHANCD_DISABLE_HYPHEN=${ENHANCD_DISABLE_HYPHEN:-0}
 
 # __die puts a string to stderr
 __die() {
@@ -611,16 +611,21 @@ cd::cd()
     # If a hyphen is passed as the argument,
     # searchs from the last 10 directory items in the log
     if [ "$1" = "-" ]; then
-        t="$(cd::list | command grep -v "^$PWD$" | head | cd::narrow "$2")"
-        cd::interface "${t:-$2}"
-        return $?
+        if [ "$ENHANCD_DISABLE_HYPHEN" -ne 0 ]; then
+            builtin cd -
+            return $?
+        else
+            t="$(cd::list | command grep -v "^$PWD$" | head | cd::narrow "$2")"
+            cd::interface "${t:-$2}"
+            return $?
+        fi
     fi
 
     # If a double-dot is passed as the argument,
     # it behaves like a zsh-bd plugin
     # In short, you can jump back to a specific directory,
     # without doing `cd ../../..`
-    if [ "$1" = ".." ]; then
+    if [ "$1" = ".." ] && [ "$ENHANCD_DISABLE_DOT" -eq 0 ]; then
         t="$(cd::get_dirname "$PWD" | __reverse | command grep "$2")"
         cd::interface ".." "${t:-$2}"
         return $?

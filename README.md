@@ -199,11 +199,11 @@ Give me a trial!
 
 ## :wrench: Configurations
 
-### ENHANCD_DIR
+### `ENHANCD_DIR`
 
 The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
-### ENHANCD_FILTER
+### `ENHANCD_FILTER`
 
 1. What is ENHANCD_FILTER?
 
@@ -236,7 +236,7 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 	/usr/local/bin/peco:fzf:non-existing-filter
 	```
 
-### ENHANCD_COMMAND
+### `ENHANCD_COMMAND`
 
 The ENHANCD_COMMAND environment variable is to change the command name of enhancd `cd`. It defaults to `cd`.
 
@@ -256,6 +256,14 @@ Besides putting a setting such as this one in your `~/.bash_profile` or `.zshenv
 ```bash
 ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
 ```
+
+### `ENHANCD_DISABLE_DOT`
+
+If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Dedaluts to 0.
+
+### `ENHANCD_DISABLE_HYPHEN`
+
+This option is similar to `ENHANCD_DISABLE_DOT`. Dedaluts to 0.
 
 ## :books: References
 
