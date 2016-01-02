@@ -6,8 +6,8 @@
 #   this enhancd.sh supports bash and zsh only
 #
 
-ENHANCD_DIR=~/.enhancd
-ENHANCD_LOG="$ENHANCD_DIR"/enhancd.log
+ENHANCD_DIR=${ENHANCD_DIR:-~/.enhancd}
+ENHANCD_LOG=${ENHANCD_LOG:-"$ENHANCD_DIR"/enhancd.log}
 export ENHANCD_DIR
 export ENHANCD_LOG
 
