@@ -263,7 +263,7 @@ If you don't want to use the interactive filter, when specifing a double dot (`.
 
 ### `ENHANCD_DISABLE_HYPHEN`
 
-This option is similar to `ENHANCD_DISABLE_DOT`. Dedaluts to 0.
+This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0.
 
 ## :books: References
 
