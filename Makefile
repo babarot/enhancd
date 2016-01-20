@@ -9,7 +9,8 @@ shpec:
 	@test -x ./shpec || chmod 755 ./shpec
 
 test: shpec
-	@./shpec ./test/enhancd_test.sh
+	@# do not use shebang
+	@bash shpec ./test/enhancd_test.sh
 	@rm -rf ./shpec
 
 clean:
