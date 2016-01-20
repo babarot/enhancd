@@ -1,7 +1,4 @@
 language: sh
 
-before_script:
-    - make init
-
 script:
     - make test

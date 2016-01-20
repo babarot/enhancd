@@ -1,3 +1,10 @@
+2016-01-20  BABAROT <b4b4r07@gmail.com>
+
+	* v2.1.6 ignorecase make doc directory
+
+	* enhancd.sh: see issue #24
+	* doc/: documentations
+
 2015-08-23  BABAROT <b4b4r07@gmail.com>
 
 	* v2.1.5 Supports stdin
