@@ -364,7 +364,7 @@ cd::narrow()
 
     # Save stdin
     stdin="$(cat <&0)"
-    m="$(echo "$stdin" | awk '/\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
+    m="$(echo "$stdin" | awk 'tolower($0) ~ /\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
 
     # If m is __empty, do fuzzy-search; otherwise puts m
     if __empty "$m"; then

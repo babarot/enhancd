@@ -141,6 +141,18 @@ EOF
       assert equal "$expect" "$actual"
     end
 
+    it "cd::narrow (ignore case)"
+      text="$(cat <<EOF
+/home/lisa/work/dir/test
+/home/lisa/work/dir/Abcd
+/home/lisa/work/dir/Efgh
+EOF
+)"
+      expect="/home/lisa/work/dir/Abcd"
+      actual="$(echo "$text" | cd::narrow a)"
+      assert equal "$expect" "$actual"
+    end
+
     it "cd::enumrate"
       expect="$(cat <<EOF
 /
