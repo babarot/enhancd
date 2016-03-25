@@ -1,14 +1,5 @@
-[![](https://travis-ci.org/b4b4r07/enhancd.svg?branch=master)][travis]
+[![](https://travis-ci.org/b4b4r07/enhancd.svg?branch=master)][travis] [![](https://badges.gitter.im/Join%20Chat.svg)][gitter]
 
-<!--
-[![](https://img.shields.io/badge/dependencies-nawk-orange.svg?style=flat-square)][awk]
-[![](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
--->
-
-[travis]: https://travis-ci.org/b4b4r07/enhancd
-[awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
-[license]: http://b4b4r07.mit-license.org
-[gitter]: https://gitter.im/b4b4r07/enhancd
 <a href="top"></a>
 
 <p align="center">
@@ -281,6 +272,9 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 ## :ticket: License
 
-[MIT][license] :copyright: BABAROT (a.k.a. b4b4r07)
+:copyright: [MIT][license]
 
-[![](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+[travis]: https://travis-ci.org/b4b4r07/enhancd
+[awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
+[license]: http://b4b4r07.mit-license.org
+[gitter]: https://gitter.im/b4b4r07/enhancd
