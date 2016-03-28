@@ -7,7 +7,6 @@
 #
 
 export ENHANCD_DIR=${ENHANCD_DIR:-~/.enhancd}
-export ENHANCD_LOG=${ENHANCD_LOG:-"$ENHANCD_DIR"/enhancd.log}
 export ENHANCD_DISABLE_DOT=${ENHANCD_DISABLE_DOT:-0}
 export ENHANCD_DISABLE_HYPHEN=${ENHANCD_DISABLE_HYPHEN:-0}
 
@@ -123,8 +122,8 @@ cd::get_dirstep() {
 # cd::cat_log outputs the content of the log file or __empty line to stdin
 cd::cat_log()
 {
-    if [ -s "$ENHANCD_LOG" ]; then
-        cat "$ENHANCD_LOG"
+    if [ -s "$ENHANCD_DIR"/enhancd.log ]; then
+        cat "$ENHANCD_DIR"/enhancd.log
     else
         echo
     fi
@@ -403,7 +402,7 @@ cd::makelog()
     local esc
 
     # Create ~/.enhancd/enhancd.log
-    touch "$ENHANCD_LOG"
+    touch "$ENHANCD_DIR"/enhancd.log
 
     # Prepare a temporary file for overwriting
     esc="$ENHANCD_DIR"/enhancd."$(date +%d%m%y%H%M%S)"$$$RANDOM
@@ -417,17 +416,17 @@ cd::makelog()
     fi
 
     # Create a backup in preparation for the failure of the overwriting
-    cp -f "$ENHANCD_LOG" $ENHANCD_DIR/enhancd.backup
-    rm -f "$ENHANCD_LOG"
+    cp -f "$ENHANCD_DIR"/enhancd.log "$ENHANCD_DIR"/enhancd.backup
+    rm -f "$ENHANCD_DIR"/enhancd.log
 
     # Run the overwrite process
-    mv "$esc" "$ENHANCD_LOG" 2>/dev/null
+    mv "$esc" "$ENHANCD_DIR"/enhancd.log 2>/dev/null
 
     # Restore from the backup if overwriting fails
     if [ $? -eq 0 ]; then
         rm -f "$ENHANCD_DIR"/enhancd.backup
     else
-        cp -f "$ENHANCD_DIR"/enhancd.backup "$ENHANCD_LOG"
+        cp -f "$ENHANCD_DIR"/enhancd.backup "$ENHANCD_DIR"/enhancd.log
     fi
 }
 
@@ -440,7 +439,7 @@ cd::refresh()
     while read line
     do
         [ -d "$line" ] && echo "$line"
-    done <"$ENHANCD_LOG"
+    done <"$ENHANCD_DIR"/enhancd.log
 }
 
 # cd::assemble returns the assembled log
@@ -455,11 +454,11 @@ cd::assemble()
 cd::add()
 {
     # No overlaps and no underlaps in the log
-    if [ ! -f "$ENHANCD_LOG" -o "$(tail -n 1 "$ENHANCD_LOG")" = "$PWD" ]; then
+    if [ ! -f "$ENHANCD_DIR"/enhancd.log -o "$(tail -n 1 "$ENHANCD_DIR"/enhancd.log)" = "$PWD" ]; then
         return 0
     fi
 
-    pwd >>"$ENHANCD_LOG"
+    pwd >>"$ENHANCD_DIR"/enhancd.log
 }
 
 # cd::interface searches the directory that in the given list, 
@@ -561,7 +560,8 @@ cd::interface()
 #
 # DESCRIPTION
 #     Change the current directory to DIR. The default DIR is all directories that
-#     you visited in the past in the value of the ENHANCD_LOG shell variable
+#     you visited in the past in the value of the ENHANCD_LOG(ENHANCD_DIR/enhancd.log)
+#     shell variable
 #
 #     The variable ENHANCD_FILTER defines a visual filter command you want to use
 #     The visual filter such as peco and fzf in ENHANCD_FILTER are separated by a colon (:)
