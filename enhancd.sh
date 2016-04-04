@@ -416,17 +416,17 @@ cd::makelog()
     fi
 
     # Create a backup in preparation for the failure of the overwriting
-    cp -f "$ENHANCD_DIR"/enhancd.log "$ENHANCD_DIR"/enhancd.backup
-    rm -f "$ENHANCD_DIR"/enhancd.log
+    /bin/cp -f "$ENHANCD_DIR"/enhancd.log "$ENHANCD_DIR"/enhancd.backup
+    /bin/rm -f "$ENHANCD_DIR"/enhancd.log
 
     # Run the overwrite process
-    mv "$esc" "$ENHANCD_DIR"/enhancd.log 2>/dev/null
+    /bin/mv "$esc" "$ENHANCD_DIR"/enhancd.log 2>/dev/null
 
     # Restore from the backup if overwriting fails
     if [ $? -eq 0 ]; then
-        rm -f "$ENHANCD_DIR"/enhancd.backup
+        /bin/rm -f "$ENHANCD_DIR"/enhancd.backup
     else
-        cp -f "$ENHANCD_DIR"/enhancd.backup "$ENHANCD_DIR"/enhancd.log
+        /bin/cp -f "$ENHANCD_DIR"/enhancd.backup "$ENHANCD_DIR"/enhancd.log
     fi
 }
 
