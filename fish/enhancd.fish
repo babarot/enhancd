@@ -25,6 +25,27 @@ function unique
     end | awk '!a[$0]++' 2>/dev/null
 end
 
+function cd::split_path
+    awk -v arg="$argv[1]" -f ~/.enhancd/split_path.awk
+end
+
+
+function cd::get_dirname
+    set dir "$PWD"
+    if test (count $argv) -ge 1
+        set dir "$argv[1]"
+    end
+
+    set is_uniq (cd::split_path "$dir" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')
+
+    if test "$is_uniq" = "1"
+        cd::split_path "$dir"
+    else
+        cd::split_path "$dir" | awk '{printf("%d: %s\n", NR, $1);}'
+    end
+end
+
+
 function cd::add --on-variable PWD
     pwd >>"$ENHANCD_LOG"
 end
@@ -55,69 +76,7 @@ function cd::fuzzy
         return 1
     end
 
-    awk -v search_string="$argv[1]" '
-    BEGIN {
-        FS = "/";
-    }
-
-    {
-        # calculates the degree of similarity
-        if ( (1 - leven_dist($NF, search_string) / (length($NF) + length(search_string))) * 100 >= 70 ) {
-            # When the degree of similarity of search_string is greater than or equal to 70%,
-            # to display the candidate path
-            print $0
-        }
-    }
-
-    # leven_dist returns the Levenshtein distance two text string
-    function leven_dist(a, b) {
-        lena = length(a);
-        lenb = length(b);
-
-        if (lena == 0) {
-            return lenb;
-        }
-        if (lenb == 0) {
-            return lena;
-        }
-
-        for (row = 1; row <= lena; row++) {
-            m[row,0] = row
-        }
-        for (col = 1; col <= lenb; col++) {
-            m[0,col] = col
-        }
-
-        for (row = 1; row <= lena; row++) {
-            ai = substr(a, row, 1)
-            for (col = 1; col <= lenb; col++) {
-                bi = substr(b, col, 1)
-                if (ai == bi) {
-                    cost = 0
-                } else {
-                    cost = 1
-                }
-                m[row,col] = min(m[row-1,col]+1, m[row,col-1]+1, m[row-1,col-1]+cost)
-            }
-        }
-
-        return m[lena,lenb]
-    }
-
-    # min returns the smaller of x, y or z
-    function min(a, b, c) {
-        result = a
-
-        if (b < result) {
-            result = b
-        }
-
-        if (c < result) {
-            result = c
-        }
-
-        return result
-    }' 2>/dev/null
+    awk -v search_string="$argv[1]" -f ~/.enhancd/fuzzy.awk 2>/dev/null
 end
 
 function cd::interface
@@ -163,11 +122,24 @@ function cd::cd
         end
     end
 
-    if test -d "$argv[1]"
+    if test -d "$argv[1]" -a "$argv[1]" != ".."
         builtin cd "$argv[1]"
     else
         if test -z "$argv[1]"
             set t (begin; cd::cat_log; echo "$HOME"; end | cd::list)
+    else if test "$argv[1]" = '-'
+            set arg2 ""
+            if test (count "$argv") -ge 2
+                    set t (begin; cd::list | grep -v "^$PWD\$" | reverse | tail -n 10 | reverse; end | cd::narrow "$argv[2]")
+            else
+                    set t (begin; cd::list | grep -v "^$PWD\$" | reverse | tail -n 10 | reverse; end)
+            end
+        else if test "$argv[1]" = '..'
+            set arg2 ""
+            if test (count $argv) -ge 2
+                    set arg2 "$argv[2]"
+            end
+            set t (begin; cd::get_dirname "$PWD" | grep "$arg2" ; end | cd::list)
         else
             set t (cd::list | cd::narrow "$argv[1]")
         end
