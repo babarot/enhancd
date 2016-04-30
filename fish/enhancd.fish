@@ -36,13 +36,7 @@ function cd::get_dirname
         set dir "$argv[1]"
     end
 
-    set is_uniq (cd::split_path "$dir" | sort | uniq -c | sort -nr | head -n 1 | awk '{print $1}')
-
-    if test "$is_uniq" = "1"
-        cd::split_path "$dir"
-    else
-        cd::split_path "$dir" | awk '{printf("%d: %s\n", NR, $1);}'
-    end
+    cd::split_path "$dir"
 end
 
 
