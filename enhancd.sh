@@ -633,8 +633,9 @@ cd::cd()
 
     # Process a regular argument
     # If a given argument is a directory that exists already,
+    # or if it is a number referring to a directory from the history
     # call builtin cd function; cd::interface otherwise
-    if [ -d "$1" ]; then
+    if [ -d "$1" ] || [[ "$1" =~ ^\-[0-9]$ ]]; then
         builtin cd "$1"
     else
         # If no argument is given, imitate builtin cd command and rearrange
