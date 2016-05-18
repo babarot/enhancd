@@ -4,3 +4,4 @@
 **/*~
 **/*.swp
 .config/bin/shpec
+.env

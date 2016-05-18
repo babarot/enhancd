@@ -24,3 +24,7 @@ test: shove
 
 clean:
 	rm -rf $(SHPEC_BIN)
+
+release:
+	git tag -a $(VERSION) -m $(VERSION)
+	git push origin $(VERSION)
