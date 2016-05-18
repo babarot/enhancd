@@ -1,0 +1,30 @@
+{
+    "options": [
+        {
+            "option": [
+                "-h", "--help"
+            ],
+            "description": "",
+            "action": "sh $ENHANCD_ROOT/custom/options/help.sh"
+        },
+        {
+            "option": [
+                "-V", "--version"
+            ],
+            "description": "",
+            "action": "sh $ENHANCD_ROOT/custom/options/version.sh"
+        },
+        {
+            "option": [
+                "-c", "--current"
+            ],
+            "description": "",
+            "action": "__enhancd::custom::current ${1:+\"$@\"}"
+        }
+    ],
+    "env": {
+        "ENHANCD_FILTER": "",
+        "ENHANCD_DISABLE_HYPHEN": false,
+        "ENHANCD_DISABLE_DOT": false
+    }
+}
