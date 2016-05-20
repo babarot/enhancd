@@ -1,37 +1,28 @@
 {
     "options": [
         {
-            "option": [
-                "-h", "--help"
-            ],
+            "short": "-h",
+            "long": "--help",
             "description": "Show help message",
             "action": "sh $ENHANCD_ROOT/custom/options/help.sh"
         },
         {
-            "option": [
-                "-V", "--version"
-            ],
+            "short": "-V",
+            "long": "--version",
             "description": "Show version information",
             "action": "sh $ENHANCD_ROOT/custom/options/version.sh"
         },
         {
-            "option": [
-                "-c", "--current"
-            ],
+            "short": "-c",
+            "long": "--current",
             "description": "Filter current directories that have been to",
             "action": "__enhancd::custom::current ${1:+\"$@\"}"
         },
         {
-            "option": [
-                "-g", "--ghq"
-            ],
+            "short": "-g",
+            "long": "--ghq",
             "description": "Filter ghq list and cd to it",
             "action": "__enhancd::custom::ghq ${1:+\"$@\"}"
         }
-    ],
-    "env": {
-        "ENHANCD_FILTER": "",
-        "ENHANCD_DISABLE_HYPHEN": false,
-        "ENHANCD_DISABLE_DOT": false
-    }
+    ]
 }

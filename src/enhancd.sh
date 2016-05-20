@@ -206,30 +206,29 @@ __enhancd::sync()
 
 __enhancd::options()
 {
-    local json arg="$1" action key="$1"
+    local opt="$1" action
+    shift
 
-    json="$(
-    $ENHANCD_ROOT/.config/bin/json.sh \
-        $ENHANCD_ROOT/custom.json
-    )"
-
-    key="$(
-    echo "$json" \
-        | awk -v k="$key" '$2 == k{print $1}' \
-        | sed -E 's/^(\$\.options(\[[0-9]+\])?).*$/\1\.action/g'
-    )"
-
-    echo "$json" \
-        | awk -v k="$key" '$1 == k{$1=""; print}' \
-        | read action
+    "$ENHANCD_ROOT/.bin/json.sh" \
+        "$ENHANCD_ROOT/custom.json" \
+        | awk -v opt="$opt" '
+            $2 == opt{
+                sub(/\.(short|long$)/, "", $1)
+                act = $1 ".action";
+            }
+            $1 == act{
+                $1 = "";
+                print $0;
+            }' \
+                | read action
 
     if [[ -z $action ]]; then
-        __enhancd::utils::die "$arg: no such option\n"
+        __enhancd::utils::die \
+            "$opt: no such option\n"
         return 1
     fi
 
-    shift
-    eval "$action "$@""
+    eval "$action $@"
 }
 
 __enhancd::filter()
