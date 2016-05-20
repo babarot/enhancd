@@ -24,7 +24,10 @@ __enhancd::load()
     done <"$ENHANCD_LOG"
 
     # Load all sources
-    source "$ENHANCD_ROOT"/custom/sources/*.sh
+    for f in "$ENHANCD_ROOT"/custom/sources/*.sh
+    do
+        source "$f"
+    done
 }
 
 # __enhancd::get_abspath regains the path from the divided directory name with a slash
@@ -131,7 +134,7 @@ __enhancd::list()
             else
                 cat -
             fi
-        }
+          }
 }
 
 # __enhancd::narrow returns result narrowed down by $1
@@ -141,6 +144,11 @@ __enhancd::narrow()
 
     # Save stdin
     stdin="$(cat <&0)"
+    if [[ -z $1 ]]; then
+        echo "$stdin"
+        return 0
+    fi
+
     m="$(echo "$stdin" | awk 'tolower($0) ~ /\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
 
     # If m is empty, do fuzzy-search; otherwise puts m
@@ -221,7 +229,7 @@ __enhancd::options()
     fi
 
     shift
-    eval "$action"
+    eval "$action "$@""
 }
 
 __enhancd::filter()
@@ -299,7 +307,8 @@ __enhancd::cd()
             fi
             ;;
         -*|--*)
-            __enhancd::options "$arg"
+            shift
+            __enhancd::options "$arg" "$@"
             return $?
             ;;
         *)

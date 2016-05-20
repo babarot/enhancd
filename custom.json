@@ -4,21 +4,21 @@
             "option": [
                 "-h", "--help"
             ],
-            "description": "",
+            "description": "Show help message",
             "action": "sh $ENHANCD_ROOT/custom/options/help.sh"
         },
         {
             "option": [
                 "-V", "--version"
             ],
-            "description": "",
+            "description": "Show version information",
             "action": "sh $ENHANCD_ROOT/custom/options/version.sh"
         },
         {
             "option": [
                 "-c", "--current"
             ],
-            "description": "",
+            "description": "Filter current directories that have been to",
             "action": "__enhancd::custom::current ${1:+\"$@\"}"
         }
     ],
