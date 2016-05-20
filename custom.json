@@ -20,6 +20,13 @@
             ],
             "description": "Filter current directories that have been to",
             "action": "__enhancd::custom::current ${1:+\"$@\"}"
+        },
+        {
+            "option": [
+                "-g", "--ghq"
+            ],
+            "description": "Filter ghq list and cd to it",
+            "action": "__enhancd::custom::ghq ${1:+\"$@\"}"
         }
     ],
     "env": {
