@@ -33,7 +33,7 @@ fi
 
 # Sets default values to ENHANCD_FILTER if it is empty
 if [[ -z $ENHANCD_FILTER ]]; then
-    ENHANCD_FILTER="fzy:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+    ENHANCD_FILTER="fzf:peco:fzy:percol:gof:pick:icepick:sentaku:selecta"
     export ENHANCD_FILTER
 fi
 

@@ -1,4 +1,4 @@
-[![](https://travis-ci.org/b4b4r07/enhancd.svg?branch=master)][travis] [![](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+[![][travis-badge]][travis-link] [![][version-badge]][version-link]
 
 <a href="top"></a>
 
@@ -274,7 +274,9 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 :copyright: [MIT][license]
 
-[travis]: https://travis-ci.org/b4b4r07/enhancd
+[version-badge]: https://img.shields.io/badge/latest-v2.1.7-e64d56.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
+[version-link]: https://github.com/b4b4r07/enhancd/releases
+[travis-link]: https://travis-ci.org/b4b4r07/enhancd
 [awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license]: http://b4b4r07.mit-license.org
-[gitter]: https://gitter.im/b4b4r07/enhancd
