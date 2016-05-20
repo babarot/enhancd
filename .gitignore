@@ -3,5 +3,5 @@
 .ignore
 **/*~
 **/*.swp
-.config/bin/shpec
+.bin/shpec
 .env

@@ -7,7 +7,7 @@ OPTIONS:
 HELP
 
 cat "$ENHANCD_ROOT"/custom.json \
-    | "$ENHANCD_ROOT"/.config/bin/json.sh \
+    | "$ENHANCD_ROOT"/.bin/json.sh \
     | awk -F . '
         {
             i = j = c = 1;
@@ -69,7 +69,7 @@ cat "$ENHANCD_ROOT"/custom.json \
 
 cat <<HELP
 
-Version:  2.1.7
-Author:   b4b4r07
-GitHub:   https://github.com/b4b4r07/enhancd
+Author:  b4b4r07
+Version: $_ENHANCD_VERSION
+LICENSE: MIT
 HELP

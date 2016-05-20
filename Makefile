@@ -1,9 +1,10 @@
 SHPEC_URL = https://raw.githubusercontent.com/rylnd/shpec/master/bin/shpec
-SHPEC_BIN = .config/bin/shpec
+SHPEC_BIN = .bin/shpec
 SHOVE_URL = https://github.com/key-amb/shove
 SHOVE_BIN = .config/bin/shove
+VERSION   = $(_ENHANCD_VERSION)
 
-.PHONY: all shpec test clean
+.PHONY: all shpec test_ shove test clean
 
 all:
 

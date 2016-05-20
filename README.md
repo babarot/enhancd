@@ -274,7 +274,7 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 :copyright: [MIT][license]
 
-[version-badge]: https://img.shields.io/badge/latest-v2.1.7-e64d56.svg?style=flat-square
+[version-badge]: https://img.shields.io/badge/latest-v2.2.0-e64d56.svg?style=flat-square
 [travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
 [version-link]: https://github.com/b4b4r07/enhancd/releases
 [travis-link]: https://travis-ci.org/b4b4r07/enhancd

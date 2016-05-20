@@ -1,6 +1,6 @@
 2016-05-19  BABAROT <b4b4r07@gmail.com>
 
-	* v2.1.7 many updates
+	* v2.2.0 many updates
 
 	* enhancd.sh: Divide awk part into the external files
 	* enhancd.sh: Replace "cd::" prefix with "__enhancd::"

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo 2.1.7
+echo "$_ENHANCD_VERSION"
