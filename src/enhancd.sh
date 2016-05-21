@@ -209,6 +209,7 @@ __enhancd::options()
     local opt="$1" action
     shift
 
+    action="$(
     "$ENHANCD_ROOT/.bin/json.sh" \
         "$ENHANCD_ROOT/custom.json" \
         | awk -v opt="$opt" '
@@ -219,8 +220,8 @@ __enhancd::options()
             $1 == act{
                 $1 = "";
                 print $0;
-            }' \
-                | read action
+            }'
+    )"
 
     if [[ -z $action ]]; then
         __enhancd::utils::die \

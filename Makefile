@@ -21,7 +21,8 @@ shove:
 	@test -d $(SHOVE_BIN) || git clone $(SHOVE_URL) $(SHOVE_BIN)
 
 test: shove
-	$(SHOVE_BIN)/bin/shove ./test/*_test.sh
+	$(SHOVE_BIN)/bin/shove -s bash ./test/*_test.sh
+	$(SHOVE_BIN)/bin/shove -s zsh  ./test/*_test.sh
 
 clean:
 	rm -rf $(SHPEC_BIN)
