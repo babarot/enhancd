@@ -1,1 +1,7 @@
-shpec
+.DS_Store
+**/.DS_Store
+.ignore
+**/*~
+**/*.swp
+.bin/shpec
+.env

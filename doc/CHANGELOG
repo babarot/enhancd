@@ -1,3 +1,15 @@
+2016-05-19  BABAROT <b4b4r07@gmail.com>
+
+	* v2.2.0 many updates
+
+	* enhancd.sh: Divide awk part into the external files
+	* enhancd.sh: Replace "cd::" prefix with "__enhancd::"
+	* enhancd.sh: Add custom option mechanism
+	* enhancd.sh: Add custom sources
+	* enhancd.sh: Use memory instead of logfiles in order to improve speedup
+	* enhancd.sh: and refactor some functions
+	* test/: New tests
+
 2016-01-20  BABAROT <b4b4r07@gmail.com>
 
 	* v2.1.6 ignorecase make doc directory

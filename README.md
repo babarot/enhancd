@@ -1,4 +1,4 @@
-[![](https://travis-ci.org/b4b4r07/enhancd.svg?branch=master)][travis] [![](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+[![][travis-badge]][travis-link] [![][version-badge]][version-link]
 
 <a href="top"></a>
 
@@ -32,7 +32,7 @@ A next-generation `cd` command with an interactive filter :sparkles:
 
 ## :memo: Description
 
-`cd` command is one of the frequently used commands. 
+`cd` command is one of the frequently used commands.
 
 Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in `/home/lisa`, dir is `/home/lisa/work/dir`) to `cd` command.
 
@@ -274,7 +274,9 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 :copyright: [MIT][license]
 
-[travis]: https://travis-ci.org/b4b4r07/enhancd
+[version-badge]: https://img.shields.io/badge/latest-v2.2.0-e64d56.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
+[version-link]: https://github.com/b4b4r07/enhancd/releases
+[travis-link]: https://travis-ci.org/b4b4r07/enhancd
 [awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license]: http://b4b4r07.mit-license.org
-[gitter]: https://gitter.im/b4b4r07/enhancd

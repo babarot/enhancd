@@ -1,88 +1,179 @@
-.TH enhancd "1" "August 2014" "enhancd v2.1.4" "enhancd Manual"
-.
-.SH NAME
-enhancd \- A simple tool that provides enhanced cd command
-.
-.
-.SH SYNOPSIS
-.B
-cd [\fI-|..\fP] [\fIDIR\fP]
-.
-.
-.SH DESCRIPTION
-\fBenhancd\fP is a next-generation \fBcd\fP command with an interactive filter.
-
-\fBcd\fP command is one of the frequently used commands.
-
-Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to \fBcd\fP command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in \fI/home/lisa\fP, dir is \fI/home/lisa/work/dir\fP) to \fBcd\fP command.
-
-The new \fBcd\fP command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER variable in order to narrow it down to one.
-
-Thanks to that mechanism, the user can intuitively and easily change the directory where you want to go to.
-.
-.
-.SH REQUIREMENTS
-\fBenhancd\fP requires more than one interactive filter such as \fIpeco\fP and \fIfzf\fP. You should install it before run enhancd.
-.
-.IP "peco"
-Simplistic interactive filtering tool
+'\" t
+.\"     Title: enhancd
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 05/21/2016
+.\"    Manual: ENHANCD Manual
+.\"    Source: ENHANCD Manual
+.\"  Language: English
+.\"
+.TH "ENHANCD" "1" "05/21/2016" "ENHANCD Manual" "ENHANCD Manual"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+enhancd \- A next\-generation cd command with an interactive\-filter
+.SH "SYNOPSIS"
+.sp
 .nf
-https://github.com/peco/peco
-.
-.
-.SH OPTIONS
-.IP "-"
-When enhancd takes a hyphen (-) string as an argument, it searchs from the last 10 directory items in the log. With it, you can search easily the directory you used last.
-
-Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type \fBcd -\fP (\fB$PWD\fP is /home/lisa, \fB$OLDPWD\fP is /home/lisa/src/github.com/b4b4r07/portfolio).
-.
-.IP ".."
-From the beginning, \fB..\fP means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (..) string as an argument, it behaves like a \fIzsh-bd\fP plugin. In short, you can jump back to a specific directory, without doing \fBcd ../../..\fP.
-.
-.
-.SH CONFIGURATIONS
-.
-.IP "\fBENHANCD_DIR\fP"
-.
-The ENHANCD_DIR variable is a base directory path. It defaults to \fI~/.enhancd\fP.
-.
-.IP "\fBENHANCD_FILTER\fP"
-.
-The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as peco concatenated using ':'.
-
-Setting the ENHANCD_FILTER variable is exactly like setting the PATH variable. For example:
-
-    $ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
-
-This above command will hold good till the session is closed. In order to make this change permanent, we need to put this command in the appropriate profile file. The ENHANCD_FILTER command in this example is set with 3 components: /usr/local/bin/peco followed by fzf and the not-existing-filter.
-
-enhancd narrows the ENHANCD_FILTER variable down to one. However, the command does not exist can not be the candidate.
-
-Let us try to test this ENHANCD_FILTER variable.
-
-    $ cd
-
-If cd command does not return error, the settings of ENHANCD_FILTER is success.
-
-How to find the value of the ENHANCD_FILTER variable?
-
-    $ echo $ENHANCD_FILTER
-    /usr/local/bin/peco:fzf:non-existing-filter
-.
-.
-.SH BUGS
-Issue tracking on GitHub:
+\fIcd\fR [<options>] [<\fIdir\fR>]]
+.fi
+.sp
+The "visual filter" (interactive filter) is what is called \fI"Interactive Grep Tool"\fR according to percol that is a pioneer in interactive selection to the traditional pipe concept on UNIX\&.
+.SH "DESCRIPTION"
+.sp
+cd command is one of the frequently used commands\&.
+.sp
+Nevertheless, it is not so easy to handle unfortunately\&. A directory path given as an argument to cd command must be a valid path that exists and is able to resolve\&. In other words, you cannot pass a partial path such as "dir" (you are in /home/lisa, dir is /home/lisa/work/dir) to cd command\&.
+.sp
+The new cd command called "enhancd" enhanced the flexibility and usability for a user\&. enhancd will memorize all directories visited by a user and use it for the pathname resolution\&. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER environment variable in order to narrow it down to one directory\&.
+.SH "OPTIONS"
+.sp
+Thanks to the mechanism that recognize user\-defined options as own options, you can add new option or remove these options freely\&.
+.PP
+\fB\-h\fR, \fB\-\-help\fR
+.RS 4
+Print the synopsis and a list of all available commands\&.
+.RE
+.PP
+\fB\-V\fR, \fB\-\-version\fR
+.RS 4
+Print zplug\(cqs version\&.
+.RE
+.PP
+\fB\-g\fR, \fB\-\-ghq\fR
+.RS 4
+Change the directory displayed with
+ghq list
+.RE
+.SH "ENVIRONMENT VARIABLES"
+.sp
+Various zplug commands use the following environment variables:
+.PP
+\fIENHANCD_ROOT\fR
+.RS 4
+This variable is enhancd\(cqs entitiy path\&.
+.RE
+.PP
+\fIENHANCD_DIR\fR
+.RS 4
+Defaults to
+~/\&.enhancd\&. This variable is a base directory path\&.
+.RE
+.PP
+\fIENHANCD_LOG\fR, \fIENHANCD_DISABLE_DOT\fR
+.RS 4
+If you don\(cqt want to use the interactive filter, when specifing a double dot (\&.\&.), you should set not zero value to
+$ENHANCD_DISABLE_DOT\&. Dedaluts to
+0\&.
+.RE
+.PP
+\fIENHANCD_DISABLE_HYPHEN\fR
+.RS 4
+This option is similar to
+$ENHANCD_DISABLE_DOT\&. Defaults to
+0\&.
+.RE
+.PP
+\fIENHANCD_COMMAND\fR
+.RS 4
+The
+ENHANCD_COMMAND
+environment variable is to change the command name of enhancd
+cd\&. It defaults to
+cd\&. When the command name is changed, you should set new command name to
+ENHANCD_COMMAND, export it and restart your shell (reload
+enhancd\&.sh)\&.
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
 .nf
-https://github.com/b4b4r07/enhancd/issues
-.
-.
-.SH AUTHORS
-Created and maintained by BABAROT, with the help oh various contributors:
+$ echo $ENHANCD_COMMAND
+cd
+$ export ENHANCD_COMMAND=ecd
+$ source /path/to/enhancd\&.sh
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
 .nf
-https://github.com/b4b4r07/enhancd/graphs/contributors.
-.
-.
-.SH LICENSE
-enhancd is licensed under the MIT license.
+The `ENHANCD_COMMAND` may only hold one command name\&.
+Thus, in the previous example, it is true that enhancd `cd` command name is `ecd`,
+but it is not `cd` (`cd` is turned into original `builtin cd`)\&.
+Besides putting a setting such as this one in your `~/\&.bash_profile` or `\&.zshenv` would be a good idea:
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
 .nf
-https://b4b4r07.mit-license.org
+ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
+.fi
+.if n \{\
+.RE
+.\}
+.PP
+\fIENHANCD_FILTER\fR
+.RS 4
+The
+ENHANCD_FILTER
+looks exactly like the
+PATH
+variable containing with many different filters such as peco concatenated using
+\fI:\fR\&. Setting the
+ENHANCD_FILTER
+variable is exactly like setting the
+PATH
+variable\&. For example:
+.RE
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non\-existing\-filter"
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+This above command will hold good till the session is closed\&.
+In order to make this change permanent, we need to put this command
+in the appropriate profile file\&.
+The `ENHANCD_FILTER` command in this example is set with 3 components:
+`/usr/local/bin/peco` followed by `fzf` and the `not\-existing\-filter`\&.
+enhancd narrows the `ENHANCD_FILTER` variable down to one\&.
+Besides, the `ENHANCD_FILTER` also accepts arguments:
+e\&.g\&. `fzf\-tmux \-d "10%":/path/to/peco:my peco`
+.fi
+.if n \{\
+.RE
+.\}
+.SH "COPYING"
+.sp
+Copyright (C) 2015\-2016 Masaki Ishiyama
+.sp
+MIT License
+.SH "REPORTING BUGS"
+.sp
+Report bugs to the zplug issues
