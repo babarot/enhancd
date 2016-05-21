@@ -63,10 +63,6 @@ T_SUB "__enhancd::split_path()" ((
 ))
 
 T_SUB "__enhancd::get_dirstep()" ((
-  expect="too few arguments"
-  actual="$(__enhancd::get_dirstep 2>&1)"
-  t_is "$expect" "$actual"
-
   expect="/home/lisa${LF}/home${LF}/"
   actual="$(__enhancd::get_dirstep /home/lisa/work)"
   t_is "$expect" "$actual"
@@ -81,9 +77,7 @@ T_SUB "__enhancd::get_dirname()" ((
   expect="1: /${LF}2: home${LF}3: lisa${LF}4: lisa"
   actual="$(__enhancd::get_dirname /home/lisa/lisa/work)"
   t_is "$expect" "$actual"
-))
 
-T_SUB "__enhancd::list()" ((
   expect="/${LF}home${LF}lisa"
   actual="$(__enhancd::get_dirname /home/lisa/work)"
   t_is "$expect" "$actual"

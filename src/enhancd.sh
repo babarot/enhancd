@@ -105,14 +105,14 @@ __enhancd::get_dirname()
 # __enhancd::list returns a directory list for changing directory of enhancd
 __enhancd::list()
 {
-    local dir arg="$1"
+    local dir opt="$1" arg="$2"
 
     {
         for dir in "${enhancd_dirs[@]}"
         do
             echo "$dir"
         done
-        if [[ $arg == "--home" ]]; then
+        if [[ $opt == "--home" ]]; then
             shift
             echo "$HOME"
         fi
@@ -121,8 +121,7 @@ __enhancd::list()
         | __enhancd::utils::unique \
         | command grep -v "^$PWD$" \
         | {
-            if [[ $arg == "--narrow" ]]; then
-                shift
+            if [[ $opt == "--narrow" ]]; then
                 __enhancd::narrow "$arg"
             else
                 cat -
@@ -235,6 +234,8 @@ __enhancd::filter()
         list="$(cat <&0)"
     fi
 
+    _ENHANCD_FILTER="$(__enhancd::utils::available "$ENHANCD_FILTER")"
+
     # Count lines in the list
     local wc
     wc="$(echo "$list" | command grep -c "")"
@@ -261,7 +262,6 @@ __enhancd::cd()
     local t arg="$1"
     local -i ret=0
 
-    _ENHANCD_FILTER="$(__enhancd::utils::available "$ENHANCD_FILTER")"
     if [[ -z $_ENHANCD_FILTER ]]; then
         __enhancd::utils::die \
             "$ENHANCD_FILTER: Invalid value as ENHANCD_FILTER\n"

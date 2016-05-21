@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 export ENHANCD_ROOT
 export ENHANCD_COMMAND
 export ENHANCD_FILTER
@@ -51,6 +49,7 @@ __enhancd::init()
     if [[ -z $ENHANCD_FILTER ]]; then
         ENHANCD_FILTER="fzf-tmux:fzf:peco:fzy:percol:gof:pick:icepick:sentaku:selecta"
     fi
+    _ENHANCD_FILTER="$(__enhancd::utils::available "$ENHANCD_FILTER")"
 
     return 0
 }
