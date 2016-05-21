@@ -12,8 +12,7 @@ __enhancd::load()
         setopt localoptions SH_WORD_SPLIT
     fi
 
-    local line
-    local f
+    local f line
     enhancd_dirs=()
 
     while read line
@@ -52,7 +51,6 @@ __enhancd::get_abspath()
         # num is a number for identification
         num="$(echo "$dir" | cut -d: -f1)"
 
-        local i
         if [ -n "$num" ]; then
             # It is listed path stepwise
             __enhancd::get_dirstep "$1" \
@@ -81,15 +79,9 @@ __enhancd::split_path()
 # __enhancd::get_dirstep returns a list of stepwise path
 __enhancd::get_dirstep()
 {
-    # __enhancd::get_dirstep requires $1 that should be a path
-    if [[ -z $1 ]]; then
-        __enhancd::utils::die "too few arguments\n"
-        return 1
-    fi
-
     awk \
         -f "$ENHANCD_ROOT/src/share/get_dirstep.awk" \
-        -v dir="$1"
+        -v dir="${1:-$PWD}"
 }
 
 # __enhancd::get_dirname returns the divided directory name with a slash
@@ -113,13 +105,14 @@ __enhancd::get_dirname()
 # __enhancd::list returns a directory list for changing directory of enhancd
 __enhancd::list()
 {
-    local f
+    local dir arg="$1"
+
     {
-        for f in "${enhancd_dirs[@]}"
+        for dir in "${enhancd_dirs[@]}"
         do
-            echo "$f"
+            echo "$dir"
         done
-        if [[ $1 == "--home" ]]; then
+        if [[ $arg == "--home" ]]; then
             shift
             echo "$HOME"
         fi
@@ -128,9 +121,9 @@ __enhancd::list()
         | __enhancd::utils::unique \
         | command grep -v "^$PWD$" \
         | {
-            if [[ $1 == "--narrow" ]]; then
+            if [[ $arg == "--narrow" ]]; then
                 shift
-                __enhancd::narrow "$1"
+                __enhancd::narrow "$arg"
             else
                 cat -
             fi
@@ -140,7 +133,7 @@ __enhancd::list()
 # __enhancd::narrow returns result narrowed down by $1
 __enhancd::narrow()
 {
-    local stdin m
+    local stdin m str="$1"
 
     # Save stdin
     stdin="$(cat <&0)"
@@ -149,14 +142,14 @@ __enhancd::narrow()
         return 0
     fi
 
-    m="$(echo "$stdin" | awk 'tolower($0) ~ /\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null)"
+    m="$(echo "$stdin" | awk 'tolower($0) ~ /\/.?'"$str"'[^\/]*$/{print $0}' 2>/dev/null)"
 
     # If m is empty, do fuzzy-search; otherwise puts m
     if [[ -z "$m" ]]; then
         echo "$stdin" \
             | awk \
             -f "$ENHANCD_ROOT/src/share/fuzzy.awk" \
-            -v search_string="$1"
+            -v search_string="$str"
     else
         echo "$m"
     fi
@@ -164,10 +157,8 @@ __enhancd::narrow()
 
 __enhancd::sync()
 {
-    local f dir OLDIFS
-    OLDIFS="$IFS"
+    local dir OLDIFS="$IFS"
     IFS=$'\n'
-    dir="$PWD"
 
     enhancd_dirs=( $(
     {
@@ -178,29 +169,29 @@ __enhancd::sync()
         # -> /home/lisa
         # -> /home/lisa/src
         # -> /home/lisa/src/github.com
-        __enhancd::get_dirstep "$dir" | __enhancd::utils::reverse
-        if [ -d "$dir" ]; then
-            find "$dir" -maxdepth 1 -type d | command grep -v "\/\."
-        fi
-        for f in ${enhancd_dirs[@]}
+        __enhancd::get_dirstep "$PWD" | __enhancd::utils::reverse
+        find "$PWD" -maxdepth 1 -type d | command grep -v "\/\."
+        for dir in "${enhancd_dirs[@]}"
         do
-            echo "$f"
+            echo "$dir"
         done
-    } |  __enhancd::utils::reverse | __enhancd::utils::unique | __enhancd::utils::reverse
+    } \
+        |  __enhancd::utils::reverse \
+        | __enhancd::utils::unique \
+        | __enhancd::utils::reverse
     ) )
     IFS="$OLDIFS"
-
     enhancd_dirs+=("$PWD")
 
     (
-    {
-        for f in "${enhancd_dirs[@]}"
-        do
-            if [[ -d $f ]]; then
-                echo "$f"
-            fi
-        done >|"$ENHANCD_LOG"
-    } &
+        {
+            for dir in "${enhancd_dirs[@]}"
+            do
+                if [[ -d $dir ]]; then
+                    echo "$dir"
+                fi
+            done >|"$ENHANCD_LOG"
+        } &
     )
 }
 
@@ -236,14 +227,7 @@ __enhancd::filter()
 {
     # Narrows the ENHANCD_FILTER environment variables down to one
     # and sets it to the variables filter
-    local filter
     local list="$1"
-
-    filter="$(__enhancd::utils::available "$ENHANCD_FILTER")"
-    if [[ -z $filter ]]; then
-        echo "$list"
-        return 0
-    fi
 
     # If no argument is given to __enhancd::interface
     if [[ -z $list ]] || [[ -p /dev/stdin ]]; then
@@ -262,7 +246,7 @@ __enhancd::filter()
             ;;
         * )
             local t
-            t="$(echo "$list" | eval "$filter")"
+            t="$(echo "$list" | eval "$_ENHANCD_FILTER")"
             if [[ -z $t ]]; then
                 return 1
             fi
@@ -275,6 +259,15 @@ __enhancd::cd()
 {
     # t is an argument of the list for __enhancd::interface
     local t arg="$1"
+    local -i ret=0
+
+    _ENHANCD_FILTER="$(__enhancd::utils::available "$ENHANCD_FILTER")"
+    if [[ -z $_ENHANCD_FILTER ]]; then
+        __enhancd::utils::die \
+            "$ENHANCD_FILTER: Invalid value as ENHANCD_FILTER\n"
+        builtin cd "${arg:-$HOME}"
+        return $?
+    fi
 
     # Read from standard input
     if [[ -p /dev/stdin ]]; then
@@ -288,11 +281,11 @@ __enhancd::cd()
         "-")
             # If a hyphen is passed as the argument,
             # searchs from the last 10 directory items in the log
-            if [ "$ENHANCD_DISABLE_HYPHEN" -ne 0 ]; then
-                t="-"
-            else
+            if [[ "$ENHANCD_DISABLE_HYPHEN" -eq 0 ]]; then
                 t="$(__enhancd::list --narrow "$2" | head)"
                 t="$(__enhancd::filter "${t:-$2}")"
+            else
+                t="-"
             fi
             ;;
         "..")
@@ -300,10 +293,12 @@ __enhancd::cd()
             # it behaves like a zsh-bd plugin
             # In short, you can jump back to a specific directory,
             # without doing `cd ../../..`
-            if [ "$ENHANCD_DISABLE_DOT" -eq 0 ]; then
+            if [[ "$ENHANCD_DISABLE_DOT" -eq 0 ]]; then
                 t="$(__enhancd::get_dirname "$PWD" | __enhancd::utils::reverse | command grep "$2")"
                 t="$(__enhancd::filter "${t:-$2}")"
-                t="$(__enhancd::get_abspath "$PWD" "$t")"
+                t="$(__enhancd::get_abspath "$PWD" "$t" 2>/dev/null)"
+            else
+                t=".."
             fi
             ;;
         -*|--*)
@@ -329,12 +324,14 @@ __enhancd::cd()
         return 0
     fi
     if [[ ! -d $t ]]; then
-        __enhancd::utils::die "$t: no such file or directory\n"
+        __enhancd::utils::die \
+            "$t: no such file or directory\n"
         return 1
     fi
 
     builtin cd "$t"
     ret=$?
     __enhancd::sync
+
     return $ret
 }
