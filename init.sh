@@ -33,7 +33,9 @@ fi
 
 __enhancd::init()
 {
+    # make file and directory
     mkdir -p "$ENHANCD_DIR" &>/dev/null
+    touch "$ENHANCD_LOG"
 
     return 0
 }
