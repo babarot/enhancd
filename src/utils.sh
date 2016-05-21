@@ -2,7 +2,7 @@
 
 # __enhancd::utils::die puts a string to stderr
 __enhancd::utils::die() {
-    printf "$@" >&2
+    printf -- "$@" >&2
 }
 
 # __enhancd::utils::unique uniques a stdin contents

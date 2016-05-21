@@ -31,4 +31,11 @@ if [[ -z $ENHANCD_FILTER ]]; then
     export ENHANCD_FILTER
 fi
 
-__enhancd::load
+__enhancd::init()
+{
+    mkdir -p "$ENHANCD_DIR" &>/dev/null
+
+    return 0
+}
+
+__enhancd::init && __enhancd::load
