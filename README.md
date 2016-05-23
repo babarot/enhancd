@@ -51,7 +51,7 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 - Work on Bash, Zsh and Fish :fish:
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
-- Support standard input (`echo $HOME | cd` is ok)
+- Support standard input (`echo $HOME | cd` is acceptable)
 
 ### Fuzzy search
 
@@ -66,6 +66,7 @@ You can fuzzy-search a directory name you want to run `cd`. For example, a word 
 	- [peco](https://github.com/peco/peco)
 	- [fzf](https://github.com/junegunn/fzf)
 	- [gof](https://github.com/mattn/gof)
+	- [fzy](https://github.com/jhawthorn/fzy)
 	- ...
 
 	Choose any one from among these.
@@ -74,10 +75,10 @@ You can fuzzy-search a directory name you want to run `cd`. For example, a word 
 
 ## :mag: Usage
 
-Under Zsh or Bourne shells such as sh and bash, you would use `enhancd.sh`. Under [fish shell](http://fishshell.com), `enhancd.fish`.
+Under Zsh or Bourne shells such as sh and bash, you just source `init.sh` into your shell:
 
 ```console
-$ source ./enhancd.sh
+$ source ./init.sh
 ```
 
 Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
@@ -122,6 +123,24 @@ $ export ENHANCD_FILTER
 ```
 
 ### Options
+
+:new: v2.2.0~
+
+You can make the option that you thought for your enhancd from 2.2.0 or above.
+
+```console
+$ cd --help
+usage: cd [OPTIONS] [dir]
+
+OPTIONS:
+  -h, --help       Show help message
+  -V, --version    Show version information
+  -c, --current    Filter current directories that have been to
+  -g, --ghq        Filter ghq list and cd to it
+
+```
+
+Those options are defined at [/custom.json](https://github.com/b4b4r07/enhancd/blob/master/custom.json). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/custom/sources/ghq.sh).　Of cource, you can disable those options if you do not like it.
 
 - Hyphen (`-`)
 
@@ -178,14 +197,14 @@ Give me a trial!
 	enhancd can be installed by adding following to your `.zshrc` file in the same function you're doing your other `zplug load` calls in.
 
 	```console
-	$ zplug "b4b4r07/enhancd", of:enhancd.sh
+	$ zplug "b4b4r07/enhancd", use:init.sh
 	```
 
 - Install with `git clone`:
 
 	```console
 	$ git clone https://github.com/b4b4r07/enhancd
-	$ source /path/to/enhancd/enhancd.sh
+	$ source /path/to/enhancd/init.sh
 	```
 
 ## :wrench: Configurations
@@ -200,7 +219,7 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
 	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using '`:`'.
 
-2. How to set the ENHANCD_FILTER variable?      
+2. How to set the ENHANCD_FILTER variable?
 
 	Setting the ENHANCD_FILTER variable is exactly like setting the PATH variable. For example:
 
@@ -231,13 +250,13 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
 The ENHANCD_COMMAND environment variable is to change the command name of enhancd `cd`. It defaults to `cd`.
 
-When the command name is changed, you should set new command name to ENHANCD_COMMAND, export it and restart your shell (reload `enhancd.sh`).
+When the command name is changed, you should set new command name to ENHANCD_COMMAND, export it and restart your shell (reload `init.sh`).
 
 ```console
 $ echo $ENHANCD_COMMAND
 cd
 $ export ENHANCD_COMMAND=ecd
-$ source /path/to/enhancd.sh
+$ source /path/to/init.sh
 ```
 
 The ENHANCD_COMMAND may only hold one command name. Thus, in the previous example, it is true that enhancd `cd` command name is `ecd`, but it is not `cd` (`cd` is turned into original `builtin cd`).
@@ -258,7 +277,7 @@ This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0.
 
 ## :books: References
 
-The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. 
+The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.
 
 - **percol** :point_right: [percol adds flavor of interactive selection to the traditional pipe concept on UNIX](https://github.com/mooz/percol)
 - **peco** :point_right: [Simplistic interactive filtering tool](https://github.com/peco/peco)
