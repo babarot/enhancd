@@ -4,7 +4,6 @@ export ENHANCD_ROOT
 export ENHANCD_COMMAND
 export ENHANCD_FILTER
 export ENHANCD_DIR="${ENHANCD_DIR:-$HOME/.enhancd}"
-export ENHANCD_LOG="${ENHANCD_LOG:-$ENHANCD_DIR/enhancd.log}"
 export ENHANCD_DISABLE_DOT="${ENHANCD_DISABLE_DOT:-0}"
 export ENHANCD_DISABLE_HYPHEN="${ENHANCD_DISABLE_HYPHEN:-0}"
 
@@ -30,7 +29,7 @@ __enhancd::init()
     # make a log file and a root directory
     {
         mkdir -p "$ENHANCD_DIR"
-        touch "$ENHANCD_LOG"
+        touch "$ENHANCD_DIR/enhancd.log"
     } &>/dev/null
 
     # source the files within src directory

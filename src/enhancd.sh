@@ -20,7 +20,7 @@ __enhancd::load()
         if [[ -d $line ]]; then
             enhancd_dirs+=("$line")
         fi
-    done <"$ENHANCD_LOG"
+    done <"$ENHANCD_DIR/enhancd.log"
 
     # Load all sources
     for f in "$ENHANCD_ROOT"/custom/sources/*.sh
@@ -189,7 +189,7 @@ __enhancd::sync()
                 if [[ -d $dir ]]; then
                     echo "$dir"
                 fi
-            done >|"$ENHANCD_LOG"
+            done >|"$ENHANCD_DIR/enhancd.log"
         } &
     )
 }

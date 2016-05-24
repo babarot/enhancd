@@ -62,8 +62,6 @@ Various zplug commands use the following environment variables:
     Defaults to `~/.enhancd`.
     This variable is a base directory path.
 
-'ENHANCD_LOG'::
-
 'ENHANCD_DISABLE_DOT'::
     If you don't want to use the interactive filter, when specifing a double dot (`..`),
     you should set not zero value to `$ENHANCD_DISABLE_DOT`. Dedaluts to `0`.
