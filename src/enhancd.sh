@@ -174,6 +174,7 @@ __enhancd::sync()
         do
             echo "$dir"
         done
+        echo "$PWD"
     } \
         |  __enhancd::utils::reverse \
         | __enhancd::utils::unique \
@@ -186,9 +187,7 @@ __enhancd::sync()
         {
             for dir in "${enhancd_dirs[@]}"
             do
-                if [[ -d $dir ]]; then
-                    echo "$dir"
-                fi
+                echo "$dir"
             done >|"$ENHANCD_DIR/enhancd.log"
         } &
     )

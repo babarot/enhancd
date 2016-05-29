@@ -10,9 +10,17 @@ __enhancd::custom::ghq()
         return 1
     fi
 
-    ghq root \
+    ghq root 2>/dev/null \
         | read root
-    ghq list \
+    {
+        cat "$ENHANCD_DIR/enhancd.log" \
+            | grep "$root" \
+            | __enhancd::utils::reverse
+        ghq list 2>/dev/null
+    } \
+        | grep -v "^$root$" \
+        | sed 's#'"$root/"'##' \
+        | __enhancd::utils::unique \
         | __enhancd::narrow "$@" \
         | __enhancd::filter \
         | read dir

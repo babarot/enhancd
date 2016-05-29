@@ -15,14 +15,20 @@
         {
             "short": "-c",
             "long": "--current",
-            "description": "Filter current directories that have been to",
+            "description": "Filter current directories",
             "action": "__enhancd::custom::current ${1:+\"$@\"}"
         },
         {
             "short": "-g",
             "long": "--ghq",
-            "description": "Filter ghq list and cd to it",
+            "description": "Filter ghq list",
             "action": "__enhancd::custom::ghq ${1:+\"$@\"}"
+        },
+        {
+            "short": "-G",
+            "long": "--git",
+            "description": "Filter Git directories if in Git repo",
+            "action": "__enhancd::custom::git ${1:+\"$@\"}"
         }
     ]
 }
