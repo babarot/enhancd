@@ -140,5 +140,14 @@ T_SUB "__enhancd::filter()" ((
 ))
 
 T_SUB "__enhancd::cd()" ((
-  # skip
+  T_SUB "With \$ENHANCD_DISABLE_HYPHEN set" ((
+    ENHANCD_DISABLE_HYPHEN=1
+    __enhancd::cd $HOME
+    __enhancd::cd $ENHANCD_ROOT
+    t_is "$PWD" "$ENHANCD_ROOT"
+    t_is "$OLDPWD" "$HOME"
+    __enhancd::cd -
+    t_is "$PWD" "$HOME"
+    t_is "$OLDPWD" "$ENHANCD_ROOT"
+  ))
 ))
