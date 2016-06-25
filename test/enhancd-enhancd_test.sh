@@ -140,6 +140,9 @@ T_SUB "__enhancd::filter()" ((
 ))
 
 T_SUB "__enhancd::cd()" ((
+  # TODO: should set valid filter when writing filter tests
+  _ENHANCD_FILTER=dummy
+
   T_SUB "With \$ENHANCD_DISABLE_HYPHEN set" ((
     ENHANCD_DISABLE_HYPHEN=1
     __enhancd::cd $HOME
