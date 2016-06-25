@@ -284,7 +284,7 @@ __enhancd::cd()
                 t="$(__enhancd::list --narrow "$2" | head)"
                 t="$(__enhancd::filter "${t:-$2}")"
             else
-                t="-"
+                t="$OLDPWD"
             fi
             ;;
         "..")
