@@ -277,7 +277,7 @@ __enhancd::cd()
     case "$arg" in
         ":stdin:")
             ;;
-        "-")
+        "$ENHANCD_HYPHEN_ARG")
             # If a hyphen is passed as the argument,
             # searchs from the last 10 directory items in the log
             if [[ "$ENHANCD_DISABLE_HYPHEN" -eq 0 ]]; then
@@ -287,7 +287,7 @@ __enhancd::cd()
                 t="$OLDPWD"
             fi
             ;;
-        "..")
+        "$ENHANCD_DOT_ARG")
             # If a double-dot is passed as the argument,
             # it behaves like a zsh-bd plugin
             # In short, you can jump back to a specific directory,
@@ -299,6 +299,16 @@ __enhancd::cd()
             else
                 t=".."
             fi
+            ;;
+        "-")
+            # When $ENHANCD_HYPHEN_ARG is configured,
+            # this behaves like `cd -`
+            t="$OLDPWD"
+            ;;
+        "..")
+            # When $ENHANCD_DOT_ARG is configured,
+            # ".." is passed to builtin cd
+            t=".."
             ;;
         -*|--*)
             shift
