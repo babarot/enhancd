@@ -86,7 +86,7 @@ Because enhancd functions must be executed in the context of the current shell, 
 The basic usage of the `cd` command that has been implemented by `enhancd` is the same as the normal builtin `cd` command.
 
 ```console
-$ cd [-|..] <directroy>
+$ cd [-|..] <directory>
 ```
 
 If no arguments are given, enhancd `cd` command will display a list of the directory you've visited once, encourage you to filter the directory that you want to move.
