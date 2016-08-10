@@ -121,7 +121,10 @@ function cd::fuzzy
 end
 
 function cd::interface
-    set -l filter "fzf"
+    set -l filter $ENHANCD_FILTER
+    if test -z $filter
+        set -l filter "fzf"
+    end
 
     switch (count $argv)
         case 0
