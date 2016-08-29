@@ -140,5 +140,54 @@ T_SUB "__enhancd::filter()" ((
 ))
 
 T_SUB "__enhancd::cd()" ((
-  # skip
+  # TODO: should set valid filter when writing filter tests
+  _ENHANCD_FILTER=dummy
+
+  T_SUB "With \$ENHANCD_DISABLE_HYPHEN set" ((
+    ENHANCD_DISABLE_HYPHEN=1
+    __enhancd::cd $HOME
+    __enhancd::cd $ENHANCD_ROOT
+    t_is "$PWD" "$ENHANCD_ROOT"
+    t_is "$OLDPWD" "$HOME"
+    __enhancd::cd -
+    t_is "$PWD" "$HOME"
+    t_is "$OLDPWD" "$ENHANCD_ROOT"
+  ))
+
+  T_SUB "With \$ENHANCD_DISABLE_DOT set" ((
+    ENHANCD_DISABLE_DOT=1
+    __enhancd::cd $ENHANCD_ROOT/test
+    __enhancd::cd ..
+    t_is "$PWD" "$ENHANCD_ROOT"
+  ))
+
+  T_SUB "With \$ENHANCD_HYPHEN_ARG set" ((
+    ENHANCD_HYPHEN_ARG=--dummy
+    ENHANCD_DISABLE_HYPHEN=1
+    __enhancd::cd $HOME
+    __enhancd::cd $ENHANCD_ROOT
+    __enhancd::cd --dummy
+    t_is "$PWD" "$HOME"
+    t_is "$OLDPWD" "$ENHANCD_ROOT"
+
+    ENHANCD_DISABLE_HYPHEN=0
+    __enhancd::cd $HOME
+    __enhancd::cd $ENHANCD_ROOT
+    __enhancd::cd -
+    t_is "$PWD" "$HOME"
+    t_is "$OLDPWD" "$ENHANCD_ROOT"
+  ))
+
+  T_SUB "With \$ENHANCD_DOT_ARG set" ((
+    ENHANCD_DOT_ARG=--dummy
+    ENHANCD_DISABLE_DOT=1
+    __enhancd::cd $ENHANCD_ROOT/test
+    __enhancd::cd --dummy
+    t_is "$PWD" "$ENHANCD_ROOT"
+
+    ENHANCD_DISABLE_DOT=0
+    __enhancd::cd $ENHANCD_ROOT/test
+    __enhancd::cd ..
+    t_is "$PWD" "$ENHANCD_ROOT"
+  ))
 ))
