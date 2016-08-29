@@ -17,6 +17,8 @@ dummy_log="/home/lisa
 /home/lisa/test
 /home/lisa/text
 "
+rm -f /tmp/enhancd.log
+echo "$dummy" >/tmp/enhancd.log
 
 json='{
     "options": [
@@ -84,8 +86,7 @@ T_SUB "__enhancd::get_dirname()" ((
 ))
 
 T_SUB "__enhancd::list()" ((
-  enhancd_dirs=( $dummy $PWD )
-
+  export ENHANCD_DIR=/tmp
   expect="bbb${LF}aaa${LF}ccc"
   actual="$(__enhancd::list)"
   t_is "$expect" "$actual"
@@ -94,9 +95,8 @@ T_SUB "__enhancd::list()" ((
   actual="$(__enhancd::list --home)"
   t_is "$expect" "$actual"
 
-  enhancd_dirs=( "text" "test" "tax" )
-  expect="test${LF}text"
-  actual="$(__enhancd::list --narrow 'test')"
+  expect="ccc"
+  actual="$(__enhancd::list --narrow 'ccb')"
   t_is "$expect" "$actual"
 ))
 

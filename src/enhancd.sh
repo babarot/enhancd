@@ -113,9 +113,7 @@ __enhancd::list() #{{{1
         #done
         while read dir
         do
-            if [[ -d $dir ]]; then
-                echo "$dir"
-            fi
+            echo "$dir"
         done <"$ENHANCD_DIR/enhancd.log"
         if [[ $opt == "--home" ]]; then
             shift
