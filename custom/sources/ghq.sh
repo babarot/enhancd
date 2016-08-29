@@ -26,7 +26,17 @@ __enhancd::custom::ghq()
         | read dir
 
     if [[ -n $dir ]]; then
-        __enhancd::cd "$root/$dir"
+        if [[ -d "$root/$dir" ]]; then
+            __enhancd::cd "$root/$dir"
+        else
+            __enhancd::cd "$(
+            # TODO unique
+            cat "$ENHANCD_DIR/enhancd.log" \
+                | awk \
+                -f "$ENHANCD_ROOT/src/share/fuzzy.awk" \
+                -v search_string="$dir"
+            )"
+        fi
         return $?
     fi
 }
