@@ -107,10 +107,16 @@ __enhancd::list() #{{{1
     local dir opt="$1" arg="$2"
 
     {
-        for dir in "${enhancd_dirs[@]}"
+        #for dir in "${enhancd_dirs[@]}"
+        #do
+        #    echo "$dir"
+        #done
+        while read dir
         do
-            echo "$dir"
-        done
+            if [[ -d $dir ]]; then
+                echo "$dir"
+            fi
+        done <"$ENHANCD_DIR/enhancd.log"
         if [[ $opt == "--home" ]]; then
             shift
             echo "$HOME"
@@ -183,6 +189,7 @@ __enhancd::sync() #{{{1
     enhancd_dirs+=("$PWD")
 
     (
+        IFS=$'\n'
         {
             for dir in "${enhancd_dirs[@]}"
             do
