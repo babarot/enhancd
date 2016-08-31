@@ -14,7 +14,12 @@ BEGIN {
 
     # decompose the path by a slash
     for (i = 1; i < num; i++) {
-        print arr[i]
+        if (show_fullpath == 1) {
+            split(s, dirname, arr[i])
+            print "/" dirname[1] arr[i]
+        } else {
+            print arr[i]
+        }
     }
 }
 

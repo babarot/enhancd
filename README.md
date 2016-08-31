@@ -267,6 +267,23 @@ Besides putting a setting such as this one in your `~/.bash_profile` or `.zshenv
 ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
 ```
 
+### `ENHANCD_DOT_SHOW_FULLPATH`
+
+The ENHANCD_DOT_SHOW_FULLPATH environment variable is to set whether to show full path or not when executing Double-dot. It defaults to `0`.
+
+```console
+$ export ENHANCD_DOT_SHOW_FULLPATH=1
+$ cd ..
+  /
+  /home
+  /home/lisa
+  /home/lisa/src
+  /home/lisa/src/github.com
+> /home/lisa/src/github.com/b4b4r07
+  6/6
+> _
+```
+
 ### `ENHANCD_DISABLE_DOT`
 
 If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Dedaluts to 0.
