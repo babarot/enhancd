@@ -60,6 +60,13 @@ T_SUB "__enhancd::split_path()" ((
   expect="/${LF}home${LF}lisa"
   actual="$(__enhancd::split_path /home/lisa/work)"
   t_is "$expect" "$actual"
+
+  T_SUB "With \$ENHANCD_DOT_SHOW_FULLPATH set" ((
+    ENHANCD_DOT_SHOW_FULLPATH=1
+    expect="/${LF}/home${LF}/home/lisa"
+    actual="$(__enhancd::split_path /home/lisa/work)"
+    t_is "$expect" "$actual"
+  ))
 ))
 
 T_SUB "__enhancd::get_dirstep()" ((
