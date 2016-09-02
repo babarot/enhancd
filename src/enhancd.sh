@@ -73,7 +73,7 @@ __enhancd::split_path()
 {
     awk \
         -f "$ENHANCD_ROOT/src/share/split_path.awk" \
-        -v arg="${1:-$PWD}"
+        -v arg="${1:-$PWD}" -v show_fullpath="$ENHANCD_DOT_SHOW_FULLPATH"
 }
 
 # __enhancd::get_dirstep returns a list of stepwise path

@@ -5,3 +5,4 @@
 **/*.swp
 .bin/shpec
 .env
+.config
