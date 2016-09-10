@@ -286,7 +286,7 @@ $ cd ..
 
 ### `ENHANCD_DISABLE_DOT`
 
-If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Dedaluts to 0.
+If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Defaults to 0.
 
 ### `ENHANCD_DISABLE_HYPHEN`
 
