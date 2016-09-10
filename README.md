@@ -292,6 +292,10 @@ If you don't want to use the interactive filter, when specifing a double dot (`.
 
 This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0.
 
+### `ENHANCD_DISABLE_HOME`
+
+If you don't want to use the interactive filter when you call `cd` without an argument, you can set any value but `0` for `$ENHANCD_DISABLE_HOME`. Defaults to `0`.
+
 ### `ENHANCD_DOT_ARG`
 
 You can customize the double-dot (`..`) argument for enhancd by this environment variable.  
