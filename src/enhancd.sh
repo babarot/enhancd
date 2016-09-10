@@ -316,8 +316,12 @@ __enhancd::cd()
             return $?
             ;;
         "")
-            t="$(__enhancd::list --home)"
-            t="$(__enhancd::filter "${t:-$arg}")"
+            if [[ "$ENHANCD_DISABLE_HOME" -eq 1 ]]; then
+                t="$HOME"
+            else
+                t="$(__enhancd::list --home)"
+                t="$(__enhancd::filter "${t:-$arg}")"
+            fi
             ;;
         *)
             if [[ -d $arg ]]; then

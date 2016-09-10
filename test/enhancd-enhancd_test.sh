@@ -204,11 +204,21 @@ T_SUB "__enhancd::cd()" ((
       local t=${1##--}
       echo $t
     }
-    __enhancd::cd $ENHANCD_ROOT/tmp
-    __enhancd::cd # calls __enhancd::list --home
-    t_is "$PWD" "$ENHANCD_ROOT/tmp/home"
+
+    T_SUB "When \\$ENHANCD_DISABLE_HOME is not set" ((
+      ENHANCD_DISABLE_HOME=0
+      __enhancd::cd $ENHANCD_ROOT/tmp
+      __enhancd::cd # calls __enhancd::list --home
+      t_is "$PWD" "$ENHANCD_ROOT/tmp/home"
+    ))
+    T_SUB "When \\$ENHANCD_DISABLE_HOME is set" ((
+      ENHANCD_DISABLE_HOME=1
+      __enhancd::cd $ENHANCD_ROOT/tmp
+      __enhancd::cd # calls __enhancd::list --home
+      t_is "$PWD" "$HOME"
+    ))
+
     # clean up
-    __enhancd::cd $ENHANCD_ROOT
     rm -rf $ENHANCD_ROOT/tmp
   ))
 ))
