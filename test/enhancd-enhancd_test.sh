@@ -168,7 +168,7 @@ T_SUB "__enhancd::cd()" ((
     t_is "$PWD" "$ENHANCD_ROOT"
   ))
 
-  T_SUB "With \$ENHANCD_HYPHEN_ARG set" ((
+  T_SUB "With \\$ENHANCD_HYPHEN_ARG set" ((
     ENHANCD_HYPHEN_ARG=--dummy
     ENHANCD_DISABLE_HYPHEN=1
     __enhancd::cd $HOME
@@ -185,7 +185,7 @@ T_SUB "__enhancd::cd()" ((
     t_is "$OLDPWD" "$ENHANCD_ROOT"
   ))
 
-  T_SUB "With \$ENHANCD_DOT_ARG set" ((
+  T_SUB "With \\$ENHANCD_DOT_ARG set" ((
     ENHANCD_DOT_ARG=--dummy
     ENHANCD_DISABLE_DOT=1
     __enhancd::cd $ENHANCD_ROOT/test
