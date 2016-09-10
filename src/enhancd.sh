@@ -315,15 +315,15 @@ __enhancd::cd()
             __enhancd::options "$arg" "$@"
             return $?
             ;;
+        "")
+            t="$(__enhancd::list --home)"
+            t="$(__enhancd::filter "${t:-$arg}")"
+            ;;
         *)
             if [[ -d $arg ]]; then
                 t="$arg"
             else
-                if [[ -z $arg ]]; then
-                    t="$(__enhancd::list --home)"
-                else
-                    t="$(__enhancd::list --narrow "$arg")"
-                fi
+                t="$(__enhancd::list --narrow "$arg")"
                 t="$(__enhancd::filter "${t:-$arg}")"
             fi
             ;;
