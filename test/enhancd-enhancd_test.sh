@@ -197,4 +197,18 @@ T_SUB "__enhancd::cd()" ((
     __enhancd::cd ..
     t_is "$PWD" "$ENHANCD_ROOT"
   ))
+
+  T_SUB "When \\$arg is blank" ((
+    mkdir -p "$ENHANCD_ROOT/tmp/home"
+    __enhancd::list() {
+      local t=${1##--}
+      echo $t
+    }
+    __enhancd::cd $ENHANCD_ROOT/tmp
+    __enhancd::cd # calls __enhancd::list --home
+    t_is "$PWD" "$ENHANCD_ROOT/tmp/home"
+    # clean up
+    __enhancd::cd $ENHANCD_ROOT
+    rm -rf $ENHANCD_ROOT/tmp
+  ))
 ))
