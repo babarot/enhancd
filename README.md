@@ -292,6 +292,26 @@ If you don't want to use the interactive filter, when specifing a double dot (`.
 
 This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0.
 
+### `ENHANCD_DOT_ARG`
+
+You can customize the double-dot (`..`) argument for enhancd by this environment variable.  
+Default is `..`.
+
+If you set this variable any but `..`, it gives you the _double-dot_ behavior with that argument; i.e. upward search of directory hierarchy.
+Then `cd ..` changes current directory to parent directory without interactive filter.
+
+In other words, you can keep original `cd ..` behavior by this option.
+
+### `ENHANCD_HYPHEN_ARG`
+
+You can customize the hyphen (`-`) argument for enhancd by this environment variable.  
+Default is `-`.
+
+If you set this variable any but `-`, it gives you the _hyphen_ behavior with that argument; i.e. backward search of directory-change history.
+Then `cd -` changes current directory to `$OLDPWD` without interactive filter.
+
+In other words, you can keep original `cd -` behavior by this option.
+
 ## :books: References
 
 The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.
