@@ -168,7 +168,7 @@ T_SUB "__enhancd::cd()" ((
     t_is "$PWD" "$ENHANCD_ROOT"
   ))
 
-  T_SUB "With \$ENHANCD_HYPHEN_ARG set" ((
+  T_SUB "With \\$ENHANCD_HYPHEN_ARG set" ((
     ENHANCD_HYPHEN_ARG=--dummy
     ENHANCD_DISABLE_HYPHEN=1
     __enhancd::cd $HOME
@@ -185,7 +185,7 @@ T_SUB "__enhancd::cd()" ((
     t_is "$OLDPWD" "$ENHANCD_ROOT"
   ))
 
-  T_SUB "With \$ENHANCD_DOT_ARG set" ((
+  T_SUB "With \\$ENHANCD_DOT_ARG set" ((
     ENHANCD_DOT_ARG=--dummy
     ENHANCD_DISABLE_DOT=1
     __enhancd::cd $ENHANCD_ROOT/test
@@ -196,5 +196,29 @@ T_SUB "__enhancd::cd()" ((
     __enhancd::cd $ENHANCD_ROOT/test
     __enhancd::cd ..
     t_is "$PWD" "$ENHANCD_ROOT"
+  ))
+
+  T_SUB "When \\$arg is blank" ((
+    mkdir -p "$ENHANCD_ROOT/tmp/home"
+    __enhancd::list() {
+      local t=${1##--}
+      echo $t
+    }
+
+    T_SUB "When \\$ENHANCD_DISABLE_HOME is not set" ((
+      ENHANCD_DISABLE_HOME=0
+      __enhancd::cd $ENHANCD_ROOT/tmp
+      __enhancd::cd # calls __enhancd::list --home
+      t_is "$PWD" "$ENHANCD_ROOT/tmp/home"
+    ))
+    T_SUB "When \\$ENHANCD_DISABLE_HOME is set" ((
+      ENHANCD_DISABLE_HOME=1
+      __enhancd::cd $ENHANCD_ROOT/tmp
+      __enhancd::cd # calls __enhancd::list --home
+      t_is "$PWD" "$HOME"
+    ))
+
+    # clean up
+    rm -rf $ENHANCD_ROOT/tmp
   ))
 ))
