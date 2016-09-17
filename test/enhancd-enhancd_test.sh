@@ -57,6 +57,7 @@ T_SUB "__enhancd::get_abspath()" ((
 ))
 
 T_SUB "__enhancd::split_path()" ((
+  ENHANCD_DOT_SHOW_FULLPATH=0
   expect="/${LF}home${LF}lisa"
   actual="$(__enhancd::split_path /home/lisa/work)"
   t_is "$expect" "$actual"
@@ -65,6 +66,13 @@ T_SUB "__enhancd::split_path()" ((
     ENHANCD_DOT_SHOW_FULLPATH=1
     expect="/${LF}/home${LF}/home/lisa"
     actual="$(__enhancd::split_path /home/lisa/work)"
+    t_is "$expect" "$actual"
+  ))
+
+  T_SUB "With \$ENHANCD_DOT_SHOW_FULLPATH when the same directory name set" ((
+    ENHANCD_DOT_SHOW_FULLPATH=1
+    expect="/${LF}/home${LF}/home/lisa${LF}/home/lisa"
+    actual="$(__enhancd::split_path /home/lisa/work/home)"
     t_is "$expect" "$actual"
   ))
 ))
@@ -77,6 +85,8 @@ T_SUB "__enhancd::get_dirstep()" ((
 
 T_SUB "__enhancd::get_dirname()" ((
   # Basically, the same as __enhancd::split_path
+  ENHANCD_DOT_SHOW_FULLPATH=0
+
   expect="/${LF}home${LF}lisa"
   actual="$(__enhancd::get_dirname /home/lisa/work)"
   t_is "$expect" "$actual"
