@@ -42,4 +42,3 @@ function has_prefix(s, pre,        pre_len, s_len) {
 function isabs(pathname) {
     return length(pathname) > 0 && has_prefix(pathname, "/")
 }
-
