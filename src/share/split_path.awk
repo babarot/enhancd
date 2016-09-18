@@ -12,12 +12,19 @@ BEGIN {
     # display the beginning of the path
     print substr(arg, 1, 1)
 
-    # decompose the path by a slash
-    for (i = 1; i < num; i++) {
-        if (show_fullpath == 1) {
-            split(s, dirname, arr[i])
-            print "/" dirname[1] arr[i]
-        } else {
+    if (show_fullpath == 1) {
+        # get dirname from /
+        num = split(s, dirname, "/")
+        for (i = 1; i < num; i++) {
+            pre_dir = ""
+            for (ii = 1; ii <= i; ii++) {
+                pre_dir = pre_dir "/" dirname[ii]
+            }
+            print pre_dir
+        }
+    } else {
+        # decompose the path by a slash
+        for (i = 1; i < num; i++) {
             print arr[i]
         }
     }
@@ -35,3 +42,4 @@ function has_prefix(s, pre,        pre_len, s_len) {
 function isabs(pathname) {
     return length(pathname) > 0 && has_prefix(pathname, "/")
 }
+
