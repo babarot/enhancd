@@ -261,7 +261,7 @@ __enhancd::cd()
     local t arg="$1"
     local -i ret=0
 
-    if [[ -z $_ENHANCD_FILTER ]]; then
+    if [[ -z $ENHANCD_FILTER ]]; then
         __enhancd::utils::die \
             "$ENHANCD_FILTER: Invalid value as ENHANCD_FILTER\n"
         builtin cd "${arg:-$HOME}"
