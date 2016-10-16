@@ -7,27 +7,27 @@ __enhancd::arguments::option()
         "$opt: no such option\n"
     return 1
 
-    action="$(
-    "$ENHANCD_ROOT/.bin/json.sh" \
-        "$ENHANCD_ROOT/custom.json" \
-        | awk -v opt="$opt" '
-            $2 == opt{
-                sub(/\.(short|long$)/, "", $1)
-                act = $1 ".action";
-            }
-            $1 == act{
-                $1 = "";
-                print $0;
-            }'
-    )"
+    #action="$(
+    #"$ENHANCD_ROOT/.bin/json.sh" \
+    #    "$ENHANCD_ROOT/custom.json" \
+    #    | awk -v opt="$opt" '
+    #        $2 == opt{
+    #            sub(/\.(short|long$)/, "", $1)
+    #            act = $1 ".action";
+    #        }
+    #        $1 == act{
+    #            $1 = "";
+    #            print $0;
+    #        }'
+    #)"
 
-    if [[ -z $action ]]; then
-        __enhancd::utils::die \
-            "$opt: no such option\n"
-        return 1
-    fi
+    #if [[ -z $action ]]; then
+    #    __enhancd::utils::die \
+    #        "$opt: no such option\n"
+    #    return 1
+    #fi
 
-    eval "$action $@"
+    #eval "$action $@"
 }
 
 __enhancd::arguments::hyphen()
