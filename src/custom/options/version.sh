@@ -1,3 +1,6 @@
 #!/bin/bash
 
-echo "$_ENHANCD_VERSION"
+__enhancd::custom::options::version()
+{
+    echo "$_ENHANCD_VERSION"
+}

@@ -3,31 +3,24 @@ __enhancd::arguments::option()
     local opt="$1" action
     shift
 
-    __enhancd::utils::die \
-        "$opt: no such option\n"
-    return 1
+    cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
+        | awk '/:'$opt'\t/{print $4}' \
+        | read action
 
-    #action="$(
-    #"$ENHANCD_ROOT/.bin/json.sh" \
-    #    "$ENHANCD_ROOT/custom.json" \
-    #    | awk -v opt="$opt" '
-    #        $2 == opt{
-    #            sub(/\.(short|long$)/, "", $1)
-    #            act = $1 ".action";
-    #        }
-    #        $1 == act{
-    #            $1 = "";
-    #            print $0;
-    #        }'
-    #)"
+    if [[ -z $action ]]; then
+        __enhancd::utils::die \
+            "$opt: no such option\n"
+        return 1
+    fi
 
-    #if [[ -z $action ]]; then
-    #    __enhancd::utils::die \
-    #        "$opt: no such option\n"
-    #    return 1
-    #fi
-
-    #eval "$action $@"
+    if __enhancd::utils::has __enhancd::custom::sources::$action; then
+        __enhancd::custom::sources::$action "$@"
+    elif __enhancd::utils::has __enhancd::custom::options::$action; then
+        __enhancd::custom::options::$action "$@"
+    else
+        __enhancd::utils::die "$action: no such action defined\n"
+        return 1
+    fi
 }
 
 __enhancd::arguments::hyphen()

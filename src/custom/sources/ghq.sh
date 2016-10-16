@@ -1,42 +1,38 @@
 #!/bin/bash
 
-__enhancd::custom::ghq()
+__enhancd::custom::sources::ghq()
 {
-    local root dir
-
     if ! __enhancd::utils::has "ghq"; then
-        __enhancd::utils::die \
-            "ghq: not found\n"
+        __enhancd::utils::die "ghq: not found\n"
         return 1
     fi
 
-    ghq root 2>/dev/null \
-        | read root
+    local dir ghq_root
+    ghq_root="$(ghq root 2>/dev/null)"
+
     {
         cat "$ENHANCD_DIR/enhancd.log" \
-            | grep "$root" \
+            | __enhancd::utils::grep "^$ghq_root" \
             | __enhancd::utils::reverse
-        ghq list 2>/dev/null
-    } \
-        | grep -v "^$root$" \
-        | sed 's#'"$root/"'##' \
+        ghq list
+    } 2>/dev/null \
+        | __enhancd::utils::grep -vx "$ghq_root" \
+        | __enhancd::utils::grep -vx "$PWD" \
+        | __enhancd::utils::replace "$ghq_root/" \
         | __enhancd::utils::unique \
-        | __enhancd::narrow "$@" \
+        | __enhancd::log::fuzzy "$@" \
         | __enhancd::log::filter \
         | read dir
 
-    if [[ -n $dir ]]; then
-        if [[ -d "$root/$dir" ]]; then
-            __enhancd::cd "$root/$dir"
-        else
-            __enhancd::cd "$(
-            # TODO unique
-            cat "$ENHANCD_DIR/enhancd.log" \
-                | awk \
-                -f "$ENHANCD_ROOT/src/share/fuzzy.awk" \
-                -v search_string="$dir"
-            )"
-        fi
-        return $?
+    if [[ -z $dir ]]; then
+        # Press Ctrl-C
+        return 0
     fi
+
+    if [[ ! -d $ghq_root/$dir ]]; then
+        __enhancd::utils::die "$dir: no such directory\n"
+        return 1
+    fi
+
+    __enhancd::cd "$ghq_root/$dir"
 }

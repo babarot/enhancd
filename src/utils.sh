@@ -9,7 +9,7 @@ __enhancd::utils::die()
 # __enhancd::utils::unique uniques a stdin contents
 __enhancd::utils::unique()
 {
-    if [[ -f $1 ]]; then
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
         cat "$1"
     else
         cat <&0
@@ -19,7 +19,7 @@ __enhancd::utils::unique()
 # __enhancd::utils::reverse reverses a stdin contents
 __enhancd::utils::reverse()
 {
-    if [[ -f $1 ]]; then
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
         cat "$1"
     else
         cat <&0
@@ -31,13 +31,44 @@ __enhancd::utils::reverse()
 # __enhancd::utils::grep prints in regular expression
 __enhancd::utils::grep()
 {
-    if [[ -f $1 ]]; then
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
         cat "$1"
         shift
     else
         cat <&0
     fi \
         | command grep "$@" 2>/dev/null
+}
+
+# __enhancd::utils::replace replaces 1st arg with 2nd arg
+# Use blank char instead if no argument is given
+__enhancd::utils::replace()
+{
+    local g='' sep='!'
+
+    while (( $# > 0 ))
+    do
+        case "$1" in
+            -g)
+                g='g'
+                shift
+                ;;
+            -d)
+                sep="${2:?}"
+                shift
+                shift
+                ;;
+            -* | --*)
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    cat <&0 \
+        | command sed -E "s$sep$1$sep$2$sep$g" 2>/dev/null
 }
 
 # __enhancd::utils::available fuzzys list down to one

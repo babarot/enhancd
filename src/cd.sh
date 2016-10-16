@@ -58,21 +58,32 @@ __enhancd::cd()
 
     case $ret in
         $_ENHANCD_SUCCESS)
-            # Case of pressing Ctrl-C in selecting
-            if [[ -z $t ]]; then
-                return 0
-            fi
-            builtin cd "$t"
+            __enhancd::cd::builtin "$t"
             ret=$?
-            __enhancd::hook::after_cd
             ;;
         $_ENHANCD_FAILURE)
             __enhancd::utils::die \
-                "${t:-$2}: no such file or directory\n"
+                "${t:-${2:-$1}}: no such file or directory\n"
             ;;
         *)
             ;;
     esac
 
+    return $ret
+}
+
+__enhancd::cd::builtin()
+{
+    local -i ret=0
+
+    # Case of pressing Ctrl-C in selecting
+    if [[ -z $1 ]]; then
+        return 0
+    fi
+
+    builtin cd "$1"
+    ret=$?
+
+    __enhancd::hook::after_cd
     return $ret
 }

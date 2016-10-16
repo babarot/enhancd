@@ -26,9 +26,17 @@ else
 fi
 
 {
+    # core files
     for src in "$ENHANCD_ROOT/src"/*.sh
     do
         source "$src"
     done
+
+    # custom files
+    for src in "$ENHANCD_ROOT/src/custom/"{sources,options}/*.sh
+    do
+        source "$src"
+    done
+
     unset src
 } &>/dev/null
