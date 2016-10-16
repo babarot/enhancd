@@ -53,8 +53,17 @@ __enhancd::arguments::dot()
         | __enhancd::filter \
         | __enhancd::path::to_abspath
 
+    # Returns false if __enhancd::path::to_abspath fails
+    # __enhancd::path::to_abspath returns false
+    # if __enhancd::filter doesn't output anything
     if [[ $? -eq 1 ]]; then
-        return $_ENHANCD_FAILURE
+        if [[ -n $1 ]]; then
+            # Returns false if an argument is given
+            return $_ENHANCD_FAILURE
+        else
+            # Returns true when detecting to press Ctrl-C in selection
+            return $_ENHANCD_SUCCESS
+        fi
     fi
 }
 
