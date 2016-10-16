@@ -13,7 +13,7 @@ aaa
 bbb"
 
 # Load enhancd
-. ./init.sh || exit 1
+. "$ENHANCD_ROOT/init.sh" || exit 1
 
 T_SUB "die" ((
   p2="$(__enhancd::utils::die "error\n" 2>/dev/null)"
