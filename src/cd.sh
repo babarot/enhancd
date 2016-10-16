@@ -64,7 +64,7 @@ __enhancd::cd()
             fi
             builtin cd "$t"
             ret=$?
-            __enhancd::sync
+            __enhancd::hook::after_cd
             ;;
         $_ENHANCD_FAILURE)
             __enhancd::utils::die \
