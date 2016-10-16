@@ -269,7 +269,7 @@ ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
 
 ### `ENHANCD_DOT_SHOW_FULLPATH`
 
-The ENHANCD_DOT_SHOW_FULLPATH environment variable is to set whether to show full path or not when executing Double-dot. It defaults to `0`.
+The ENHANCD_DOT_SHOW_FULLPATH environment variable is to set whether to show the full path or not when executing Double-dot. It defaults to `0`.
 
 ```console
 $ export ENHANCD_DOT_SHOW_FULLPATH=1
