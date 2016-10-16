@@ -321,8 +321,8 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 - **percol** :point_right: [percol adds flavor of interactive selection to the traditional pipe concept on UNIX](https://github.com/mooz/percol)
 - **peco** :point_right: [Simplistic interactive filtering tool](https://github.com/peco/peco)
-- **fzf** :point_right: [:mag: A better fuzzy findero](https://github.com/junegunn/fzf)
-- **fzy** :point_right: [:cherry_blossom: fzf is a blazing fast command-line fuzzy finder written in Go](https://github.com/jhawthorn/fzy)
+- **fzf** :point_right: [:cherry_blossom: fzf is a blazing fast command-line fuzzy finder written in Go](https://github.com/junegunn/fzf)
+- **fzy** :point_right: [:mag: A better fuzzy finder](https://github.com/jhawthorn/fzy)
 - **gof** :point_right: [gof - Go Fuzzy](https://github.com/mattn/gof)
 - **selecta** :point_right: [Selecta is a fuzzy text selector for files and anything else you need to select](https://github.com/garybernhardt/selecta/)
 - **pick** :point_right: [Pick is "just like Selecta, but faster"](https://robots.thoughtbot.com/announcing-pick)
