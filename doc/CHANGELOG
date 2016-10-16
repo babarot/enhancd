@@ -1,3 +1,13 @@
+2016-10-17  BABAROT <b4b4r07@gmail.com>
+
+	* v2.2.1, v2.2.2 many refactor and unsupport fish
+
+	* Add: Separate into many files in src
+	* Fix: issue -> Case-insensitive autocomplete? #33
+	* Add: New env ENHANCD_HOOK_AFTER_CD
+	* Change: Unsupport fish. Use `fisherman/enhancd` instead (todo)
+	* Change: Recommend `jhawthorn/fzy` as an interactive filter officially
+
 2016-05-19  BABAROT <b4b4r07@gmail.com>
 
 	* v2.2.0 many updates

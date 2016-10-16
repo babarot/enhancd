@@ -81,6 +81,12 @@ __enhancd::cd::builtin()
         return 0
     fi
 
+    if [[ ! -d $1 ]]; then
+        __enhancd::utils::die \
+            "$1: no such file or directory\n"
+        return 1
+    fi
+
     builtin cd "$1"
     ret=$?
 

@@ -48,10 +48,11 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
-- Work on Bash, Zsh and Fish :fish:
+- Work on Bash and Zsh (Full compatible)
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
+- Custom options (acceptable user-defined)
 
 ### Fuzzy search
 
@@ -62,11 +63,10 @@ You can fuzzy-search a directory name you want to run `cd`. For example, a word 
 ## :heartbeat: Requirements
 
 - An interactive filter
-	- [percol](https://github.com/mooz/percol)
-	- [peco](https://github.com/peco/peco)
-	- [fzf](https://github.com/junegunn/fzf)
-	- [gof](https://github.com/mattn/gof)
-	- [fzy](https://github.com/jhawthorn/fzy)
+	- [**fzy**](https://github.com/jhawthorn/fzy) *=> recommend*
+	- [**percol**](https://github.com/mooz/percol)
+	- [**peco**](https://github.com/peco/peco)
+	- [**fzf**](https://github.com/junegunn/fzf)
 	- ...
 
 	Choose any one from among these.
@@ -118,7 +118,7 @@ $ ENHANCD_FILTER=peco; export ENHANCD_FILTER
 Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_FILTER` to mean the first element unless otherwise specified.
 
 ```console
-$ ENHANCD_FILTER=fzf:peco:gof
+$ ENHANCD_FILTER=fzy:fzf:peco
 $ export ENHANCD_FILTER
 ```
 
@@ -135,7 +135,6 @@ usage: cd [OPTIONS] [dir]
 OPTIONS:
   -h, --help       Show help message
   -V, --version    Show version information
-  -c, --current    Filter current directories that have been to
   -g, --ghq        Filter ghq list and cd to it
 
 ```
@@ -322,19 +321,20 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 - **percol** :point_right: [percol adds flavor of interactive selection to the traditional pipe concept on UNIX](https://github.com/mooz/percol)
 - **peco** :point_right: [Simplistic interactive filtering tool](https://github.com/peco/peco)
-- **hf** :point_right: [hf is a command line utility to quickly find files and execute a command](https://github.com/hugows/hf)
-- **fzf** :point_right: [fzf is a blazing fast command-line fuzzy finder written in Go](https://github.com/junegunn/fzf)
+- **fzf** :point_right: [:mag: A better fuzzy findero](https://github.com/junegunn/fzf)
+- **fzy** :point_right: [:cherry_blossom: fzf is a blazing fast command-line fuzzy finder written in Go](https://github.com/jhawthorn/fzy)
 - **gof** :point_right: [gof - Go Fuzzy](https://github.com/mattn/gof)
 - **selecta** :point_right: [Selecta is a fuzzy text selector for files and anything else you need to select](https://github.com/garybernhardt/selecta/)
 - **pick** :point_right: [Pick is "just like Selecta, but faster"](https://robots.thoughtbot.com/announcing-pick)
 - **icepick** :point_right: [icepick is a reimplementation of Selecta in Rust](https://github.com/felipesere/icepick)
 - **sentaku** :point_right: [Utility to make sentaku (selection, 選択(sentaku)) window with shell command](https://github.com/rcmdnk/sentaku)
+- **hf** :point_right: [hf is a command line utility to quickly find files and execute a command](https://github.com/hugows/hf)
 
 ## :ticket: License
 
 :copyright: [MIT][license]
 
-[version-badge]: https://img.shields.io/badge/latest-v2.2.1-e64d56.svg?style=flat-square
+[version-badge]: https://img.shields.io/badge/latest-v2.2.2-e64d56.svg?style=flat-square
 [travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
 [version-link]: https://github.com/b4b4r07/enhancd/releases
 [travis-link]: https://travis-ci.org/b4b4r07/enhancd
