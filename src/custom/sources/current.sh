@@ -2,10 +2,10 @@
 
 __enhancd::custom::current()
 {
-    __enhancd::list --narrow ${1:+"$@"} \
+    __enhancd::log::list --narrow ${1:+"$@"} \
         | grep "$PWD/" \
         | sed 's#'"$PWD"'#.#' \
-        | __enhancd::filter \
+        | __enhancd::log::filter \
         | read dir
 
     if [[ -d $dir ]]; then

@@ -1,29 +1,30 @@
-__enhancd::list()
+__enhancd::log::list()
 {
-    local dir
+    local is_home=false
 
     # Return false if the logfile dosen't exist
     if [[ ! -f $ENHANCD_DIR/enhancd.log ]]; then
         return 1
     fi
 
+    # Shift arguments in advance if given
+    # because it's on subshell beyond a pipe
+    if [[ $1 == '--home' ]]; then
+        is_home=true
+        shift
+    fi
+
     {
-        while read dir
-        do
-            echo "$dir"
-        done <"$ENHANCD_DIR/enhancd.log"
-        if [[ $1 == '--home' ]]; then
-            echo "$HOME"
-            shift
-        fi
+        cat "$ENHANCD_DIR/enhancd.log"
+        $is_home && echo "$HOME"
     } \
         | __enhancd::utils::reverse \
         | __enhancd::utils::unique \
-        | __enhancd::fuzzy "$@" \
+        | __enhancd::log::fuzzy "$@" \
         | __enhancd::utils::grep -vx "$PWD"
 }
 
-__enhancd::fuzzy()
+__enhancd::log::fuzzy()
 {
     if [[ -z $1 ]]; then
         cat <&0
@@ -35,7 +36,7 @@ __enhancd::fuzzy()
     fi
 }
 
-__enhancd::filter()
+__enhancd::log::filter()
 {
     # Narrows the ENHANCD_FILTER environment variables down to one
     # and sets it to the variables filter
@@ -71,4 +72,27 @@ __enhancd::filter()
             echo "$t"
             ;;
     esac
+}
+
+__enhancd::log::new()
+{
+    {
+        # Returns a list that was decomposed with a slash
+        # to the directory path that visited just before
+        # e.g., /home/lisa/src/github.com
+        # -> /home
+        # -> /home/lisa
+        # -> /home/lisa/src
+        # -> /home/lisa/src/github.com
+        __enhancd::path::step_by_step "$PWD" | __enhancd::utils::reverse
+        find "$PWD" -maxdepth 1 -type d | __enhancd::utils::grep -v "\/\."
+        if [[ -f $ENHANCD_DIR/enhancd.log ]]; then
+            cat "$ENHANCD_DIR/enhancd.log"
+        fi
+        echo "$PWD"
+    } \
+        | __enhancd::utils::reverse \
+        | __enhancd::utils::unique \
+        | __enhancd::utils::reverse
+    echo "$PWD"
 }

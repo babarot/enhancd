@@ -37,7 +37,7 @@ __enhancd::arguments::hyphen()
         return 0
     fi
 
-    __enhancd::list "$1" | head | __enhancd::filter
+    __enhancd::log::list "$1" | head | __enhancd::log::filter
 }
 
 __enhancd::arguments::dot()
@@ -50,12 +50,12 @@ __enhancd::arguments::dot()
     __enhancd::path::go_upstairs "$PWD" \
         | __enhancd::utils::reverse \
         | __enhancd::utils::grep "$1" \
-        | __enhancd::filter \
+        | __enhancd::log::filter \
         | __enhancd::path::to_abspath
 
     # Returns false if __enhancd::path::to_abspath fails
     # __enhancd::path::to_abspath returns false
-    # if __enhancd::filter doesn't output anything
+    # if __enhancd::log::filter doesn't output anything
     if [[ $? -eq 1 ]]; then
         if [[ -n $1 ]]; then
             # Returns false if an argument is given
@@ -74,7 +74,7 @@ __enhancd::arguments::none()
         return 0
     fi
 
-    __enhancd::list | __enhancd::filter
+    __enhancd::log::list --home | __enhancd::log::filter
 }
 
 __enhancd::arguments::given()
@@ -84,5 +84,5 @@ __enhancd::arguments::given()
         return 0
     fi
 
-    __enhancd::list "$1" | __enhancd::filter
+    __enhancd::log::list "$1" | __enhancd::log::filter
 }

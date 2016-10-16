@@ -22,7 +22,7 @@ __enhancd::custom::ghq()
         | sed 's#'"$root/"'##' \
         | __enhancd::utils::unique \
         | __enhancd::narrow "$@" \
-        | __enhancd::filter \
+        | __enhancd::log::filter \
         | read dir
 
     if [[ -n $dir ]]; then

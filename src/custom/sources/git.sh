@@ -25,7 +25,7 @@ __enhancd::custom::git()
         | sed 's#^#[git] #' \
         | __enhancd::utils::unique \
         | __enhancd::narrow "$@" \
-        | __enhancd::filter \
+        | __enhancd::log::filter \
         | sed 's#^\[git\] ##' \
         | read dir
 

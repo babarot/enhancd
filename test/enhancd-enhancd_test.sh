@@ -111,18 +111,18 @@ T_SUB "__enhancd::get_dirname()" ((
   t_is "$expect" "$actual"
 ))
 
-T_SUB "__enhancd::list()" ((
+T_SUB "__enhancd::log::list()" ((
   export ENHANCD_DIR=/tmp
   expect="bbb${LF}aaa${LF}ccc"
-  actual="$(__enhancd::list)"
+  actual="$(__enhancd::log::list)"
   t_is "$expect" "$actual"
 
   expect="$HOME${LF}bbb${LF}aaa${LF}ccc"
-  actual="$(__enhancd::list --home)"
+  actual="$(__enhancd::log::list --home)"
   t_is "$expect" "$actual"
 
   expect="ccc"
-  actual="$(__enhancd::list --narrow 'ccb')"
+  actual="$(__enhancd::log::list --narrow 'ccb')"
   t_is "$expect" "$actual"
 ))
 
@@ -153,15 +153,15 @@ T_SUB "__enhancd::options()" ((
   git checkout "$ENHANCD_ROOT/custom.json" &>/dev/null
 ))
 
-T_SUB "__enhancd::filter()" ((
+T_SUB "__enhancd::log::filter()" ((
   export ENHANCD_FILTER="head -1"
   expect="aaa"
-  actual="$(__enhancd::filter "$dummy")"
+  actual="$(__enhancd::log::filter "$dummy")"
   t_is "$expect" "$actual"
 
   export ENHANCD_FILTER="head -2 | tail -1"
   expect="bbb"
-  actual="$(__enhancd::filter "$dummy")"
+  actual="$(__enhancd::log::filter "$dummy")"
   t_is "$expect" "$actual"
 ))
 
@@ -219,7 +219,7 @@ T_SUB "__enhancd::cd()" ((
 
   T_SUB "When \\$arg is blank" ((
     mkdir -p "$ENHANCD_ROOT/tmp/home"
-    __enhancd::list() {
+    __enhancd::log::list() {
       local t=${1##--}
       echo $t
     }
@@ -227,13 +227,13 @@ T_SUB "__enhancd::cd()" ((
     T_SUB "When \\$ENHANCD_DISABLE_HOME is not set" ((
       ENHANCD_DISABLE_HOME=0
       __enhancd::cd $ENHANCD_ROOT/tmp
-      __enhancd::cd # calls __enhancd::list --home
+      __enhancd::cd # calls __enhancd::log::list --home
       t_is "$PWD" "$ENHANCD_ROOT/tmp/home"
     ))
     T_SUB "When \\$ENHANCD_DISABLE_HOME is set" ((
       ENHANCD_DISABLE_HOME=1
       __enhancd::cd $ENHANCD_ROOT/tmp
-      __enhancd::cd # calls __enhancd::list --home
+      __enhancd::cd # calls __enhancd::log::list --home
       t_is "$PWD" "$HOME"
     ))
 
