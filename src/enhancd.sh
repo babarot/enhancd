@@ -1,5 +1,4 @@
-# __enhancd::load
-__enhancd::load()
+__enhancd::load() #{{{1
 {
     # In zsh it will cause field splitting to be performed
     # on unquoted parameter expansions.
@@ -30,7 +29,7 @@ __enhancd::load()
 }
 
 # __enhancd::get_abspath regains the path from the divided directory name with a slash
-__enhancd::get_abspath()
+__enhancd::get_abspath() #{{{1
 {
     if [[ $# -lt 2 ]] || [[ -z $2 ]]; then
         __enhancd::utils::die "too few arguments\n"
@@ -69,7 +68,7 @@ __enhancd::get_abspath()
 }
 
 # __enhancd::split_path decomposes the path with a slash as a delimiter
-__enhancd::split_path()
+__enhancd::split_path() #{{{1
 {
     awk \
         -f "$ENHANCD_ROOT/src/share/split_path.awk" \
@@ -77,7 +76,7 @@ __enhancd::split_path()
 }
 
 # __enhancd::get_dirstep returns a list of stepwise path
-__enhancd::get_dirstep()
+__enhancd::get_dirstep() #{{{1
 {
     awk \
         -f "$ENHANCD_ROOT/src/share/get_dirstep.awk" \
@@ -85,7 +84,7 @@ __enhancd::get_dirstep()
 }
 
 # __enhancd::get_dirname returns the divided directory name with a slash
-__enhancd::get_dirname()
+__enhancd::get_dirname() #{{{1
 {
     local dir
 
@@ -103,15 +102,19 @@ __enhancd::get_dirname()
 }
 
 # __enhancd::list returns a directory list for changing directory of enhancd
-__enhancd::list()
+__enhancd::list() #{{{1
 {
     local dir opt="$1" arg="$2"
 
     {
-        for dir in "${enhancd_dirs[@]}"
+        #for dir in "${enhancd_dirs[@]}"
+        #do
+        #    echo "$dir"
+        #done
+        while read dir
         do
             echo "$dir"
-        done
+        done <"$ENHANCD_DIR/enhancd.log"
         if [[ $opt == "--home" ]]; then
             shift
             echo "$HOME"
@@ -130,7 +133,7 @@ __enhancd::list()
 }
 
 # __enhancd::narrow returns result narrowed down by $1
-__enhancd::narrow()
+__enhancd::narrow() #{{{1
 {
     local stdin m str="$1"
 
@@ -154,7 +157,7 @@ __enhancd::narrow()
     fi
 }
 
-__enhancd::sync()
+__enhancd::sync() #{{{1
 {
     local dir OLDIFS="$IFS"
     IFS=$'\n'
@@ -184,6 +187,7 @@ __enhancd::sync()
     enhancd_dirs+=("$PWD")
 
     (
+        IFS=$'\n'
         {
             for dir in "${enhancd_dirs[@]}"
             do
@@ -193,7 +197,7 @@ __enhancd::sync()
     )
 }
 
-__enhancd::options()
+__enhancd::options() #{{{1
 {
     local opt="$1" action
     shift
@@ -221,7 +225,7 @@ __enhancd::options()
     eval "$action $@"
 }
 
-__enhancd::filter()
+__enhancd::filter() #{{{1
 {
     # Narrows the ENHANCD_FILTER environment variables down to one
     # and sets it to the variables filter
@@ -255,7 +259,7 @@ __enhancd::filter()
     esac
 }
 
-__enhancd::cd()
+__enhancd::cd() #{{{1
 {
     # t is an argument of the list for __enhancd::interface
     local t arg="$1"
@@ -348,3 +352,5 @@ __enhancd::cd()
 
     return $ret
 }
+
+# vim:fdm=marker expandtab fdc=3:
