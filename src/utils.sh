@@ -25,9 +25,13 @@ __enhancd::utils::reverse() {
         2>/dev/null
 }
 
-# __enhancd::utils::available narrows list down to one
+# __enhancd::utils::available fuzzys list down to one
 __enhancd::utils::available() {
     local x candidates
+
+    if [[ -z $1 ]]; then
+        return 1
+    fi
 
     # candidates should be list like "a:b:c" concatenated by a colon
     candidates="$1:"
