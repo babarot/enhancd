@@ -49,7 +49,7 @@ __enhancd::arguments::dot()
 
     __enhancd::path::go_upstairs "$PWD" \
         | __enhancd::utils::reverse \
-        | command grep "$1" \
+        | __enhancd::utils::grep "$1" \
         | __enhancd::filter \
         | __enhancd::path::to_abspath
 

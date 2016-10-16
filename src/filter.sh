@@ -20,7 +20,7 @@ __enhancd::list()
         | __enhancd::utils::reverse \
         | __enhancd::utils::unique \
         | __enhancd::fuzzy "$@" \
-        | grep -vx "$PWD"
+        | __enhancd::utils::grep -vx "$PWD"
 }
 
 __enhancd::fuzzy()
@@ -51,7 +51,7 @@ __enhancd::filter()
 
     # Count lines in the list
     local wc
-    wc="$(echo "$list" | command grep -c "")"
+    wc="$(echo "$list" | __enhancd::utils::grep -c "")"
 
     case "$wc" in
         1 )

@@ -13,7 +13,7 @@ __enhancd::sync()
         # -> /home/lisa/src
         # -> /home/lisa/src/github.com
         __enhancd::path::step_by_step "$PWD" | __enhancd::utils::reverse
-        find "$PWD" -maxdepth 1 -type d | command grep -v "\/\."
+        find "$PWD" -maxdepth 1 -type d | __enhancd::utils::grep -v "\/\."
         for dir in "${enhancd_dirs[@]}"
         do
             echo "$dir"
