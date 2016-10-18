@@ -1,3 +1,10 @@
+[version-badge]: https://img.shields.io/badge/latest-v2.2.2-e64d56.svg?style=flat-square
+[version-link]: https://github.com/b4b4r07/enhancd/releases
+[travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
+[travis-link]: https://travis-ci.org/b4b4r07/enhancd
+[awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
+[license-link]: http://b4b4r07.mit-license.org
+
 [![][travis-badge]][travis-link] [![][version-badge]][version-link]
 
 <a href="top"></a>
@@ -28,7 +35,7 @@
 
 :rocket: enhancd <sup>v2</sup> is ...
 
-A next-generation `cd` command with an interactive filter :sparkles:
+> A next-generation `cd` command with an interactive filter :sparkles:
 
 ## :memo: Description
 
@@ -52,7 +59,7 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
-- Custom options (acceptable user-defined)
+- Custom options (user-defined option is acceptable)
 
 ### Fuzzy search
 
@@ -70,8 +77,6 @@ You can fuzzy-search a directory name you want to run `cd`. For example, a word 
 	- ...
 
 	Choose any one from among these.
-
-- AWK (`nawk` or `gawk`)
 
 ## :mag: Usage
 
@@ -315,6 +320,10 @@ Then `cd -` changes current directory to `$OLDPWD` without interactive filter.
 
 In other words, you can keep original `cd -` behavior by this option.
 
+### `ENHANCD_HOOK_AFTER_CD`
+
+Default is empty. You can run any commands after changing directory with enhancd (e.g. `ls`: like `cd && ls`).
+
 ## :books: References
 
 The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.
@@ -332,11 +341,4 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 ## :ticket: License
 
-:copyright: [MIT][license]
-
-[version-badge]: https://img.shields.io/badge/latest-v2.2.2-e64d56.svg?style=flat-square
-[travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
-[version-link]: https://github.com/b4b4r07/enhancd/releases
-[travis-link]: https://travis-ci.org/b4b4r07/enhancd
-[awk]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
-[license]: http://b4b4r07.mit-license.org
+:copyright: [MIT][license-link] @b4b4r07
