@@ -1,8 +1,8 @@
 .DS_Store
 **/.DS_Store
-.ignore
+*~
 **/*~
+*.swp
 **/*.swp
-.bin/shpec
 .env
-.config
+.ignore
