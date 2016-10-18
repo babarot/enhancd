@@ -1,38 +1,89 @@
 #!/bin/bash
 
 # __enhancd::utils::die puts a string to stderr
-__enhancd::utils::die() {
+__enhancd::utils::die()
+{
     printf -- "$@" >&2
 }
 
 # __enhancd::utils::unique uniques a stdin contents
-__enhancd::utils::unique() {
-    if [[ -z $1 ]]; then
-        cat <&0
-    else
+__enhancd::utils::unique()
+{
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
         cat "$1"
+    else
+        cat <&0
     fi | awk '!a[$0]++' 2>/dev/null
 }
 
 # __enhancd::utils::reverse reverses a stdin contents
-__enhancd::utils::reverse() {
-    if [[ -z $1 ]]; then
-        cat <&0
-    else
+__enhancd::utils::reverse()
+{
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
         cat "$1"
+    else
+        cat <&0
     fi \
         | awk -f "$ENHANCD_ROOT/src/share/reverse.awk" \
         2>/dev/null
 }
 
-# __enhancd::utils::available narrows list down to one
-__enhancd::utils::available() {
+# __enhancd::utils::grep prints in regular expression
+__enhancd::utils::grep()
+{
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
+        cat "$1"
+        shift
+    else
+        cat <&0
+    fi \
+        | command grep "$@" 2>/dev/null
+}
+
+# __enhancd::utils::replace replaces 1st arg with 2nd arg
+# Use blank char instead if no argument is given
+__enhancd::utils::replace()
+{
+    local g='' sep='!'
+
+    while (( $# > 0 ))
+    do
+        case "$1" in
+            -g)
+                g='g'
+                shift
+                ;;
+            -d)
+                sep="${2:?}"
+                shift
+                shift
+                ;;
+            -* | --*)
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    cat <&0 \
+        | command sed -E "s$sep$1$sep$2$sep$g" 2>/dev/null
+}
+
+# __enhancd::utils::available fuzzys list down to one
+__enhancd::utils::available()
+{
     local x candidates
+
+    if [[ -z $1 ]]; then
+        return 1
+    fi
 
     # candidates should be list like "a:b:c" concatenated by a colon
     candidates="$1:"
 
-    while [ -n "$candidates" ]; do
+    while [[ -n $candidates ]]; do
         # the first remaining entry
         x=${candidates%%:*}
         # reset candidates
@@ -51,7 +102,8 @@ __enhancd::utils::available() {
 }
 
 # __enhancd::utils::has returns true if $1 exists in the PATH environment variable
-__enhancd::utils::has() {
+__enhancd::utils::has()
+{
     if [[ -z $1 ]]; then
         return 1
     fi
@@ -60,9 +112,11 @@ __enhancd::utils::has() {
     return $?
 }
 
-# __enhancd::utils::nl reads lines from the named file or the standard input if the file argument is ommitted,
-# applies a configurable line numbering filter operation and writes the result to the standard output
-__enhancd::utils::nl() {
+# __enhancd::utils::nl reads lines from the named file or the standard input
+# if the file argument is ommitted, applies a configurable line numbering filter operation
+# and writes the result to the standard output
+__enhancd::utils::nl()
+{
     # d in awk's argument is a delimiter
     awk -v d="${1:-": "}" '
     BEGIN {

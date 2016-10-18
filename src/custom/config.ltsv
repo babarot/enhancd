@@ -1,0 +1,3 @@
+short:-h	long:--help	desc:Show help message	action:help
+short:-V	long:--version	desc:Show version information	action:version
+short:-g	long:--ghq	desc:List ghq list with filtering	action:ghq
