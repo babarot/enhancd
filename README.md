@@ -127,24 +127,7 @@ $ ENHANCD_FILTER=fzy:fzf:peco
 $ export ENHANCD_FILTER
 ```
 
-### Options
-
-:new: v2.2.0~
-
-You can make the option that you thought for your enhancd from 2.2.0 or above.
-
-```console
-$ cd --help
-usage: cd [OPTIONS] [dir]
-
-OPTIONS:
-  -h, --help       Show help message
-  -V, --version    Show version information
-  -g, --ghq        Filter ghq list and cd to it
-
-```
-
-Those options are defined at [/custom.json](https://github.com/b4b4r07/enhancd/blob/master/custom.json). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/custom/sources/ghq.sh).　Of cource, you can disable those options if you do not like it.
+Also, 
 
 - Hyphen (`-`)
 
@@ -192,6 +175,25 @@ Those options are defined at [/custom.json](https://github.com/b4b4r07/enhancd/b
 	
 	![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/bd.gif)
 
+### Options
+
+:new: v2.2.0~
+
+You can make the option that you thought for your enhancd from 2.2.0 or above.
+
+```console
+$ cd --help
+usage: cd [OPTIONS] [dir]
+
+OPTIONS:
+  -h, --help       Show help message
+  -V, --version    Show version information
+  -g, --ghq        Filter ghq list and cd to it
+
+```
+
+Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/src/custom/config.ltsv). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/src/custom/sources/ghq.sh).　Of cource, you can disable those options if you do not like it.
+
 ## :package: Installation
 
 Give me a trial!
@@ -213,11 +215,15 @@ Give me a trial!
 
 ## :wrench: Configurations
 
-### `ENHANCD_DIR`
+<details>
+<summary><strong><code>ENHANCD_DIR</code></strong></summary>
 
 The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
-### `ENHANCD_FILTER`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_FILTER</code></strong></summary>
 
 1. What is ENHANCD_FILTER?
 
@@ -250,7 +256,10 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 	/usr/local/bin/peco:fzf:non-existing-filter
 	```
 
-### `ENHANCD_COMMAND`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_COMMAND</code></strong></summary>
 
 The ENHANCD_COMMAND environment variable is to change the command name of enhancd `cd`. It defaults to `cd`.
 
@@ -271,7 +280,10 @@ Besides putting a setting such as this one in your `~/.bash_profile` or `.zshenv
 ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
 ```
 
-### `ENHANCD_DOT_SHOW_FULLPATH`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_DOT_SHOW_FULLPATH</code></strong></summary>
 
 The ENHANCD_DOT_SHOW_FULLPATH environment variable is to set whether to show the full path or not when executing Double-dot. It defaults to `0`.
 
@@ -288,19 +300,31 @@ $ cd ..
 > _
 ```
 
-### `ENHANCD_DISABLE_DOT`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_DISABLE_DOT</code></strong></summary>
 
 If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Defaults to 0.
 
-### `ENHANCD_DISABLE_HYPHEN`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_DISABLE_HYPHEN</code></strong></summary>
 
 This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0.
 
-### `ENHANCD_DISABLE_HOME`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_DISABLE_HOME</code></strong></summary>
 
 If you don't want to use the interactive filter when you call `cd` without an argument, you can set any value but `0` for `$ENHANCD_DISABLE_HOME`. Defaults to `0`.
 
-### `ENHANCD_DOT_ARG`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_DOT_ARG</code></strong></summary>
 
 You can customize the double-dot (`..`) argument for enhancd by this environment variable.  
 Default is `..`.
@@ -310,7 +334,10 @@ Then `cd ..` changes current directory to parent directory without interactive f
 
 In other words, you can keep original `cd ..` behavior by this option.
 
-### `ENHANCD_HYPHEN_ARG`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_HYPHEN_ARG</code></strong></summary>
 
 You can customize the hyphen (`-`) argument for enhancd by this environment variable.  
 Default is `-`.
@@ -320,9 +347,14 @@ Then `cd -` changes current directory to `$OLDPWD` without interactive filter.
 
 In other words, you can keep original `cd -` behavior by this option.
 
-### `ENHANCD_HOOK_AFTER_CD`
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_HOOK_AFTER_CD</code></strong></summary>
 
 Default is empty. You can run any commands after changing directory with enhancd (e.g. `ls`: like `cd && ls`).
+
+</details>
 
 ## :books: References
 
