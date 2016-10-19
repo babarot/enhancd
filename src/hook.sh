@@ -1,7 +1,7 @@
 __enhancd::hook::after_cd()
 {
     local list
-    list="$(__enhancd::log::new)"
+    list="$(__enhancd::history::new)"
 
     if [[ -n $list ]]; then
         echo "$list" >| "$ENHANCD_DIR/enhancd.log"

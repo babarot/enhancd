@@ -1,4 +1,4 @@
-__enhancd::log::list()
+__enhancd::history::list()
 {
     local is_home=false
 
@@ -20,11 +20,11 @@ __enhancd::log::list()
     } \
         | __enhancd::utils::reverse \
         | __enhancd::utils::unique \
-        | __enhancd::log::fuzzy "$@" \
+        | __enhancd::history::fuzzy "$@" \
         | __enhancd::utils::grep -vx "$PWD"
 }
 
-__enhancd::log::fuzzy()
+__enhancd::history::fuzzy()
 {
     if [[ -z $1 ]]; then
         cat <&0
@@ -36,7 +36,7 @@ __enhancd::log::fuzzy()
     fi
 }
 
-__enhancd::log::filter()
+__enhancd::history::filter()
 {
     # Narrows the ENHANCD_FILTER environment variables down to one
     # and sets it to the variables filter
@@ -74,7 +74,7 @@ __enhancd::log::filter()
     esac
 }
 
-__enhancd::log::new()
+__enhancd::history::new()
 {
     {
         # Returns a list that was decomposed with a slash

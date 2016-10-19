@@ -129,51 +129,57 @@ $ export ENHANCD_FILTER
 
 Also, 
 
-- Hyphen (`-`)
+<details>
+<summary><strong>Hyphen (`-`)</strong></summary>
 
-	When enhancd takes a hyphen (`-`) string as an argument, it searchs from the last 10 directory items in the log. With it, you can search easily the directory you used last.
-	
-	```console
-	$ cd -
-	  /home/lisa/Dropbox/etc/dotfiles
-	  /home/lisa/Dropbox
-	  /home/lisa/src/github.com
-	  /home/lisa/src/github.com/b4b4r07/cli
-	  /home
-	  /home/lisa/src
-	  /home/lisa/src/github.com/b4b4r07/enhancd
-	  /home/lisa/src/github.com/b4b4r07/gotcha
-	  /home/lisa/src/github.com/b4b4r07
-	> /home/lisa/src/github.com/b4b4r07/portfolio
-	  10/10
-	> _	
-	```
-	
-	Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` (`$PWD` is `/home/lisa`, `$OLDPWD` is `/home/lisa/src/github.com/b4b4r07/portfolio`).
-	
-	![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/cd_hyphen.gif)
+When enhancd takes a hyphen (`-`) string as an argument, it searchs from the last 10 directory items in the log. With it, you can search easily the directory you used last.
 
-- Double-dot (`..`)
+```console
+$ cd -
+  /home/lisa/Dropbox/etc/dotfiles
+  /home/lisa/Dropbox
+  /home/lisa/src/github.com
+  /home/lisa/src/github.com/b4b4r07/cli
+  /home
+  /home/lisa/src
+  /home/lisa/src/github.com/b4b4r07/enhancd
+  /home/lisa/src/github.com/b4b4r07/gotcha
+  /home/lisa/src/github.com/b4b4r07
+> /home/lisa/src/github.com/b4b4r07/portfolio
+  10/10
+> _	
+```
 
-	From the beginning, `..` means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (`..`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
-	
-	For example, when you are in `/home/lisa/src/github.com/b4b4r07/enhancd`, type `cd ..` in your terminal:
-	
-	```console
-	$ cd ..
-	  /
-	  home
-	  lisa
-	  src
-	  github.com
-	> b4b4r07
-	  6/6
-	> _
-	```
-	
-	When moving to the parent directory, the current directory is removed from the candidate.
-	
-	![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/bd.gif)
+Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` (`$PWD` is `/home/lisa`, `$OLDPWD` is `/home/lisa/src/github.com/b4b4r07/portfolio`).
+
+![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/cd_hyphen.gif)
+
+</details>
+
+<details>
+<summary><strong>Double-dot (`..`)</strong></summary>
+
+From the beginning, `..` means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (`..`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
+
+For example, when you are in `/home/lisa/src/github.com/b4b4r07/enhancd`, type `cd ..` in your terminal:
+
+```console
+$ cd ..
+  /
+  home
+  lisa
+  src
+  github.com
+> b4b4r07
+  6/6
+> _
+```
+
+When moving to the parent directory, the current directory is removed from the candidate.
+
+![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/bd.gif)
+
+</details>
 
 ### Options
 
@@ -373,4 +379,4 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 
 ## :ticket: License
 
-:copyright: [MIT][license-link] @b4b4r07
+[MIT][license-link] :copyright: b4b4r07
