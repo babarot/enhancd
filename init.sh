@@ -39,4 +39,30 @@ fi
     done
 
     unset src
+
+    # make a log file and a root directory
+    mkdir -p "$ENHANCD_DIR"
+    touch "$ENHANCD_DIR/enhancd.log"
+
+    # alias to cd
+    eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
+    if [[ $ENHANCD_COMMAND != cd ]]; then
+        unalias cd
+    fi
+
+    # Set the filter if empty
+    if [[ -z $ENHANCD_FILTER ]]; then
+        ENHANCD_FILTER="fyz:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+    fi
+
+    # In zsh it will cause field splitting to be performed
+    # on unquoted parameter expansions.
+    if __enhancd::utils::has "setopt" && [[ -n $ZSH_VERSION ]]; then
+        # Note in particular the fact that words of unquoted parameters are not
+        # automatically split on whitespace unless the option SH_WORD_SPLIT is set;
+        # see references to this option below for more details.
+        # This is an important difference from other shells.
+        # (Zsh Manual 14.3 Parameter Expansion)
+        setopt localoptions SH_WORD_SPLIT
+    fi
 } &>/dev/null
