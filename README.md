@@ -362,6 +362,13 @@ Default is empty. You can run any commands after changing directory with enhancd
 
 </details>
 
+<details>
+<summary><strong><code>ENHANCD_USE_FUZZY_MATCH</code></strong></summary>
+
+Default is 1 (enable). See [#33](https://github.com/b4b4r07/enhancd/issues/33).
+
+</details>
+
 ## :books: References
 
 The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.

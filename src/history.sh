@@ -29,10 +29,14 @@ __enhancd::history::fuzzy()
     if [[ -z $1 ]]; then
         cat <&0
     else
-        cat <&0 \
-            | awk \
-            -f "$ENHANCD_ROOT/src/share/fuzzy.awk" \
-            -v search_string="$1"
+        if [[ $ENHANCD_USE_FUZZY_MATCH == 1 ]]; then
+            awk \
+                -f "$ENHANCD_ROOT/src/share/fuzzy.awk" \
+                -v search_string="$1"
+        else
+            # Case-insensitive (don't use fuzzy searhing)
+            awk '$0 ~ /\/.?'"$1"'[^\/]*$/{print $0}' 2>/dev/null
+        fi
     fi
 }
 
