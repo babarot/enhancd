@@ -11,6 +11,9 @@ OPTIONS:
 HELP
 
 if [[ -f $config ]]; then
+    cat "$config" \
+        | __enhancd::utils::grep -v '^(//|#)' \
+        |
     while IFS=$'\t' read short long desc action
     do
         if [[ -z ${short#*:} ]]; then
@@ -20,7 +23,7 @@ if [[ -f $config ]]; then
         else
             command printf "  %s, %-15s %s\n" "${short#*:}" "${long#*:}" "${desc#*:}"
         fi
-    done <"$config"
+    done
 else
     printf "  nothing yet"
 fi

@@ -4,7 +4,9 @@ __enhancd::arguments::option()
     shift
 
     cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
-        | awk '/:'$opt'\t/{print $4}' \
+        | __enhancd::utils::grep -v '^(//|#)' \
+        | awk -F$'\t' '/:'"$opt"'\t/{print $4}' \
+        | cut -d: -f2 \
         | read action
 
     if [[ -z $action ]]; then
@@ -16,7 +18,7 @@ __enhancd::arguments::option()
     if __enhancd::utils::has __enhancd::custom::sources::$action; then
         __enhancd::custom::sources::$action "$@"
     elif __enhancd::utils::has __enhancd::custom::options::$action; then
-        __enhancd::custom::options::$action "$@"
+        __enhancd::custom::options::$action "$opt" "$@"
     else
         __enhancd::utils::die "$action: no such action defined\n"
         return 1
