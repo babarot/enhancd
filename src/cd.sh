@@ -87,11 +87,17 @@ __enhancd::cd::builtin()
         return 1
     fi
 
+    __enhancd::cd::before
     builtin cd "$1"
     ret=$?
-
     __enhancd::cd::after
+
     return $ret
+}
+
+__enhancd::cd::before()
+{
+    :
 }
 
 __enhancd::cd::after()

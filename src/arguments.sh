@@ -33,7 +33,7 @@ __enhancd::arguments::hyphen()
 
     __enhancd::history::list "$1" \
         | head \
-        | __enhancd::history::interactive
+        | __enhancd::filter::interactive
 }
 
 __enhancd::arguments::dot()
@@ -46,12 +46,12 @@ __enhancd::arguments::dot()
     __enhancd::path::go_upstairs "$PWD" \
         | __enhancd::filter::reverse \
         | __enhancd::utils::grep "$1" \
-        | __enhancd::history::interactive \
+        | __enhancd::filter::interactive \
         | __enhancd::path::to_abspath
 
     # Returns false if __enhancd::path::to_abspath fails
     # __enhancd::path::to_abspath returns false
-    # if __enhancd::history::interactive doesn't output anything
+    # if __enhancd::filter::interactive doesn't output anything
     if [[ $? -eq 1 ]]; then
         if [[ -n $1 ]]; then
             # Returns false if an argument is given
@@ -70,7 +70,7 @@ __enhancd::arguments::none()
         return 0
     fi
 
-    __enhancd::history::list --home | __enhancd::history::interactive
+    __enhancd::history::list | __enhancd::filter::interactive
 }
 
 __enhancd::arguments::given()
@@ -80,5 +80,5 @@ __enhancd::arguments::given()
         return 0
     fi
 
-    __enhancd::history::list "$1" | __enhancd::history::interactive
+    __enhancd::history::list "$1" | __enhancd::filter::interactive
 }

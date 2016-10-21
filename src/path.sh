@@ -39,7 +39,7 @@ __enhancd::path::split()
 {
     awk \
         -f "$ENHANCD_ROOT/src/share/split.awk" \
-        -v arg="${1:-$PWD}" -v show_fullpath="$ENHANCD_DOT_SHOW_FULLPATH"
+        -v arg="${1:-$PWD}" #-v show_fullpath="$ENHANCD_DOT_SHOW_FULLPATH"
 }
 
 # __enhancd::path::step_by_step returns a list of stepwise path
@@ -57,6 +57,12 @@ __enhancd::path::go_upstairs()
     # dir is a target directory that defaults to the PWD
     dir="${1:-$PWD}"
 
+    if [[ $ENHANCD_DOT_SHOW_FULLPATH == 1 ]]; then
+        __enhancd::path::step_by_step \
+            | __enhancd::utils::reverse
+        return 0
+    fi
+
     # uniq is the variable that checks whether there is
     # the duplicate directory in the PWD environment variable
     if __enhancd::path::split "$dir" | awk -f "$ENHANCD_ROOT/src/share/has_dup_lines.awk"; then
@@ -65,4 +71,15 @@ __enhancd::path::go_upstairs()
     else
         __enhancd::path::split "$dir"
     fi
+}
+
+__enhancd::path::scan_cwd()
+{
+    find "${1:-$PWD}" -maxdepth 1 -type d \
+        | __enhancd::utils::grep -v "\/\."
+}
+
+__enhancd::path::pwd()
+{
+    command pwd
 }

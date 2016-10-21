@@ -23,8 +23,8 @@ __enhancd::custom::sources::ghq()
         | __enhancd::utils::grep -vx "$PWD" \
         | __enhancd::utils::sed "$ghq_root/" \
         | __enhancd::filter::unique \
-        | __enhancd::history::fuzzy "$@" \
-        | __enhancd::history::interactive \
+        | __enhancd::filter::fuzzy "$@" \
+        | __enhancd::filter::interactive \
         | read dir
 
     if [[ -z $dir ]]; then
