@@ -25,7 +25,7 @@ if [[ -f $config ]]; then
         fi
     done
 else
-    printf "  nothing yet"
+    printf "  nothing yet\n"
 fi
 
 cat <<HELP

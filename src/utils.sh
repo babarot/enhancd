@@ -6,28 +6,6 @@ __enhancd::utils::die()
     printf -- "$@" >&2
 }
 
-# __enhancd::utils::unique uniques a stdin contents
-__enhancd::utils::unique()
-{
-    if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
-    else
-        cat <&0
-    fi | awk '!a[$0]++' 2>/dev/null
-}
-
-# __enhancd::utils::reverse reverses a stdin contents
-__enhancd::utils::reverse()
-{
-    if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
-    else
-        cat <&0
-    fi \
-        | awk -f "$ENHANCD_ROOT/src/share/reverse.awk" \
-        2>/dev/null
-}
-
 # __enhancd::utils::grep prints in regular expression
 __enhancd::utils::grep()
 {
@@ -40,9 +18,9 @@ __enhancd::utils::grep()
         | command grep -E "$@" 2>/dev/null
 }
 
-# __enhancd::utils::replace replaces 1st arg with 2nd arg
+# __enhancd::utils::sed replaces 1st arg with 2nd arg
 # Use blank char instead if no argument is given
-__enhancd::utils::replace()
+__enhancd::utils::sed()
 {
     local g='' sep='!'
 

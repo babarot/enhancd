@@ -20,7 +20,7 @@ __enhancd::path::to_abspath()
         if [ -n "$num" ]; then
             # It is listed path stepwise
             __enhancd::path::step_by_step "$1" \
-                | __enhancd::utils::reverse \
+                | __enhancd::filter::reverse \
                 | __enhancd::utils::nl ":" \
                 | __enhancd::utils::grep "^$num" \
                 | cut -d: -f2

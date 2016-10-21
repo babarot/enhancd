@@ -1,7 +1,6 @@
 __enhancd::arguments::option()
 {
     local opt="$1" action
-    shift
 
     cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
         | __enhancd::utils::grep -v '^(//|#)' \
@@ -18,7 +17,7 @@ __enhancd::arguments::option()
     if __enhancd::utils::has __enhancd::custom::sources::$action; then
         __enhancd::custom::sources::$action "$@"
     elif __enhancd::utils::has __enhancd::custom::options::$action; then
-        __enhancd::custom::options::$action "$opt" "$@"
+        __enhancd::custom::options::$action "$@"
     else
         __enhancd::utils::die "$action: no such action defined\n"
         return 1
@@ -32,7 +31,9 @@ __enhancd::arguments::hyphen()
         return 0
     fi
 
-    __enhancd::history::list "$1" | head | __enhancd::history::filter
+    __enhancd::history::list "$1" \
+        | head \
+        | __enhancd::history::interactive
 }
 
 __enhancd::arguments::dot()
@@ -43,14 +44,14 @@ __enhancd::arguments::dot()
     fi
 
     __enhancd::path::go_upstairs "$PWD" \
-        | __enhancd::utils::reverse \
+        | __enhancd::filter::reverse \
         | __enhancd::utils::grep "$1" \
-        | __enhancd::history::filter \
+        | __enhancd::history::interactive \
         | __enhancd::path::to_abspath
 
     # Returns false if __enhancd::path::to_abspath fails
     # __enhancd::path::to_abspath returns false
-    # if __enhancd::history::filter doesn't output anything
+    # if __enhancd::history::interactive doesn't output anything
     if [[ $? -eq 1 ]]; then
         if [[ -n $1 ]]; then
             # Returns false if an argument is given
@@ -64,12 +65,12 @@ __enhancd::arguments::dot()
 
 __enhancd::arguments::none()
 {
-    if [[ "$ENHANCD_DISABLE_HOME" == 1 ]]; then
+    if [[ $ENHANCD_DISABLE_HOME == 1 ]]; then
         echo "$HOME"
         return 0
     fi
 
-    __enhancd::history::list --home | __enhancd::history::filter
+    __enhancd::history::list --home | __enhancd::history::interactive
 }
 
 __enhancd::arguments::given()
@@ -79,5 +80,5 @@ __enhancd::arguments::given()
         return 0
     fi
 
-    __enhancd::history::list "$1" | __enhancd::history::filter
+    __enhancd::history::list "$1" | __enhancd::history::interactive
 }

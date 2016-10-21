@@ -2,6 +2,9 @@
 
 __enhancd::custom::sources::ghq()
 {
+    # Shift first arguments (-g/--ghq)
+    shift
+
     if ! __enhancd::utils::has "ghq"; then
         __enhancd::utils::die "ghq: not found\n"
         return 1
@@ -13,15 +16,15 @@ __enhancd::custom::sources::ghq()
     {
         cat "$ENHANCD_DIR/enhancd.log" \
             | __enhancd::utils::grep "^$ghq_root" \
-            | __enhancd::utils::reverse
+            | __enhancd::filter::reverse
         ghq list
     } 2>/dev/null \
         | __enhancd::utils::grep -vx "$ghq_root" \
         | __enhancd::utils::grep -vx "$PWD" \
-        | __enhancd::utils::replace "$ghq_root/" \
-        | __enhancd::utils::unique \
+        | __enhancd::utils::sed "$ghq_root/" \
+        | __enhancd::filter::unique \
         | __enhancd::history::fuzzy "$@" \
-        | __enhancd::history::filter \
+        | __enhancd::history::interactive \
         | read dir
 
     if [[ -z $dir ]]; then

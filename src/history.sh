@@ -18,8 +18,9 @@ __enhancd::history::list()
         cat "$ENHANCD_DIR/enhancd.log"
         $is_home && echo "$HOME"
     } \
-        | __enhancd::utils::reverse \
-        | __enhancd::utils::unique \
+        | __enhancd::filter::reverse \
+        | __enhancd::filter::unique \
+        | __enhancd::filter::exists \
         | __enhancd::history::fuzzy "$@" \
         | __enhancd::utils::grep -vx "$PWD"
 }
@@ -40,7 +41,7 @@ __enhancd::history::fuzzy()
     fi
 }
 
-__enhancd::history::filter()
+__enhancd::history::interactive()
 {
     # Narrows the ENHANCD_FILTER environment variables down to one
     # and sets it to the variables filter
@@ -78,7 +79,7 @@ __enhancd::history::filter()
     esac
 }
 
-__enhancd::history::new()
+__enhancd::history::update()
 {
     {
         # Returns a list that was decomposed with a slash
@@ -88,15 +89,16 @@ __enhancd::history::new()
         # -> /home/lisa
         # -> /home/lisa/src
         # -> /home/lisa/src/github.com
-        __enhancd::path::step_by_step "$PWD" | __enhancd::utils::reverse
+        __enhancd::path::step_by_step "$PWD" \
+            | __enhancd::filter::reverse
         find "$PWD" -maxdepth 1 -type d | __enhancd::utils::grep -v "\/\."
         if [[ -f $ENHANCD_DIR/enhancd.log ]]; then
             cat "$ENHANCD_DIR/enhancd.log"
         fi
         echo "$PWD"
     } \
-        | __enhancd::utils::reverse \
-        | __enhancd::utils::unique \
-        | __enhancd::utils::reverse
+        | __enhancd::filter::reverse \
+        | __enhancd::filter::unique \
+        | __enhancd::filter::reverse
     echo "$PWD"
 }

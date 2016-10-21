@@ -90,6 +90,20 @@ __enhancd::cd::builtin()
     builtin cd "$1"
     ret=$?
 
-    __enhancd::hook::after_cd
+    __enhancd::cd::after
     return $ret
+}
+
+__enhancd::cd::after()
+{
+    local list
+    list="$(__enhancd::history::update)"
+
+    if [[ -n $list ]]; then
+        echo "$list" >| "$ENHANCD_DIR/enhancd.log"
+    fi
+
+    if [[ -n $ENHANCD_HOOK_AFTER_CD ]]; then
+        eval "$ENHANCD_HOOK_AFTER_CD"
+    fi
 }

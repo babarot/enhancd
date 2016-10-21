@@ -22,13 +22,13 @@ T_SUB "die" ((
 ))
 T_SUB "unique" ((
   p1a="$(echo -e "aaa${LF}bbb${LF}ccc")"
-  p1b="$(echo "$dummy" | __enhancd::utils::unique)"
+  p1b="$(echo "$dummy" | __enhancd::filter::unique)"
   t_ok $? "unique 1"
   t_is "$p1a" "$p1b" "unique 2"
 ))
 T_SUB "reverse" ((
   p1a="$(echo -e "bbb${LF}aaa${LF}ccc${LF}bbb${LF}aaa")"
-  p1b="$(echo "$dummy" | __enhancd::utils::reverse)"
+  p1b="$(echo "$dummy" | __enhancd::filter::reverse)"
   t_ok $? "reverse 1"
   t_is "$p1a" "$p1b" "reverse 2"
 ))
