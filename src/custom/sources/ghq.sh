@@ -43,38 +43,39 @@ __enhancd::custom::sources::ghq()
 __enhancd::custom::sources::ghq_smart()
 {
     shift
+    local dir ret
 
     if ! __enhancd::utils::has "ghq"; then
         __enhancd::utils::die "ghq: not found\n"
         return 1
     fi
 
-    local dir ghq_root history
-    ghq_root="$(ghq root 2>/dev/null)"
-
+    dir="$(
     {
         ghq list --full-path
         {
             ghq list --full-path
             __enhancd::history::origin
         } \
-            | awk 'a[$0]++' \
-            | awk '!a[$0]++' # TODO
+            | __enhancd::filter::intersection
     } \
         | __enhancd::utils::grep -vx "$PWD" \
         | __enhancd::filter::reverse \
         | __enhancd::filter::unique \
-        | __enhancd::filter::interactive \
-        | read dir
+        | __enhancd::filter::fuzzy "$@" \
+        | __enhancd::filter::interactive
+    )"
 
+    ret=$?
     if [[ -z $dir ]]; then
-        # Press Ctrl-C
-        return 0
-    fi
-
-    if [[ ! -d $dir ]]; then
-        __enhancd::utils::die "$dir: no such directory\n"
-        return 1
+        if [[ $ret == $_ENHANCD_FAILURE ]]; then
+            __enhancd::utils::die \
+                "$@: no such file or directory\n"
+            return 1
+        else
+            # Press Ctrl-C
+            return 0
+        fi
     fi
 
     __enhancd::cd "$dir"

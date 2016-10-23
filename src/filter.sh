@@ -10,6 +10,15 @@ __enhancd::filter::exists()
     done
 }
 
+__enhancd::filter::intersection()
+{
+    if [[ -n $1 ]] && [[ -f $1 ]]; then
+        cat "$1"
+    else
+        cat <&0
+    fi | awk 'a[$0]++' 2>/dev/null
+}
+
 # __enhancd::filter::unique uniques a stdin contents
 __enhancd::filter::unique()
 {
