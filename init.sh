@@ -53,7 +53,7 @@ fi
 
     # Set the filter if empty
     if [[ -z $ENHANCD_FILTER ]]; then
-        ENHANCD_FILTER="fyz:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+        ENHANCD_FILTER="fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
     fi
 
     # In zsh it will cause field splitting to be performed

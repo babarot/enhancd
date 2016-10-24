@@ -194,7 +194,7 @@ usage: cd [OPTIONS] [dir]
 OPTIONS:
   -h, --help       Show help message
   -V, --version    Show version information
-  -g, --ghq        Filter ghq list and cd to it
+  -G, --ghq        Filter ghq list
 
 ```
 

@@ -59,7 +59,7 @@ __enhancd::path::go_upstairs()
 
     if [[ $ENHANCD_DOT_SHOW_FULLPATH == 1 ]]; then
         __enhancd::path::step_by_step \
-            | __enhancd::utils::reverse
+            | __enhancd::filter::reverse
         return 0
     fi
 

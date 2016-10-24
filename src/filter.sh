@@ -10,7 +10,7 @@ __enhancd::filter::exists()
     done
 }
 
-__enhancd::filter::intersection()
+__enhancd::filter::join()
 {
     if [[ -n $1 ]] && [[ -f $1 ]]; then
         cat "$1"

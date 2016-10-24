@@ -57,7 +57,7 @@ __enhancd::custom::sources::ghq_smart()
             ghq list --full-path
             __enhancd::history::origin
         } \
-            | __enhancd::filter::intersection
+            | __enhancd::filter::join
     } \
         | __enhancd::utils::grep -vx "$PWD" \
         | __enhancd::filter::reverse \
