@@ -4,8 +4,8 @@ __enhancd::cd()
     local    t arg="$1"
     local -i ret=0
 
-    if ! __enhancd::utils::available "$ENHANCD_FILTER" &>/dev/null; then
-        builtin cd "${arg:-$HOME}"
+    if ! __enhancd::utils::available; then
+        __enhancd::cd::builtin "${@:-$HOME}"
         return $?
     fi
 

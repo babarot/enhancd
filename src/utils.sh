@@ -1,5 +1,11 @@
 #!/bin/bash
 
+__enhancd::utils::available()
+{
+    __enhancd::utils::filter "$ENHANCD_FILTER" &>/dev/null &&
+        [[ -s $ENHANCD_DIR/enhancd.log ]]
+}
+
 # __enhancd::utils::die puts a string to stderr
 __enhancd::utils::die()
 {
@@ -49,8 +55,8 @@ __enhancd::utils::sed()
         | command sed -E "s$sep$1$sep$2$sep$g" 2>/dev/null
 }
 
-# __enhancd::utils::available fuzzys list down to one
-__enhancd::utils::available()
+# __enhancd::utils::filter fuzzys list down to one
+__enhancd::utils::filter()
 {
     local x candidates
 
@@ -67,7 +73,7 @@ __enhancd::utils::available()
         # reset candidates
         candidates=${candidates#*:}
 
-        # check if x is __enhancd::utils::available
+        # check if x is __enhancd::utils::filter
         if __enhancd::utils::has "${x%% *}"; then
             echo "$x"
             return 0

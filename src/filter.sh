@@ -69,7 +69,7 @@ __enhancd::filter::interactive()
         list="$(cat <&0)"
     fi
 
-    filter="$(__enhancd::utils::available "$ENHANCD_FILTER")"
+    filter="$(__enhancd::utils::filter "$ENHANCD_FILTER")"
 
     # Count lines in the list
     local wc
