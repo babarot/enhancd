@@ -26,7 +26,7 @@ else
     return 1
 fi
 
-() {
+{
     # core files
     for src in "$ENHANCD_ROOT/src"/*.sh
     do
