@@ -26,6 +26,7 @@ else
     return 1
 fi
 
+__enhancd::init::init()
 {
     # core files
     for src in "$ENHANCD_ROOT/src"/*.sh
@@ -67,3 +68,5 @@ fi
         setopt localoptions SH_WORD_SPLIT
     fi
 } &>/dev/null
+
+__enhancd::init::init
