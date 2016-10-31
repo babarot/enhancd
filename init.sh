@@ -67,6 +67,6 @@ __enhancd::init::init()
         # (Zsh Manual 14.3 Parameter Expansion)
         setopt localoptions SH_WORD_SPLIT
     fi
-} &>/dev/null
+}
 
 __enhancd::init::init
