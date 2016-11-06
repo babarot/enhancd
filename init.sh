@@ -48,9 +48,6 @@ __enhancd::init::init()
 
     # alias to cd
     eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
-    if [[ $ENHANCD_COMMAND != cd ]]; then
-        unalias cd
-    fi
 
     # Set the filter if empty
     if [[ -z $ENHANCD_FILTER ]]; then
