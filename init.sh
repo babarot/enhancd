@@ -26,6 +26,7 @@ else
     return 1
 fi
 
+__enhancd::init::init()
 {
     # core files
     for src in "$ENHANCD_ROOT/src"/*.sh
@@ -47,9 +48,6 @@ fi
 
     # alias to cd
     eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
-    if [[ $ENHANCD_COMMAND != cd ]]; then
-        unalias cd
-    fi
 
     # Set the filter if empty
     if [[ -z $ENHANCD_FILTER ]]; then
@@ -66,4 +64,6 @@ fi
         # (Zsh Manual 14.3 Parameter Expansion)
         setopt localoptions SH_WORD_SPLIT
     fi
-} &>/dev/null
+}
+
+__enhancd::init::init
