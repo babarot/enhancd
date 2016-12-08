@@ -83,3 +83,32 @@ __enhancd::path::pwd()
 {
     command pwd
 }
+
+__enhancd::path::not_found()
+{
+    local dir="$1"
+    local yesno
+
+    if [[ -z $dir ]]; then
+        return 1
+    fi
+
+    if [[ $ENHANCD_AUTO_MKDIR == 1 ]]; then
+        printf "$dir: not found. Create it? [y/N]: "
+        read yesno
+        case "$yesno" in
+            y|Y|[yY][eE][sS]|"")
+                ;;
+            *)
+                __enhancd::utils::die \
+                    "$dir: no such file or directory\n"
+                return 1
+                ;;
+        esac
+        mkdir -p "$dir"
+    else
+        __enhancd::utils::die \
+            "$dir: no such file or directory\n"
+        return 1
+    fi
+}
