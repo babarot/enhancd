@@ -32,6 +32,7 @@ __enhancd::arguments::hyphen()
     fi
 
     __enhancd::history::list "$1" \
+        | __enhancd::utils::grep -vx "$HOME" \
         | head \
         | __enhancd::filter::interactive
 }
