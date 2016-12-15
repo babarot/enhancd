@@ -43,8 +43,12 @@ __enhancd::init::init()
     unset src
 
     # make a log file and a root directory
-    mkdir -p "$ENHANCD_DIR"
-    touch "$ENHANCD_DIR/enhancd.log"
+    if [ ! -d "$ENHANCD_DIR" ]; then
+      mkdir -p "$ENHANCD_DIR"
+    fi
+    if [ ! -f "$ENHANCD_DIR/enhancd.log" ]; then
+      touch "$ENHANCD_DIR/enhancd.log"
+    fi
 
     # alias to cd
     eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
