@@ -85,7 +85,7 @@ __enhancd::filter::interactive()
             ;;
         * )
             local t
-            t="$(echo "$list" | $filter)"
+            t="$(echo "$list" | eval $filter)"
             if [[ -z $t ]]; then
                 # No selection
                 return 0
