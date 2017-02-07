@@ -1,6 +1,6 @@
 [version-badge]: https://img.shields.io/badge/latest-v2.2.2-e64d56.svg?style=flat-square
 [version-link]: https://github.com/b4b4r07/enhancd/releases
-[travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
+[travis-badge]: https://travis-ci.org/b4b4r07/enhancd.svg?branch=master
 [travis-link]: https://travis-ci.org/b4b4r07/enhancd
 [awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license-link]: http://b4b4r07.mit-license.org
