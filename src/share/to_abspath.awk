@@ -4,6 +4,9 @@ BEGIN {
         print "/"
         exit
     }
+    if (cwd !~ dir) {
+        exit
+    }
 
     # pos is a position of dir in cwd
     pos = rindex(cwd, dir)
