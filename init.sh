@@ -53,6 +53,7 @@ __enhancd::init::init()
     # alias to cd
     eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
 
+
     # If ENHANCD_FILTER is set then do nothing :
     # else if INTERACTIVE_FILTER is set then ENHANCD_FILTER equals INTERACTIVE_FILTER
     # else ENHANCD_FILTER equals INTERACTIVE_FILTER equals defaults
