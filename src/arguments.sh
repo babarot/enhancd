@@ -74,6 +74,12 @@ __enhancd::arguments::none()
     __enhancd::history::list | __enhancd::filter::interactive
 }
 
+__enhancd::arguments::empty()
+{
+    echo "$HOME"
+    return 0
+}
+
 __enhancd::arguments::given()
 {
     if [[ -d $1 ]]; then
