@@ -356,6 +356,19 @@ In other words, you can keep original `cd -` behavior by this option.
 </details>
 
 <details>
+<summary><strong><code>ENHANCD_HOME_ARG</code></strong></summary>
+
+You can customize to trigger the argumentless `cd` behavior by giving the string specified by this environment variable as an argument.
+Default is empty string.
+
+If you set this variable any but empty string, it gives you the behavior of `cd` with no argument; i.e. backward search of the whole directory-change history.
+Then `cd` with no argument changes current directory to `$HOME` without interactive filter.
+
+In other words, you can keep original behavior of `cd` with no argument by this option.
+
+</details>
+
+<details>
 <summary><strong><code>ENHANCD_HOOK_AFTER_CD</code></strong></summary>
 
 Default is empty. You can run any commands after changing directory with enhancd (e.g. `ls`: like `cd && ls`).
