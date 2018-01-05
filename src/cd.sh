@@ -46,8 +46,12 @@ __enhancd::cd()
             __enhancd::arguments::option "$@"
             return $?
             ;;
-        "")
+        "$ENHANCD_HOME_ARG")
             t="$(__enhancd::arguments::none "$@")"
+            ret=$?
+            ;;
+        "")
+            t="$(__enhancd::arguments::empty)"
             ret=$?
             ;;
         *)

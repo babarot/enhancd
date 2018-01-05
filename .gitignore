@@ -6,3 +6,4 @@
 **/*.swp
 .env
 .ignore
+*.zwc
