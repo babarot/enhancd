@@ -33,7 +33,7 @@ __enhancd::arguments::hyphen()
 
     __enhancd::history::list "$1" \
         | __enhancd::utils::grep -vx "$HOME" \
-        | head \
+        | head -n "$ENHANCD_HYPHEN_NUM" \
         | __enhancd::filter::interactive
 }
 
