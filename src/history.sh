@@ -22,7 +22,7 @@ __enhancd::history::list()
         | __enhancd::filter::unique \
         | __enhancd::filter::exists \
         | __enhancd::filter::fuzzy "$@" \
-        | __enhancd::utils::grep -vx "$PWD"
+        | __enhancd::utils::grep -vx "$PWD" || true
 }
 
 __enhancd::history::update()
