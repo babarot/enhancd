@@ -1,12 +1,12 @@
 daysUntilStale: 7
-daysUntilClose: 7
+daysUntilClose: 14
 exemptMilestones: true
-staleLabel: waiting-reply
+staleLabel: stale
 
 markComment: >
-  Hi there! This has been automatically marked as stale because it has not
-  had activity in the past 7 days. It will be closed in 7 days if no
-  further activity takes place.
+  This issue has been automatically marked as stale because it has not had
+  recent activity. It will be closed if no further activity occurs. Thank you
+  for your contributions.
 
 closeComment: >
   Hi there! This has been closed due to lack of activity. Please comment
