@@ -6,22 +6,24 @@ VERSION      := $(_ENHANCD_VERSION)
 
 .DEFAULT_GOAL := help
 
-.PHONY: all shove test tag doc help
-
 all:
 
+.PHONY: shove
 shove: # Grab shove from GitHub and grant execution
 	@test -f $(SHOVE_BIN) || git clone $(SHOVE_URL) $(SHOVE_DIR)
 	@test -x $(SHOVE_BIN) || chmod 755 $(SHOVE_BIN)
 
+.PHONY: test
 test: shove
 	ENHANCD_ROOT=$(PWD) $(SHOVE_BIN) -s bash ./test/*_test.sh
 	ENHANCD_ROOT=$(PWD) $(SHOVE_BIN) -s zsh  ./test/*_test.sh
 
+.PHONY: tag
 tag:
 	git tag -a v$(VERSION) -m v$(VERSION) || true
 	git push origin v$(VERSION)
 
+.PHONY: doc
 doc:
 	a2x \
 		--format=manpage \
@@ -30,7 +32,16 @@ doc:
 		doc/enhancd.txt
 	rm doc/enhancd.xml
 
-help: ## Self-documented Makefile
+.PHONY: build
+build: ## Run an iamge
+	docker build -t enhancd:latest .
+
+.PHONY: run
+run: build ## Build an image
+	docker run -it enhancd
+
+.PHONY: help
+help: ## Show help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
