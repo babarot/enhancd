@@ -356,6 +356,16 @@ In other words, you can keep original `cd -` behavior by this option.
 </details>
 
 <details>
+<summary><strong><code>ENHANCD_HYPHEN_NUM</code></strong></summary>
+
+You can customize the number of rows by "cd -" 
+Default is `10`.
+
+This is passed to `head` comand as `-n` option.
+
+</details>
+
+<details>
 <summary><strong><code>ENHANCD_HOME_ARG</code></strong></summary>
 
 You can customize to trigger the argumentless `cd` behavior by giving the string specified by this environment variable as an argument.
