@@ -13,6 +13,7 @@ export ENHANCD_HYPHEN_NUM="${ENHANCD_HYPHEN_NUM:-10}"
 export ENHANCD_HOME_ARG="${ENHANCD_HOME_ARG:-}"
 export ENHANCD_DOT_SHOW_FULLPATH="${ENHANCD_DOT_SHOW_FULLPATH:-0}"
 export ENHANCD_USE_FUZZY_MATCH="${ENHANCD_USE_FUZZY_MATCH:-1}"
+export ENHANCD_AWK
 
 _ENHANCD_VERSION="2.2.2"
 _ENHANCD_SUCCESS=0
@@ -59,6 +60,20 @@ __enhancd::init::init()
     if [[ -z $ENHANCD_FILTER ]]; then
         ENHANCD_FILTER="fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
     fi
+
+    # In zsh it will cause field splitting to be performed
+    # on unquoted parameter expansions.
+    if __enhancd::utils::has "setopt" && [[ -n $ZSH_VERSION ]]; then
+        # Note in particular the fact that words of unquoted parameters are not
+        # automatically split on whitespace unless the option SH_WORD_SPLIT is set;
+        # see references to this option below for more details.
+        # This is an important difference from other shells.
+        # (Zsh Manual 14.3 Parameter Expansion)
+        setopt localoptions SH_WORD_SPLIT
+    fi
+
+    ENHANCD_AWK="$(__enhancd::utils::awk)"
+
 }
 
 __enhancd::init::init
