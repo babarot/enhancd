@@ -25,6 +25,7 @@ if [[ -n $BASH_VERSION ]]; then
 elif [[ -n $ZSH_VERSION ]]; then
     # ZSH
     ENHANCD_ROOT="${${(%):-%x}:A:h}"
+    compdef _cd __enhancd::cd
 else
     return 1
 fi
