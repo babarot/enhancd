@@ -66,8 +66,11 @@ __enhancd::cd()
             ret=$?
             ;;
         $_ENHANCD_FAILURE)
-            __enhancd::utils::die \
-                "${t:-${2:-$1}}: no such file or directory\n"
+            __enhancd::path::not_found "${t:-${2:-$1}}" &&
+                {
+                    __enhancd::cd::builtin "${t:-${2:-$1}}"
+                }
+            ret=$?
             ;;
         *)
             ;;
@@ -79,20 +82,20 @@ __enhancd::cd()
 __enhancd::cd::builtin()
 {
     local -i ret=0
+    local    dir="$1"
 
     # Case of pressing Ctrl-C in selecting
-    if [[ -z $1 ]]; then
+    if [[ -z $dir ]]; then
         return 0
     fi
 
-    if [[ ! -d $1 ]]; then
-        __enhancd::utils::die \
-            "$1: no such file or directory\n"
-        return 1
+    if [[ ! -d $dir ]]; then
+        __enhancd::path::not_found "$dir"
+        return $?
     fi
 
     __enhancd::cd::before
-    builtin cd "$1"
+    builtin cd "$dir"
     ret=$?
     __enhancd::cd::after
 
