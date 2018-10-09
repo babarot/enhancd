@@ -9,8 +9,9 @@ RUN apk update && \
     wget https://github.com/junegunn/fzf-bin/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tgz && \
     tar xzvf fzf-${FZF_VERSION}-linux_amd64.tgz && \
     install -m 0755 fzf /bin && rm fzf fzf-${FZF_VERSION}-linux_amd64.tgz && \
-    git clone https://github.com/b4b4r07/enhancd.git && \
     apk del .build-deps
+
+ADD . /enhancd
 
 RUN echo "source /enhancd/init.sh" | tee /etc/bashrc
 CMD bash --rcfile /etc/bashrc
