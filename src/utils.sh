@@ -115,5 +115,5 @@ __enhancd::utils::nl()
 # __enhancd::utils::awk returns gawk if found, else awk
 __enhancd::utils::awk()
 {
-    which gawk > /dev/null 2>&1 && echo "gawk" || echo "awk"
+    type gawk &>/dev/null && echo "gawk" || echo "awk"
 }
