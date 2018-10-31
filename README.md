@@ -112,7 +112,7 @@ $ cd
 > _
 ```
 
-The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#requirements) separated by colon (`:`) characters.
+The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#heartbeat-requirements) separated by colon (`:`) characters.
 
 It is likely the only environment variable you'll need to set when starting enhancd.
 
