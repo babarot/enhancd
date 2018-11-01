@@ -115,9 +115,5 @@ __enhancd::utils::nl()
 # __enhancd::utils::awk returns gawk if found, else awk
 __enhancd::utils::awk()
 {
-    if [[ "$(uname -s)" == "FreeBSD" ]]; then
-        [[ $(command -v gawk) ]] && echo "gawk" || echo "awk"
-    else
-        echo "awk"
-    fi
+    type gawk &>/dev/null && echo "gawk" || echo "awk"
 }
