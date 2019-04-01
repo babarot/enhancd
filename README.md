@@ -202,22 +202,37 @@ Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/bl
 
 ## :package: Installation
 
-Give me a trial!
+enhancd can work on bash and zsh. But let's say we use bash as default shell at this example:
 
-- Install with [zplug](https://github.com/b4b4r07/zplug):
+```console
+# add the fzy brew tap to homebrew
+$ brew tap jhawthorn/fzy
 
-	enhancd can be installed by adding following to your `.zshrc` file in the same function you're doing your other `zplug load` calls in.
+# install fzy and ccat with homebrew
+$ brew install fzy ccat 
 
-	```console
-	$ zplug "b4b4r07/enhancd", use:init.sh
-	```
+# alt: brew install fzy ccat percol peco fzf 
+#  depending on which interactive filter you want to use
 
-- Install with `git clone`:
+# install enhancd into your home directory (or a preferred directory)
+$ cd ~  
+$ git clone https://github.com/b4b4r07/enhancd
 
-	```console
-	$ git clone https://github.com/b4b4r07/enhancd
-	$ source /path/to/enhancd/init.sh
-	```
+# if you want to hide the directory in the finder (gui)
+$ chflags hidden enhancd  
+
+# add enhancd to your bash profile (or sourced file of choice)
+$ echo "source ~/enhancd/init.sh"  >> ~/.bash_profile
+
+# reload your bash profile
+$ source ~/.bash_profile
+```
+
+Also if you use zsh as your shell, you can install this via [zplug](https://github.com/zplug/zplug) which is powerfull plugin mananger for zsh:
+
+```bash
+zplug "b4b4r07/enhancd", use:init.sh
+```
 
 ## :wrench: Configurations
 
