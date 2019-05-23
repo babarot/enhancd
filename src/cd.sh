@@ -1,8 +1,8 @@
 __enhancd::cd()
 {
-    # t is an argument of the list for __enhancd::interface
-    local    t arg="$1"
+    local    arg
     local -i ret=0
+    local -a opts args
 
     if ! __enhancd::utils::available; then
         __enhancd::cd::builtin "${@:-$HOME}"
@@ -11,63 +11,85 @@ __enhancd::cd()
 
     # Read from standard input
     if [[ -p /dev/stdin ]]; then
-        t="$(cat <&0)"
-        arg=":stdin:"
+        args+=( "$(cat <&0)" )
     fi
 
-    case "$arg" in
-        ":stdin:")
-            ;;
-        "$ENHANCD_HYPHEN_ARG")
-            # If a hyphen is passed as the argument,
-            # searchs from the last 10 directory items in the log
-            t="$(__enhancd::arguments::hyphen "$2")"
-            ret=$?
-            ;;
-        "$ENHANCD_DOT_ARG")
-            # If a double-dot is passed as the argument,
-            # it behaves like a zsh-bd plugin
-            # In short, you can jump back to a specific directory,
-            # without doing `cd ../../..`
-            t="$(__enhancd::arguments::dot "$2")"
-            ret=$?
-            ;;
-        "-")
-            # When $ENHANCD_HYPHEN_ARG is configured,
-            # this behaves like `cd -`
-            t="$OLDPWD"
-            ;;
-        "..")
-            # When $ENHANCD_DOT_ARG is configured,
-            # ".." is passed to builtin cd
-            t=".."
-            ;;
-        -* | --*)
-            __enhancd::arguments::option "$@"
-            return $?
-            ;;
-        "$ENHANCD_HOME_ARG")
-            t="$(__enhancd::arguments::none "$@")"
-            ret=$?
-            ;;
-        "")
-            t="$(__enhancd::arguments::empty)"
-            ret=$?
-            ;;
-        *)
-            t="$(__enhancd::arguments::given "$@")"
-            ret=$?
-            ;;
-    esac
+    while (( $# > 0 ))
+    do
+        case $SHELL in
+            *bash*)
+                case "$1" in
+                    "-P" | "-L" | "-e" | "-@")
+                        opts+=( "$1" )
+                        shift
+                        continue
+                        ;;
+                esac
+                ;;
+            *zsh*)
+                case "$1" in
+                    "-q" | "-s" | "-L" | "-P")
+                        opts+=( "$1" )
+                        shift
+                        continue
+                        ;;
+                esac
+                ;;
+        esac
+
+        case "$1" in
+            "$ENHANCD_HYPHEN_ARG")
+                # If a hyphen is passed as the argument,
+                # searchs from the last 10 directory items in the log
+                args+=( "$(__enhancd::arguments::hyphen "$2")" )
+                ret=$?
+                ;;
+            "$ENHANCD_DOT_ARG")
+                # If a double-dot is passed as the argument,
+                # it behaves like a zsh-bd plugin
+                # In short, you can jump back to a specific directory,
+                # without doing `cd ../../..`
+                args+=( "$(__enhancd::arguments::dot "$2")" )
+                ret=$?
+                ;;
+            "-")
+                # When $ENHANCD_HYPHEN_ARG is configured,
+                # this behaves like `cd -`
+                args+=( "$OLDPWD" )
+                ;;
+            "..")
+                # When $ENHANCD_DOT_ARG is configured,
+                # ".." is passed to builtin cd
+                args+=( ".." )
+                ;;
+            -* | --*)
+                __enhancd::arguments::option "$@"
+                return $?
+                ;;
+            "$ENHANCD_HOME_ARG")
+                args+=( "$(__enhancd::arguments::none "$@")" )
+                ret=$?
+                ;;
+            *)
+                args+=( "$(__enhancd::arguments::given "$@")" )
+                ret=$?
+                ;;
+        esac
+        shift
+    done
+
+    if (( ${#args[@]} == 0 )); then
+        args+=( "$(__enhancd::arguments::none "$@")" )
+        ret=$?
+    fi
 
     case $ret in
         $_ENHANCD_SUCCESS)
-            __enhancd::cd::builtin "$t"
+            __enhancd::cd::builtin ${opts[@]} ${args[@]}
             ret=$?
             ;;
         $_ENHANCD_FAILURE)
-            __enhancd::utils::die \
-                "${t:-${2:-$1}}: no such file or directory\n"
+            __enhancd::utils::die "no such file or directory\n"
             ;;
         *)
             ;;
@@ -85,14 +107,8 @@ __enhancd::cd::builtin()
         return 0
     fi
 
-    if [[ ! -d $1 ]]; then
-        __enhancd::utils::die \
-            "$1: no such file or directory\n"
-        return 1
-    fi
-
     __enhancd::cd::before
-    builtin cd "$1"
+    builtin cd "$@"
     ret=$?
     __enhancd::cd::after
 
