@@ -1,11 +1,8 @@
-__zic_fzf_prog() {
-  [ -n "$TMUX_PANE" ] && [ "${FZF_TMUX:-0}" != 0 ] && [ ${LINES:-40} -gt 15 ] \
-    && echo "fzf-tmux -d${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
-}
+#!/bin/zsh
 
-__zic_matched_subdir_list() {
-  __enhancd::history::list
-  return
+__enhancd::completion::list() {
+  # This code are copied from https://github.com/changyuheng/zsh-interactive-cd
+  # https://github.com/changyuheng/zsh-interactive-cd/blob/master/LICENSE
   local dir length seg starts_with_dir
   if [[ "$1" == */ ]]; then
     dir="$1"
@@ -59,23 +56,32 @@ __zic_matched_subdir_list() {
   fi
 }
 
-_zic_list_generator() {
-  # __zic_matched_subdir_list "${(Q)@[-1]}" | sort
-  __zic_matched_subdir_list "${(Q)@[-1]}"
+__enhancd::completion::completer() {
+  case $ENHANCD_COMPLETION_BEHAVIOR in
+    ("list" | "dir" | "dirlist")
+        __enhancd::completion::list "${(Q)@[-1]}" | sort
+        ;;
+    ("history")
+        __enhancd::history::list "${(Q)@[-1]}"
+        ;;
+    ("default" | "*")
+        :
+        ;;
+  esac
 }
 
-_zic_complete() {
+__enhancd::completion::complete() {
   setopt localoptions nonomatch
-  local l matches fzf tokens base
+  local l matches filter tokens base
 
-  l=$(_zic_list_generator $@)
+  l=$(__enhancd::completion::completer $@)
 
   if [ -z "$l" ]; then
-    zle ${__zic_default_completion:-expand-or-complete}
+    zle ${ENHANCD_COMPLETION_DEFAULT:-expand-or-complete}
     return
   fi
 
-  fzf=$(__zic_fzf_prog)
+  filter=$(__enhancd::utils::filter "$ENHANCD_FILTER")
 
   if [ $(echo $l | wc -l) -eq 1 ]; then
     matches=${(q)l}
@@ -83,7 +89,7 @@ _zic_complete() {
     matches=$(echo $l \
         | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} \
           --reverse $FZF_DEFAULT_OPTS $FZF_COMPLETION_OPTS \
-          --bind 'shift-tab:up,tab:down'" ${=fzf} \
+          --bind 'shift-tab:up,tab:down'" ${=filter} \
         | while read -r item; do
       echo -n "${(q)item} "
     done)
@@ -117,7 +123,7 @@ _zic_complete() {
   typeset -f zle-line-init >/dev/null && zle zle-line-init
 }
 
-zic-completion() {
+__enhancd::completion::run() {
   setopt localoptions noshwordsplit noksh_arrays noposixbuiltins
   local tokens cmd
 
@@ -125,28 +131,26 @@ zic-completion() {
   cmd=${tokens[1]}
 
   if [[ "$LBUFFER" =~ "^\ *cd$" ]]; then
-    zle ${__zic_default_completion:-expand-or-complete}
+    zle ${ENHANCD_COMPLETION_DEFAULT:-expand-or-complete}
   elif [ "$cmd" = cd ]; then
-    _zic_complete ${tokens[2,${#tokens}]/#\~/$HOME}
+    __enhancd::completion::complete ${tokens[2,${#tokens}]/#\~/$HOME}
   else
-    zle ${__zic_default_completion:-expand-or-complete}
+    zle ${ENHANCD_COMPLETION_DEFAULT:-expand-or-complete}
   fi
 }
 
-[ -z "$__zic_default_completion" ] && {
+if [[ -z "$ENHANCD_COMPLETION_DEFAULT" ]]; then
   binding=$(bindkey '^I')
   # $binding[(s: :w)2]
   # The command substitution and following word splitting to determine the
   # default zle widget for ^I formerly only works if the IFS parameter contains
   # a space via $binding[(w)2]. Now it specifically splits at spaces, regardless
   # of IFS.
-  [[ $binding =~ 'undefined-key' ]] || __zic_default_completion=$binding[(s: :w)2]
+  [[ $binding =~ 'undefined-key' ]] || ENHANCD_COMPLETION_DEFAULT=$binding[(s: :w)2]
   unset binding
-}
-
-zle -N zic-completion
-if [ -z $zic_custom_binding ]; then
-  zic_custom_binding='^I'
 fi
 
-bindkey "${zic_custom_binding}" zic-completion
+if [[ -n $ENHANCD_COMPLETION_KEYBIND ]]; then
+  zle -N __enhancd::completion::run
+  bindkey "${ENHANCD_COMPLETION_KEYBIND}" __enhancd::completion::run
+fi
