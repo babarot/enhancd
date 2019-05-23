@@ -44,6 +44,13 @@ __enhancd::init::init()
         source "$src"
     done
 
+    if [[ $SHELL == *zsh* ]]; then
+        for src in "$ENHANCD_ROOT/src"/*.zsh
+        do
+            source "$src"
+        done
+    fi
+
     unset src
 
     # make a log file and a root directory
