@@ -1,4 +1,4 @@
-[version-badge]: https://img.shields.io/badge/latest-v2.2.2-e64d56.svg?style=flat-square
+[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg?style=flat-square
 [version-link]: https://github.com/b4b4r07/enhancd/releases
 [travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
 [travis-link]: https://travis-ci.org/b4b4r07/enhancd
@@ -407,6 +407,25 @@ Default is 1 (enable). See [#33](https://github.com/b4b4r07/enhancd/issues/33).
 
 </details>
 
+<details>
+<summary><strong><code>ENHANCD_COMPLETION_KEYBIND</code></strong></summary>
+
+Default is <kbd>Tab</kbd> (`^I`). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
+
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_COMPLETION_BEHAVIOR</code></strong></summary>
+
+Default is the word of `default` (Regular completion). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
+
+It can be taken following words:
+
+- default
+- list (dir list with `$ENHANCD_FILTER`)
+- history (dir history list with `$ENHANCD_FILTER`)
+
+</details>
 ## :books: References
 
 The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.
@@ -425,3 +444,4 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 ## :ticket: License
 
 [MIT][license-link] :copyright: b4b4r07
+

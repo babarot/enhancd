@@ -14,8 +14,11 @@ export ENHANCD_HOME_ARG="${ENHANCD_HOME_ARG:-}"
 export ENHANCD_DOT_SHOW_FULLPATH="${ENHANCD_DOT_SHOW_FULLPATH:-0}"
 export ENHANCD_USE_FUZZY_MATCH="${ENHANCD_USE_FUZZY_MATCH:-1}"
 export ENHANCD_AWK
+export ENHANCD_COMPLETION_DEFAULT
+export ENHANCD_COMPLETION_KEYBIND="${ENHANCD_COMPLETION_KEYBIND:-^I}"
+export ENHANCD_COMPLETION_BEHAVIOR="${ENHANCD_COMPLETION_BEHAVIOR:-default}"
 
-_ENHANCD_VERSION="2.2.2"
+_ENHANCD_VERSION="2.2.3"
 _ENHANCD_SUCCESS=0
 _ENHANCD_FAILURE=60
 
@@ -26,6 +29,7 @@ elif [[ -n $ZSH_VERSION ]]; then
     # ZSH
     ENHANCD_ROOT="${${(%):-%x}:A:h}"
     compdef _cd __enhancd::cd
+    # source $ENHANCD_ROOT/init.zsh
 else
     return 1
 fi
@@ -43,6 +47,13 @@ __enhancd::init::init()
     do
         source "$src"
     done
+
+    if [[ $SHELL == *zsh* ]]; then
+        for src in "$ENHANCD_ROOT/src"/*.zsh
+        do
+            source "$src"
+        done
+    fi
 
     unset src
 
