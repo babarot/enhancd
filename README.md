@@ -10,25 +10,25 @@
 <a href="top"></a>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/logo.gif">
+<img src="https://user-images.githubusercontent.com/4442708/58421159-3e63fc80-80ca-11e9-9621-9fe139924411.png">
 </p>
 
 <p align="center">
-<b><a href="#memo-description">Description</a></b>
+<b><a href="#description">Description</a></b>
 |
-<b><a href="#trollface-features">Features</a></b>
+<b><a href="#features">Features</a></b>
 |
-<b><a href="#heartbeat-requirements">Requirements</a></b>
+<b><a href="#requirements">Requirements</a></b>
 |
-<b><a href="#mag-usage">Usage</a></b>
+<b><a href="#usage">Usage</a></b>
 <br>
-<b><a href="#package-installation">Installation</a></b>
+<b><a href="#installation">Installation</a></b>
 |
-<b><a href="#wrench-configuration">Configuration</a></b>
+<b><a href="#configuration">Configuration</a></b>
 |
-<b><a href="#books-references">References</a></b>
+<b><a href="#references">References</a></b>
 |
-<b><a href="#ticket-license">License</a></b>
+<b><a href="#license">License</a></b>
 </p>
 
 <br>
@@ -37,7 +37,7 @@
 
 > A next-generation `cd` command with an interactive filter :sparkles:
 
-## :memo: Description
+## Description
 
 `cd` command is one of the frequently used commands.
 
@@ -47,11 +47,9 @@ The new cd command called "enhancd" enhanced the flexibility and usability for a
 
 Thanks to this mechanism, the user can intuitively and easily change the directory you want to go.
 
-***DEMO:***
-
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/demo.gif)
 
-## :trollface: Features
+## Features
 
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
@@ -67,18 +65,19 @@ You can fuzzy-search a directory name you want to run `cd`. For example, a word 
 
 ![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/fuzzy.gif)
 
-## :heartbeat: Requirements
+## Requirements
 
 - An interactive filter
-	- [**fzy**](https://github.com/jhawthorn/fzy) *=> recommend*
-	- [**percol**](https://github.com/mooz/percol)
-	- [**peco**](https://github.com/peco/peco)
-	- [**fzf**](https://github.com/junegunn/fzf)
-	- ...
 
-	Choose any one from among these.
+  - [**fzy**](https://github.com/jhawthorn/fzy)
+  - [**percol**](https://github.com/mooz/percol)
+  - [**peco**](https://github.com/peco/peco)
+  - [**fzf**](https://github.com/junegunn/fzf)
+  - ...
 
-## :mag: Usage
+  Choose any one from among these.
+
+## Usage
 
 Under Zsh or Bourne shells such as sh and bash, you just source `init.sh` into your shell:
 
@@ -130,7 +129,7 @@ $ export ENHANCD_FILTER
 Also, 
 
 <details>
-<summary><strong>Hyphen (`-`)</strong></summary>
+<summary><strong>Hyphen (<code>-</code>)</strong></summary>
 
 When enhancd takes a hyphen (`-`) string as an argument, it searchs from the last 10 directory items in the log. With it, you can search easily the directory you used last.
 
@@ -157,7 +156,7 @@ Then, since the current directory will be delete from the candidate, you just pr
 </details>
 
 <details>
-<summary><strong>Double-dot (`..`)</strong></summary>
+<summary><strong>Double-dot (<code>..</code>)</strong></summary>
 
 From the beginning, `..` means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (`..`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
 
@@ -234,7 +233,7 @@ Also if you use zsh as your shell, you can install this via [zplug](https://gith
 zplug "b4b4r07/enhancd", use:init.sh
 ```
 
-## :wrench: Configurations
+## Configurations
 
 <details>
 <summary><strong><code>ENHANCD_DIR</code></strong></summary>
@@ -248,34 +247,34 @@ The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
 1. What is ENHANCD_FILTER?
 
-	The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using '`:`'.
+   The ENHANCD_FILTER is an environment variable. It looks exactly like the PATH variable containing with many different filters such as [peco](https://github.com/peco/peco) concatenated using '`:`'.
 
 2. How to set the ENHANCD_FILTER variable?
 
-	Setting the ENHANCD_FILTER variable is exactly like setting the PATH variable. For example:
+   Setting the ENHANCD_FILTER variable is exactly like setting the PATH variable. For example:
 
-	```console
-	$ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
-	```
+   ```console
+   $ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
+   ```
 
-	This above command will hold good till the session is closed. In order to make this change permanent, we need to put this command in the appropriate profile file. The ENHANCD_FILTER command in this example is set with 3 components: `/usr/local/bin/peco` followed by `fzf` and the `not-existing-filter`.
+   This above command will hold good till the session is closed. In order to make this change permanent, we need to put this command in the appropriate profile file. The ENHANCD_FILTER command in this example is set with 3 components: `/usr/local/bin/peco` followed by `fzf` and the `not-existing-filter`.
 
-	enhancd narrows the ENHANCD_FILTER variable down to one. However, the command does not exist can not be the candidate.
-	
-	Let us try to test this ENHANCD_FILTER variable.
+   enhancd narrows the ENHANCD_FILTER variable down to one. However, the command does not exist can not be the candidate.
 
-	```console
-	$ cd
-	```
+   Let us try to test this ENHANCD_FILTER variable.
 
-	If cd command does not return error, the settings of ENHANCD_FILTER is success.
-	
+   ```console
+   $ cd
+   ```
+
+   If cd command does not return error, the settings of ENHANCD_FILTER is success.
+
 3. How to find the value of the ENHANCD_FILTER variable?
 
-	```console
-	$ echo $ENHANCD_FILTER
-	/usr/local/bin/peco:fzf:non-existing-filter
-	```
+   ```console
+   $ echo $ENHANCD_FILTER
+   /usr/local/bin/peco:fzf:non-existing-filter
+   ```
 
 </details>
 
@@ -426,7 +425,8 @@ It can be taken following words:
 - history (dir history list with `$ENHANCD_FILTER`)
 
 </details>
-## :books: References
+
+## References
 
 The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.
 
@@ -441,7 +441,6 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 - **sentaku** :point_right: [Utility to make sentaku (selection, 選択(sentaku)) window with shell command](https://github.com/rcmdnk/sentaku)
 - **hf** :point_right: [hf is a command line utility to quickly find files and execute a command](https://github.com/hugows/hf)
 
-## :ticket: License
+## License
 
 [MIT][license-link] :copyright: b4b4r07
-
