@@ -93,3 +93,8 @@ __enhancd::filter::interactive()
             ;;
     esac
 }
+
+__enhancd::filter::by_not_cwd()
+{
+    __enhancd::command::grep -vx "$PWD" || true
+}

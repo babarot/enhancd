@@ -15,7 +15,7 @@ __enhancd::custom::sources::ghq_smart()
         ghq list --full-path
         {
             ghq list --full-path
-            __enhancd::history::origin
+            __enhancd::history::show
         } \
             | __enhancd::filter::join
     } \
