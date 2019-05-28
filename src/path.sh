@@ -21,7 +21,7 @@ __enhancd::path::to_abspath()
             # It is listed path stepwise
             __enhancd::path::step_by_step "$1" \
                 | __enhancd::filter::reverse \
-                | __enhancd::utils::nl ":" \
+                | __enhancd::command::nl ":" \
                 | __enhancd::command::grep "^$num" \
                 | cut -d: -f2
         fi

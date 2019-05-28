@@ -30,3 +30,18 @@ __enhancd::command::awk()
         awk ${1:+"${@}"}
     fi
 }
+
+# Reads lines from the named file or the standard input, writes the line
+# with the numbering starting with 1 to the standard output such as nl command
+__enhancd::command::nl()
+{
+    # d in awk's argument is a delimiter
+    __enhancd::command::awk -v d="${1:-": "}" '
+    BEGIN {
+        i = 1
+    }
+    {
+        print i d $0
+        i++
+    }' 2>/dev/null
+}

@@ -39,11 +39,11 @@ T_SUB "has" ((
 ))
 T_SUB "nl" ((
   p1a="$(echo -e "1: aaa${LF}2: bbb${LF}3: ccc${LF}4: aaa${LF}5: bbb")"
-  p1b="$(echo "$dummy" | __enhancd::utils::nl)"
+  p1b="$(echo "$dummy" | __enhancd::command::nl)"
   t_ok $? "nl 1"
   t_is "$p1a" "$p1b" "nl 2"
   p1a="$(echo -e "1. aaa${LF}2. bbb${LF}3. ccc${LF}4. aaa${LF}5. bbb")"
-  p1b="$(echo "$dummy" | __enhancd::utils::nl '. ')"
+  p1b="$(echo "$dummy" | __enhancd::command::nl '. ')"
   t_ok $? "nl 3"
   t_is "$p1a" "$p1b" "nl 4"
 ))
