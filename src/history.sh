@@ -28,12 +28,12 @@ __enhancd::history::list()
 __enhancd::history::update()
 {
     {
-        __enhancd::path::step_by_step | __enhancd::filter::reverse
-        __enhancd::path::scan_cwd
+        __enhancd::filepath::list_step | __enhancd::filter::reverse
+        __enhancd::filepath::walk
         __enhancd::history::origin --home
     } \
         | __enhancd::filter::reverse \
         | __enhancd::filter::unique \
         | __enhancd::filter::reverse
-    __enhancd::path::pwd
+    __enhancd::filepath::current_dir
 }

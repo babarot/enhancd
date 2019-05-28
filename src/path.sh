@@ -19,7 +19,7 @@ __enhancd::path::to_abspath()
 
         if [ -n "$num" ]; then
             # It is listed path stepwise
-            __enhancd::path::step_by_step "$1" \
+            __enhancd::filepath::list_step "$1" \
                 | __enhancd::filter::reverse \
                 | __enhancd::command::nl ":" \
                 | __enhancd::command::grep "^$num" \
@@ -34,22 +34,6 @@ __enhancd::path::to_abspath()
     fi
 }
 
-# __enhancd::path::split decomposes the path with a slash as a delimiter
-__enhancd::path::split()
-{
-    __enhancd::command::awk \
-        -f "$ENHANCD_ROOT/src/share/split.awk" \
-        -v arg="${1:-$PWD}" #-v show_fullpath="$ENHANCD_DOT_SHOW_FULLPATH"
-}
-
-# __enhancd::path::step_by_step returns a list of stepwise path
-__enhancd::path::step_by_step()
-{
-    __enhancd::command::awk \
-        -f "$ENHANCD_ROOT/src/share/step_by_step.awk" \
-        -v dir="${1:-$PWD}"
-}
-
 __enhancd::path::go_upstairs()
 {
     local dir
@@ -58,28 +42,17 @@ __enhancd::path::go_upstairs()
     dir="${1:-$PWD}"
 
     if [[ $ENHANCD_DOT_SHOW_FULLPATH == 1 ]]; then
-        __enhancd::path::step_by_step \
+        __enhancd::filepath::list_step \
             | __enhancd::filter::reverse
         return 0
     fi
 
     # uniq is the variable that checks whether there is
     # the duplicate directory in the PWD environment variable
-    if __enhancd::path::split "$dir" | __enhancd::command::awk -f "$ENHANCD_ROOT/src/share/has_dup_lines.awk"; then
-        __enhancd::path::split "$dir" \
+    if ___enhancd::filepath::split "$dir" | __enhancd::command::awk -f "$ENHANCD_ROOT/src/share/has_dup_lines.awk"; then
+        ___enhancd::filepath::split "$dir" \
             | __enhancd::command::awk '{ printf("%d: %s\n", NR, $0); }'
     else
-        __enhancd::path::split "$dir"
+        ___enhancd::filepath::split "$dir"
     fi
-}
-
-__enhancd::path::scan_cwd()
-{
-    find "${1:-$PWD}" -maxdepth 1 -type d \
-        | __enhancd::command::grep -v "\/\."
-}
-
-__enhancd::path::pwd()
-{
-    command pwd
 }
