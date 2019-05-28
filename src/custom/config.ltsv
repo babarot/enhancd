@@ -1,6 +1,5 @@
 short:-h	long:--help	desc:Show help message	action:help
 short:-V	long:--version	desc:Show version information	action:version
-short:-g	long:	desc:[DEPRECATED] List ghq list	action:ghq
 short:-G	long:--ghq	desc:List ghq list	action:ghq_smart
 #short:-1	long:	desc:Back to previous directory	action:number
 #short:-2	long:	desc:Back to previous directory	action:number

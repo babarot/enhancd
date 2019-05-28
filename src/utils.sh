@@ -6,37 +6,6 @@ __enhancd::utils::available()
         [[ -s $ENHANCD_DIR/enhancd.log ]]
 }
 
-# __enhancd::utils::sed replaces 1st arg with 2nd arg
-# Use blank char instead if no argument is given
-__enhancd::utils::sed()
-{
-    local g='' sep='!'
-
-    while (( $# > 0 ))
-    do
-        case "$1" in
-            -g)
-                g='g'
-                shift
-                ;;
-            -d)
-                sep="${2:?}"
-                shift
-                shift
-                ;;
-            -* | --*)
-                shift
-                ;;
-            *)
-                break
-                ;;
-        esac
-    done
-
-    cat <&0 \
-        | command sed -E "s$sep$1$sep$2$sep$g" 2>/dev/null
-}
-
 # __enhancd::utils::nl reads lines from the named file or the standard input
 # if the file argument is ommitted, applies a configurable line numbering filter operation
 # and writes the result to the standard output
