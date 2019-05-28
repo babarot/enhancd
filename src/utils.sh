@@ -6,12 +6,6 @@ __enhancd::utils::available()
         [[ -s $ENHANCD_DIR/enhancd.log ]]
 }
 
-# __enhancd::utils::die puts a string to stderr
-__enhancd::utils::die()
-{
-    printf -- "$@" >&2
-}
-
 # __enhancd::utils::grep prints in regular expression
 __enhancd::utils::grep()
 {

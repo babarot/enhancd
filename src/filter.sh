@@ -65,7 +65,6 @@ __enhancd::filter::interactive()
 
     # If no argument is given to __enhancd::interface
     if [[ -z $list ]] || [[ -p /dev/stdin ]]; then
-        #__enhancd::utils::die "__enhancd::interface requires an argument at least\n"
         list="$(cat <&0)"
     fi
 

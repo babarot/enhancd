@@ -9,8 +9,7 @@ __enhancd::arguments::option()
         | read action
 
     if [[ -z $action ]]; then
-        __enhancd::utils::die \
-            "$opt: no such option\n"
+        echo "$opt: no such option" >&2
         return 1
     fi
 
@@ -19,7 +18,7 @@ __enhancd::arguments::option()
     elif __enhancd::utils::has __enhancd::custom::options::$action; then
         __enhancd::custom::options::$action "$@"
     else
-        __enhancd::utils::die "$action: no such action defined\n"
+        echo "$action: no such action defined" >&2
         return 1
     fi
 }

@@ -1,24 +1,23 @@
-# __enhancd::core::get_filter_command fuzzys list down to one
+# Get one available command from the string divided by a colon
 __enhancd::core::get_filter_command()
 {
-    local x candidates
+    local item str
 
-    if [[ -z $1 ]]; then
+    if [[ -z ${1} ]]; then
         return 1
     fi
 
-    # candidates should be list like "a:b:c" concatenated by a colon
-    candidates="$1:"
+    # str should be list like "a:b:c" concatenated by a colon
+    str="${1}:"
 
-    while [[ -n $candidates ]]; do
+    while [[ -n ${str} ]]; do
         # the first remaining entry
-        x=${candidates%%:*}
-        # reset candidates
-        candidates=${candidates#*:}
+        item=${str%%:*}
+        # reset str
+        str=${str#*:}
 
-        # check if x is __enhancd::core::get_filter_command
-        if __enhancd::utils::has "${x%% *}"; then
-            echo "$x"
+        if __enhancd::utils::has "${item%% *}"; then
+            echo "${item}"
             return 0
         else
             continue

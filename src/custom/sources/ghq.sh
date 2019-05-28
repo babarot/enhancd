@@ -6,7 +6,7 @@ __enhancd::custom::sources::ghq()
     shift
 
     if ! __enhancd::utils::has "ghq"; then
-        __enhancd::utils::die "ghq: not found\n"
+        echo "ghq: not found" >&2
         return 1
     fi
 
@@ -33,7 +33,7 @@ __enhancd::custom::sources::ghq()
     fi
 
     if [[ ! -d $ghq_root/$dir ]]; then
-        __enhancd::utils::die "$dir: no such directory\n"
+        echo "$dir: no such directory" >&2
         return 1
     fi
 
@@ -46,7 +46,7 @@ __enhancd::custom::sources::ghq_smart()
     local dir ret
 
     if ! __enhancd::utils::has "ghq"; then
-        __enhancd::utils::die "ghq: not found\n"
+        echo "ghq: not found" >&2
         return 1
     fi
 
@@ -69,8 +69,7 @@ __enhancd::custom::sources::ghq_smart()
     ret=$?
     if [[ -z $dir ]]; then
         if [[ $ret == $_ENHANCD_FAILURE ]]; then
-            __enhancd::utils::die \
-                "$@: no such file or directory\n"
+            echo "$@: no such file or directory" >&2
             return 1
         else
             # Press Ctrl-C

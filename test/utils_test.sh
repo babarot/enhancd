@@ -15,11 +15,6 @@ bbb"
 # Load enhancd
 . "$ENHANCD_ROOT/init.sh" || exit 1
 
-T_SUB "die" ((
-  p2="$(__enhancd::utils::die "error\n" 2>/dev/null)"
-  t_ok $? "die 1"
-  t_ok "-z $p2" "die 2"
-))
 T_SUB "unique" ((
   p1a="$(echo -e "aaa${LF}bbb${LF}ccc")"
   p1b="$(echo "$dummy" | __enhancd::filter::unique)"

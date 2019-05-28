@@ -89,7 +89,7 @@ __enhancd::cd()
             ret=$?
             ;;
         $_ENHANCD_FAILURE)
-            __enhancd::utils::die "no such file or directory\n"
+            echo "no such file or directory" >&2
             ;;
         *)
             ;;
