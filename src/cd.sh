@@ -85,7 +85,7 @@ __enhancd::cd()
 
     case $ret in
         $_ENHANCD_SUCCESS)
-            __enhancd::cd::builtin ${opts[@]} ${args[@]}
+            __enhancd::cd::builtin "${opts[@]}" "${args[@]}"
             ret=$?
             ;;
         $_ENHANCD_FAILURE)
