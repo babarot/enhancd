@@ -53,3 +53,21 @@ __enhancd::filepath::current_dir()
 {
     echo "${PWD:-$(command pwd)}"
 }
+
+__enhancd::filepath::abs()
+{
+    local cwd dir
+    cwd="${PWD%/*}"
+    dir="${1}"
+    if [[ -p /dev/stdin ]]; then
+        dir="$(cat <&0)"
+    fi
+    if [[ -z ${dir} ]]; then
+        return 1
+    fi
+
+    __enhancd::command::awk \
+        -f "${ENHANCD_ROOT}/src/share/to_abspath.awk" \
+        -v cwd="${cwd}" \
+        -v dir="${dir}"
+}

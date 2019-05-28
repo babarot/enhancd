@@ -43,14 +43,13 @@ __enhancd::arguments::dot()
         return 0
     fi
 
-    __enhancd::path::go_upstairs "$PWD" \
-        | __enhancd::filter::reverse \
+    __enhancd::filepath::list_step "${PWD}" \
         | __enhancd::command::grep "$1" \
         | __enhancd::filter::interactive \
-        | __enhancd::path::to_abspath
+        | __enhancd::filepath::abs
 
-    # Returns false if __enhancd::path::to_abspath fails
-    # __enhancd::path::to_abspath returns false
+    # Returns false if __enhancd::filepath::abs fails
+    # __enhancd::filepath::abs returns false
     # if __enhancd::filter::interactive doesn't output anything
     if [[ $? -eq 1 ]]; then
         if [[ -n $1 ]]; then
