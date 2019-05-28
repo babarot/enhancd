@@ -34,7 +34,7 @@ T_SUB "reverse" ((
 ))
 T_SUB "available" ((
   p1a="filter"
-  p1b="$(__enhancd::utils::filter 'my_filter1:my_filter2:filter:my_filter3')"
+  p1b="$(__enhancd::core::get_filter_command 'my_filter1:my_filter2:filter:my_filter3')"
   t_ok $? "available 1"
   t_is "$p1a" "$p1b" "available 2"
 ))

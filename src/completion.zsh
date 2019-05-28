@@ -81,7 +81,7 @@ __enhancd::completion::complete() {
     return
   fi
 
-  filter=$(__enhancd::utils::filter "$ENHANCD_FILTER")
+  filter=$(__enhancd::core::get_filter_command "$ENHANCD_FILTER")
 
   if [ $(echo $l | wc -l) -eq 1 ]; then
     matches=${(q)l}

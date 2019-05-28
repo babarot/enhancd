@@ -2,7 +2,7 @@
 
 __enhancd::utils::available()
 {
-    __enhancd::utils::filter "$ENHANCD_FILTER" &>/dev/null &&
+    __enhancd::core::get_filter_command "$ENHANCD_FILTER" &>/dev/null &&
         [[ -s $ENHANCD_DIR/enhancd.log ]]
 }
 
@@ -53,36 +53,6 @@ __enhancd::utils::sed()
 
     cat <&0 \
         | command sed -E "s$sep$1$sep$2$sep$g" 2>/dev/null
-}
-
-# __enhancd::utils::filter fuzzys list down to one
-__enhancd::utils::filter()
-{
-    local x candidates
-
-    if [[ -z $1 ]]; then
-        return 1
-    fi
-
-    # candidates should be list like "a:b:c" concatenated by a colon
-    candidates="$1:"
-
-    while [[ -n $candidates ]]; do
-        # the first remaining entry
-        x=${candidates%%:*}
-        # reset candidates
-        candidates=${candidates#*:}
-
-        # check if x is __enhancd::utils::filter
-        if __enhancd::utils::has "${x%% *}"; then
-            echo "$x"
-            return 0
-        else
-            continue
-        fi
-    done
-
-    return 1
 }
 
 # __enhancd::utils::has returns true if $1 exists in the PATH environment variable
