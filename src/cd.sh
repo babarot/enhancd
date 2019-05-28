@@ -4,7 +4,7 @@ __enhancd::cd()
     local -i ret=0
     local -a opts args
 
-    if ! __enhancd::utils::available; then
+    if ! __enhancd::core::is_available; then
         __enhancd::cd::builtin "${@:-$HOME}"
         return $?
     fi

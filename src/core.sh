@@ -1,4 +1,4 @@
-# Get one available command from the string divided by a colon
+# Gets one available command from the string divided by a colon
 __enhancd::core::get_filter_command()
 {
     local item str
@@ -25,4 +25,12 @@ __enhancd::core::get_filter_command()
     done
 
     return 1
+}
+
+# Returns true if enhancd is ready to be available
+__enhancd::core::is_available()
+{
+    __enhancd::core::get_filter_command "${ENHANCD_FILTER}" \
+        &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
+    return ${?}
 }
