@@ -33,12 +33,12 @@ doc:
 	rm doc/enhancd.xml
 
 .PHONY: build
-build: ## Run an iamge
-	docker build -t enhancd:latest .
+build: ## Build enhancd image
+	docker build -t enhancd -f Dockerfile .
 
 .PHONY: run
-run: build ## Build an image
-	docker run -it enhancd
+run: build ## Run enhancd in docker
+	docker run --rm -it enhancd
 
 .PHONY: help
 help: ## Show help message
