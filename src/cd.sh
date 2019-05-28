@@ -4,7 +4,7 @@ __enhancd::cd()
     local -i ret=0
     local -a opts args
 
-    if ! __enhancd::core::is_available; then
+    if ! __enhancd::cd::available; then
         __enhancd::cd::builtin "${@:-$HOME}"
         return $?
     fi
@@ -96,6 +96,14 @@ __enhancd::cd()
     esac
 
     return $ret
+}
+
+# Returns true if enhancd is ready to be available
+__enhancd::cd::available()
+{
+    __enhancd::filepath::split_list "${ENHANCD_FILTER}" \
+        &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
+    return ${?}
 }
 
 __enhancd::cd::builtin()
