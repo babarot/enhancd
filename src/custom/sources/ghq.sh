@@ -5,7 +5,7 @@ __enhancd::custom::sources::ghq()
     # Shift first arguments (-g/--ghq)
     shift
 
-    if ! __enhancd::utils::has "ghq"; then
+    if ! __enhancd::command::which "ghq"; then
         echo "ghq: not found" >&2
         return 1
     fi
@@ -45,7 +45,7 @@ __enhancd::custom::sources::ghq_smart()
     shift
     local dir ret
 
-    if ! __enhancd::utils::has "ghq"; then
+    if ! __enhancd::command::which "ghq"; then
         echo "ghq: not found" >&2
         return 1
     fi

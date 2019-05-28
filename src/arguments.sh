@@ -13,9 +13,9 @@ __enhancd::arguments::option()
         return 1
     fi
 
-    if __enhancd::utils::has __enhancd::custom::sources::$action; then
+    if __enhancd::command::which __enhancd::custom::sources::$action; then
         __enhancd::custom::sources::$action "$@"
-    elif __enhancd::utils::has __enhancd::custom::options::$action; then
+    elif __enhancd::command::which __enhancd::custom::options::$action; then
         __enhancd::custom::options::$action "$@"
     else
         echo "$action: no such action defined" >&2

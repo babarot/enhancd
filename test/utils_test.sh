@@ -34,7 +34,7 @@ T_SUB "available" ((
   t_is "$p1a" "$p1b" "available 2"
 ))
 T_SUB "has" ((
-  __enhancd::utils::has "ls"
+  __enhancd::command::which "ls"
   t_ok $? "has 1"
 ))
 T_SUB "nl" ((

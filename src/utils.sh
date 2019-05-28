@@ -37,17 +37,6 @@ __enhancd::utils::sed()
         | command sed -E "s$sep$1$sep$2$sep$g" 2>/dev/null
 }
 
-# __enhancd::utils::has returns true if $1 exists in the PATH environment variable
-__enhancd::utils::has()
-{
-    if [[ -z $1 ]]; then
-        return 1
-    fi
-
-    type "$1" >/dev/null 2>&1
-    return $?
-}
-
 # __enhancd::utils::nl reads lines from the named file or the standard input
 # if the file argument is ommitted, applies a configurable line numbering filter operation
 # and writes the result to the standard output

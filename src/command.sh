@@ -9,3 +9,14 @@ __enhancd::command::grep()
     fi \
         | command grep -E "$@" 2>/dev/null
 }
+
+# Return true if the argument exists in PATH such as "which" command
+__enhancd::command::which()
+{
+    if [[ -z $1 ]]; then
+        return 1
+    fi
+
+    type "$1" >/dev/null 2>&1
+    return $?
+}

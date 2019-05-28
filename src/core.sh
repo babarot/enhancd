@@ -16,7 +16,7 @@ __enhancd::core::get_filter_command()
         # reset str
         str=${str#*:}
 
-        if __enhancd::utils::has "${item%% *}"; then
+        if __enhancd::command::which "${item%% *}"; then
             echo "${item}"
             return 0
         else
