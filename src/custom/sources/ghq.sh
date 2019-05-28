@@ -15,12 +15,12 @@ __enhancd::custom::sources::ghq()
 
     {
         cat "$ENHANCD_DIR/enhancd.log" \
-            | __enhancd::utils::grep "^$ghq_root" \
+            | __enhancd::command::grep "^$ghq_root" \
             | __enhancd::filter::reverse
         ghq list
     } 2>/dev/null \
-        | __enhancd::utils::grep -vx "$ghq_root" \
-        | __enhancd::utils::grep -vx "$PWD" \
+        | __enhancd::command::grep -vx "$ghq_root" \
+        | __enhancd::command::grep -vx "$PWD" \
         | __enhancd::utils::sed "$ghq_root/" \
         | __enhancd::filter::unique \
         | __enhancd::filter::fuzzy "$@" \
@@ -59,7 +59,7 @@ __enhancd::custom::sources::ghq_smart()
         } \
             | __enhancd::filter::join
     } \
-        | __enhancd::utils::grep -vx "$PWD" \
+        | __enhancd::command::grep -vx "$PWD" \
         | __enhancd::filter::reverse \
         | __enhancd::filter::unique \
         | __enhancd::filter::fuzzy "$@" \

@@ -72,7 +72,7 @@ __enhancd::filter::interactive()
 
     # Count lines in the list
     local wc
-    wc="$(echo "$list" | __enhancd::utils::grep -c "")"
+    wc="$(echo "$list" | __enhancd::command::grep -c "")"
 
     case "$wc" in
         1 )

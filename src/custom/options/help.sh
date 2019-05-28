@@ -12,7 +12,7 @@ HELP
 
 if [[ -f $config ]]; then
     cat "$config" \
-        | __enhancd::utils::grep -v '^(//|#)' \
+        | __enhancd::command::grep -v '^(//|#)' \
         |
     while IFS=$'\t' read short long desc action
     do

@@ -10,7 +10,7 @@ __enhancd::path::to_abspath()
 
     # It searches the directory name from the rear of the PWD,
     # and returns the path to where it was found
-    if echo "$dir" | __enhancd::utils::grep -q "[0-9]: "; then
+    if echo "$dir" | __enhancd::command::grep -q "[0-9]: "; then
         # When decomposing the PWD with a slash,
         # put the number to it if there is the same directory name.
 
@@ -22,7 +22,7 @@ __enhancd::path::to_abspath()
             __enhancd::path::step_by_step "$1" \
                 | __enhancd::filter::reverse \
                 | __enhancd::utils::nl ":" \
-                | __enhancd::utils::grep "^$num" \
+                | __enhancd::command::grep "^$num" \
                 | cut -d: -f2
         fi
     else
@@ -76,7 +76,7 @@ __enhancd::path::go_upstairs()
 __enhancd::path::scan_cwd()
 {
     find "${1:-$PWD}" -maxdepth 1 -type d \
-        | __enhancd::utils::grep -v "\/\."
+        | __enhancd::command::grep -v "\/\."
 }
 
 __enhancd::path::pwd()

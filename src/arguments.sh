@@ -3,7 +3,7 @@ __enhancd::arguments::option()
     local opt="$1" action
 
     cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
-        | __enhancd::utils::grep -v '^(//|#)' \
+        | __enhancd::command::grep -v '^(//|#)' \
         | $ENHANCD_AWK -F$'\t' '/:'"$opt"'\t/{print $4}' \
         | cut -d: -f2 \
         | read action
@@ -31,7 +31,7 @@ __enhancd::arguments::hyphen()
     fi
 
     __enhancd::history::list "$1" \
-        | __enhancd::utils::grep -vx "$HOME" \
+        | __enhancd::command::grep -vx "$HOME" \
         | head -n "$ENHANCD_HYPHEN_NUM" \
         | __enhancd::filter::interactive
 }
@@ -45,7 +45,7 @@ __enhancd::arguments::dot()
 
     __enhancd::path::go_upstairs "$PWD" \
         | __enhancd::filter::reverse \
-        | __enhancd::utils::grep "$1" \
+        | __enhancd::command::grep "$1" \
         | __enhancd::filter::interactive \
         | __enhancd::path::to_abspath
 

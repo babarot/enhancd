@@ -6,18 +6,6 @@ __enhancd::utils::available()
         [[ -s $ENHANCD_DIR/enhancd.log ]]
 }
 
-# __enhancd::utils::grep prints in regular expression
-__enhancd::utils::grep()
-{
-    if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
-        shift
-    else
-        cat <&0
-    fi \
-        | command grep -E "$@" 2>/dev/null
-}
-
 # __enhancd::utils::sed replaces 1st arg with 2nd arg
 # Use blank char instead if no argument is given
 __enhancd::utils::sed()
