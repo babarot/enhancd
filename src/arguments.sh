@@ -4,7 +4,7 @@ __enhancd::arguments::option()
 
     cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
         | __enhancd::command::grep -v '^(//|#)' \
-        | $ENHANCD_AWK -F$'\t' '/:'"$opt"'\t/{print $4}' \
+        | __enhancd::command::awk -F$'\t' '/:'"$opt"'\t/{print $4}' \
         | cut -d: -f2 \
         | read action
 

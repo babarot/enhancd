@@ -43,7 +43,7 @@ __enhancd::utils::sed()
 __enhancd::utils::nl()
 {
     # d in awk's argument is a delimiter
-    $ENHANCD_AWK -v d="${1:-": "}" '
+    __enhancd::command::awk -v d="${1:-": "}" '
     BEGIN {
         i = 1
     }
@@ -51,10 +51,4 @@ __enhancd::utils::nl()
         print i d $0
         i++
     }' 2>/dev/null
-}
-
-# __enhancd::utils::awk returns gawk if found, else awk
-__enhancd::utils::awk()
-{
-    type gawk &>/dev/null && echo "gawk" || echo "awk"
 }

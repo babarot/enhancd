@@ -13,7 +13,6 @@ export ENHANCD_HYPHEN_NUM="${ENHANCD_HYPHEN_NUM:-10}"
 export ENHANCD_HOME_ARG="${ENHANCD_HOME_ARG:-}"
 export ENHANCD_DOT_SHOW_FULLPATH="${ENHANCD_DOT_SHOW_FULLPATH:-0}"
 export ENHANCD_USE_FUZZY_MATCH="${ENHANCD_USE_FUZZY_MATCH:-1}"
-export ENHANCD_AWK
 export ENHANCD_COMPLETION_DEFAULT
 export ENHANCD_COMPLETION_KEYBIND="${ENHANCD_COMPLETION_KEYBIND:-^I}"
 export ENHANCD_COMPLETION_BEHAVIOR="${ENHANCD_COMPLETION_BEHAVIOR:-default}"
@@ -72,8 +71,6 @@ __enhancd::init::init()
     if [[ -z $ENHANCD_FILTER ]]; then
         ENHANCD_FILTER="fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
     fi
-
-    ENHANCD_AWK="$(__enhancd::utils::awk)"
 }
 
 __enhancd::init::init
