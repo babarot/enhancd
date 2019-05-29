@@ -1,12 +1,2 @@
-short:-h	long:--help	desc:Show help message	action:help
-short:-V	long:--version	desc:Show version information	action:version
+short:	long:--help	desc:Show help message	action:
 short:-G	long:--ghq	desc:List ghq list	action:ghq_smart
-#short:-1	long:	desc:Back to previous directory	action:number
-#short:-2	long:	desc:Back to previous directory	action:number
-#short:-3	long:	desc:Back to previous directory	action:number
-#short:-4	long:	desc:Back to previous directory	action:number
-#short:-5	long:	desc:Back to previous directory	action:number
-#short:-6	long:	desc:Back to previous directory	action:number
-#short:-7	long:	desc:Back to previous directory	action:number
-#short:-8	long:	desc:Back to previous directory	action:number
-#short:-9	long:	desc:Back to previous directory	action:number

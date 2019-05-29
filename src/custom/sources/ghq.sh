@@ -37,5 +37,5 @@ __enhancd::custom::sources::ghq_smart()
         fi
     fi
 
-    __enhancd::cd "$dir"
+    echo "$dir"
 }

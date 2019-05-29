@@ -3,9 +3,8 @@ __enhancd::arguments::option()
     local opt="$1" action
 
     cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
-        | __enhancd::command::grep -v '^(//|#)' \
-        | __enhancd::command::awk -F$'\t' '/:'"$opt"'\t/{print $4}' \
-        | cut -d: -f2 \
+        | __enhancd::filter::exclude_commented \
+        | __enhancd::flag::ltsv_parse -v opt=${opt} -q 'key("short")==opt||key("long")==opt{print key("action")}' \
         | read action
 
     if [[ -z $action ]]; then

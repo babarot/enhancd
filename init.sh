@@ -27,7 +27,6 @@ elif [[ -n $ZSH_VERSION ]]; then
     # ZSH
     ENHANCD_ROOT="${${(%):-%x}:A:h}"
     compdef _cd __enhancd::cd
-    # source $ENHANCD_ROOT/init.zsh
 else
     return 1
 fi

@@ -98,3 +98,8 @@ __enhancd::filter::exclude_by()
 {
     __enhancd::command::grep -vx "${1}" || true
 }
+
+__enhancd::filter::exclude_commented()
+{
+    __enhancd::command::grep -v -E '^(//|#)' || true
+}
