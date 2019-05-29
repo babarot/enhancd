@@ -19,7 +19,7 @@ __enhancd::custom::sources::ghq_smart()
         } \
             | __enhancd::filter::join
     } \
-        | __enhancd::command::grep -vx "$PWD" \
+        | __enhancd::filter::exclude_by "$PWD" \
         | __enhancd::filter::reverse \
         | __enhancd::filter::unique \
         | __enhancd::filter::fuzzy "$@" \

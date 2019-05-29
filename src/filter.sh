@@ -94,7 +94,7 @@ __enhancd::filter::interactive()
     esac
 }
 
-__enhancd::filter::by_not_cwd()
+__enhancd::filter::exclude_by()
 {
-    __enhancd::command::grep -vx "$PWD" || true
+    __enhancd::command::grep -vx "${1}" || true
 }

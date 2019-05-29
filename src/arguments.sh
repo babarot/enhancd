@@ -31,7 +31,7 @@ __enhancd::arguments::hyphen()
     fi
 
     __enhancd::history::list "$1" \
-        | __enhancd::command::grep -vx "$HOME" \
+        | __enhancd::filter::exclude_by "$HOME" \
         | head -n "$ENHANCD_HYPHEN_NUM" \
         | __enhancd::filter::interactive
 }

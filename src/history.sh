@@ -14,7 +14,7 @@ __enhancd::history::list()
         | __enhancd::filter::unique \
         | __enhancd::filter::exists \
         | __enhancd::filter::fuzzy "$@" \
-        | __enhancd::filter::by_not_cwd
+        | __enhancd::filter::exclude_by "$PWD"
 }
 
 __enhancd::history::update()
