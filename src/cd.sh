@@ -1,7 +1,7 @@
 __enhancd::cd()
 {
     local    arg
-    local -i ret=0
+    local -i code=0
     local -a args opts
 
     if ! __enhancd::cd::available; then
@@ -18,14 +18,14 @@ __enhancd::cd()
     do
         case "$1" in
             --help)
-                __enhancd::custom::options::help "$@"
+                __enhancd::flag::help
                 return $?
                 ;;
             "$ENHANCD_HYPHEN_ARG")
                 # If a hyphen is passed as the argument,
                 # searchs from the last 10 directory items in the log
                 args+=( "$(__enhancd::arguments::hyphen "$2")" )
-                ret=$?
+                code=$?
                 ;;
             "-")
                 # When $ENHANCD_HYPHEN_ARG is configured,
@@ -38,7 +38,7 @@ __enhancd::cd()
                 # In short, you can jump back to a specific directory,
                 # without doing `cd ../../..`
                 args+=( "$(__enhancd::arguments::dot "$2")" )
-                ret=$?
+                code=$?
                 ;;
             "..")
                 # When $ENHANCD_DOT_ARG is configured,
@@ -47,19 +47,19 @@ __enhancd::cd()
                 ;;
             "$ENHANCD_HOME_ARG")
                 args+=( "$(__enhancd::arguments::none)" )
-                ret=$?
+                code=$?
                 ;;
             -* | --*)
                 if __enhancd::flag::is_default "${1}"; then
                     opts+=( "${1}" )
                 else
                     args+=( "$(__enhancd::arguments::option "${1}")" )
-                    ret=$?
+                    code=$?
                 fi
                 ;;
             *)
-                args+=( "$(__enhancd::arguments::given "$@")" )
-                ret=$?
+                args+=( "$(__enhancd::arguments::given "$1")" )
+                code=$?
                 ;;
         esac
         shift
@@ -68,11 +68,11 @@ __enhancd::cd()
     case ${#args[@]} in
         0)
             args+=( "$(__enhancd::arguments::none)" )
-            ret=$?
+            code=$?
             ;;
     esac
 
-    case $ret in
+    case "${code}" in
         0)
             __enhancd::cd::builtin "${opts[@]}" "${args[@]}"
             return $?
@@ -93,19 +93,14 @@ __enhancd::cd::available()
 
 __enhancd::cd::builtin()
 {
-    local -i ret=0
-
-    # # Case of pressing Ctrl-C in selecting
-    # if [[ -z $1 ]]; then
-    #     return 0
-    # fi
+    local -i code=0
 
     __enhancd::cd::before
     builtin cd "$@"
-    ret=$?
+    code=$?
     __enhancd::cd::after
 
-    return $ret
+    return $code
 }
 
 __enhancd::cd::before()

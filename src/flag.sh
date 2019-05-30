@@ -1,33 +1,3 @@
-__enhancd::flag::ltsv_parse()
-{
-    if [[ ! -p /dev/stdin ]]; then
-        return 1
-    fi
-
-    local -a args
-    local query
-    while (( $# > 0 ))
-    do
-        case "$1" in
-            -q)
-                query="$2"
-                shift
-                ;;
-            -v)
-                args+=("-v" "$2")
-                shift
-                ;;
-        esac
-        shift
-    done
-
-    local default_query='{print $0}'
-    local ltsv_script="$(cat "$ENHANCD_ROOT/src/share/ltsv.awk")"
-    local awk_scripts="${ltsv_script} ${query:-$default_query}"
-
-    __enhancd::command::awk ${args[@]} "${awk_scripts}"
-}
-
 __enhancd::flag::is_default()
 {
     local opt=$1
@@ -52,7 +22,7 @@ __enhancd::flag::is_default()
 
 __enhancd::flag::help()
 {
-    local config="$ENHANCD_ROOT/src/custom/config.ltsv"
+    local config="$(__enhancd::ltsv::open)"
 
 cat <<HELP
 usage: cd [OPTIONS] [dir]
@@ -60,8 +30,8 @@ usage: cd [OPTIONS] [dir]
 OPTIONS:
 HELP
 
-if [[ -f $config ]]; then
-    cat "$config" \
+if [[ -n ${config} ]]; then
+    echo "${config}" \
         | __enhancd::filter::exclude_commented \
         |
     while IFS=$'\t' read short long desc action

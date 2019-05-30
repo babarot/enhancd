@@ -1,4 +1,4 @@
-__enhancd::history::show()
+__enhancd::history::open()
 {
     if [[ -f $ENHANCD_DIR/enhancd.log ]]; then
         cat "$ENHANCD_DIR/enhancd.log"
@@ -9,7 +9,7 @@ __enhancd::history::show()
 
 __enhancd::history::list()
 {
-    __enhancd::history::show \
+    __enhancd::history::open \
         | __enhancd::filter::reverse \
         | __enhancd::filter::unique \
         | __enhancd::filter::exists \
@@ -22,7 +22,7 @@ __enhancd::history::update()
     {
         __enhancd::filepath::list_step | __enhancd::filter::reverse
         __enhancd::filepath::walk
-        __enhancd::history::show
+        __enhancd::history::open
         echo "$HOME"
     } \
         | __enhancd::filter::reverse \

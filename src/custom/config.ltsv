@@ -1,2 +1,0 @@
-short:	long:--help	desc:Show help message	action:
-short:-G	long:--ghq	desc:List ghq list	action:ghq_smart

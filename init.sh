@@ -33,17 +33,21 @@ fi
 
 __enhancd::init::init()
 {
+    local src
+
     # core files
     for src in "$ENHANCD_ROOT/src"/*.sh
     do
         source "$src"
     done
 
-    # custom files
-    for src in "$ENHANCD_ROOT/src/custom/"{sources,options}/*.sh
-    do
-        source "$src"
-    done
+    # custom sources
+    if [[ -d "$ENHANCD_DIR/sources" ]]; then
+        for src in $(find "$ENHANCD_DIR/sources" -name "*.sh")
+        do
+            source "$src"
+        done
+    fi
 
     if [[ $SHELL == *zsh* ]]; then
         for src in "$ENHANCD_ROOT/src"/*.zsh
@@ -52,13 +56,11 @@ __enhancd::init::init()
         done
     fi
 
-    unset src
-
     # make a log file and a root directory
-    if [ ! -d "$ENHANCD_DIR" ]; then
+    if [[ ! -d "$ENHANCD_DIR" ]]; then
       mkdir -p "$ENHANCD_DIR"
     fi
-    if [ ! -f "$ENHANCD_DIR/enhancd.log" ]; then
+    if [[ ! -f "$ENHANCD_DIR/enhancd.log" ]]; then
       touch "$ENHANCD_DIR/enhancd.log"
     fi
 

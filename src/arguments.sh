@@ -1,23 +1,18 @@
 __enhancd::arguments::option()
 {
-    local opt="$1" action
+    local opt="$1" func
 
-    cat "$ENHANCD_ROOT/src/custom/config.ltsv" \
-        | __enhancd::filter::exclude_commented \
-        | __enhancd::flag::ltsv_parse -v opt=${opt} -q 'key("short")==opt||key("long")==opt{print key("action")}' \
-        | read action
+    func="$(__enhancd::ltsv::get "${opt}" "func")"
 
-    if [[ -z $action ]]; then
-        echo "$opt: no such option" >&2
+    if [[ -z ${func} ]]; then
+        echo "${opt}: no such option" >&2
         return 1
     fi
 
-    if __enhancd::command::which __enhancd::custom::sources::$action; then
-        __enhancd::custom::sources::$action "$@"
-    elif __enhancd::command::which __enhancd::custom::options::$action; then
-        __enhancd::custom::options::$action "$@"
+    if __enhancd::command::which ${func}; then
+        ${func} "$@"
     else
-        echo "$action: no such action defined" >&2
+        echo "${func}: no such function defined" >&2
         return 1
     fi
 }
