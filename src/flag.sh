@@ -39,7 +39,7 @@ __enhancd::flag::is_default()
     return 1
 }
 
-__enhancd::flag::help()
+__enhancd::flag::print_help()
 {
     __enhancd::ltsv::open \
         | __enhancd::command::awk -f "$ENHANCD_ROOT/src/share/help.awk"

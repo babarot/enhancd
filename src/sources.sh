@@ -1,17 +1,12 @@
-__enhancd::arguments::hyphen()
+# Returns true if enhancd is ready to be available
+__enhancd::sources::is_available()
 {
-    if [[ $ENHANCD_DISABLE_HYPHEN == 1 ]]; then
-        echo "$OLDPWD"
-        return 0
-    fi
-
-    __enhancd::history::list "$1" \
-        | __enhancd::filter::exclude_by "$HOME" \
-        | head -n "$ENHANCD_HYPHEN_NUM" \
-        | __enhancd::filter::interactive
+    __enhancd::filepath::split_list "${ENHANCD_FILTER}" \
+        &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
+    return ${?}
 }
 
-__enhancd::arguments::dot()
+__enhancd::sources::go_up()
 {
     if [[ $ENHANCD_DISABLE_DOT == 1 ]]; then
         echo ".."
@@ -37,7 +32,20 @@ __enhancd::arguments::dot()
     fi
 }
 
-__enhancd::arguments::none()
+__enhancd::sources::mru()
+{
+    if [[ $ENHANCD_DISABLE_HYPHEN == 1 ]]; then
+        echo "$OLDPWD"
+        return 0
+    fi
+
+    __enhancd::history::list "$1" \
+        | __enhancd::filter::exclude_by "$HOME" \
+        | head -n "$ENHANCD_HYPHEN_NUM" \
+        | __enhancd::filter::interactive
+}
+
+__enhancd::sources::default()
 {
     if [[ $ENHANCD_DISABLE_HOME == 1 ]]; then
         echo "$HOME"
@@ -47,7 +55,7 @@ __enhancd::arguments::none()
     __enhancd::history::list | __enhancd::filter::interactive
 }
 
-__enhancd::arguments::given()
+__enhancd::sources::argument()
 {
     local dir="${1}"
 

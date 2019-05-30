@@ -4,7 +4,7 @@ __enhancd::cd()
     local -i code=0
     local -a args opts
 
-    if ! __enhancd::cd::available; then
+    if ! __enhancd::sources::is_available; then
         __enhancd::cd::builtin "${@:-$HOME}"
         return $?
     fi
@@ -18,13 +18,13 @@ __enhancd::cd()
     do
         case "$1" in
             -h | --help)
-                __enhancd::flag::help
+                __enhancd::flag::print_help
                 return $?
                 ;;
             "$ENHANCD_HYPHEN_ARG")
                 # If a hyphen is passed as the argument,
                 # searchs from the last 10 directory items in the log
-                args+=( "$(__enhancd::arguments::hyphen "$2")" )
+                args+=( "$(__enhancd::sources::mru "$2")" )
                 code=$?
                 ;;
             "-")
@@ -37,7 +37,7 @@ __enhancd::cd()
                 # it behaves like a zsh-bd plugin
                 # In short, you can jump back to a specific directory,
                 # without doing `cd ../../..`
-                args+=( "$(__enhancd::arguments::dot "$2")" )
+                args+=( "$(__enhancd::sources::go_up "$2")" )
                 code=$?
                 ;;
             "..")
@@ -46,7 +46,7 @@ __enhancd::cd()
                 args+=( ".." )
                 ;;
             "$ENHANCD_HOME_ARG")
-                args+=( "$(__enhancd::arguments::none)" )
+                args+=( "$(__enhancd::sources::default)" )
                 code=$?
                 ;;
             -* | --*)
@@ -58,7 +58,7 @@ __enhancd::cd()
                 fi
                 ;;
             *)
-                args+=( "$(__enhancd::arguments::given "$1")" )
+                args+=( "$(__enhancd::sources::argument "$1")" )
                 code=$?
                 ;;
         esac
@@ -67,7 +67,7 @@ __enhancd::cd()
 
     case ${#args[@]} in
         0)
-            args+=( "$(__enhancd::arguments::none)" )
+            args+=( "$(__enhancd::sources::default)" )
             code=$?
             ;;
     esac
@@ -81,14 +81,6 @@ __enhancd::cd()
             return 1
             ;;
     esac
-}
-
-# Returns true if enhancd is ready to be available
-__enhancd::cd::available()
-{
-    __enhancd::filepath::split_list "${ENHANCD_FILTER}" \
-        &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
-    return ${?}
 }
 
 __enhancd::cd::builtin()

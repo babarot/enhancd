@@ -182,24 +182,19 @@ When moving to the parent directory, the current directory is removed from the c
 
 ### Options
 
-:new: v2.2.0~
-
-You can make the option that you thought for your enhancd from 2.2.0 or above.
-
 ```console
 $ cd --help
 usage: cd [OPTIONS] [dir]
 
 OPTIONS:
   -h, --help       Show help message
-  -V, --version    Show version information
   -G, --ghq        Filter ghq list
 
 ```
 
-Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/src/custom/config.ltsv). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/src/custom/sources/ghq.sh).　Of cource, you can disable those options if you do not like it.
+Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/src/custom/sources/ghq.sh).　Of cource, you can disable those options if you do not like it.
 
-## :package: Installation
+## Installation
 
 enhancd can work on bash and zsh. But let's say we use bash as default shell at this example:
 
