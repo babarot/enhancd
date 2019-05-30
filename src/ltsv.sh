@@ -39,7 +39,7 @@ __enhancd::ltsv::parse()
     done
 
     local default_query='{print $0}'
-    local ltsv_script="$(cat "$ENHANCD_ROOT/src/share/ltsv.awk")"
+    local ltsv_script="$(cat "$ENHANCD_ROOT/lib/ltsv.awk")"
     local awk_scripts="${ltsv_script} ${query:-$default_query}"
 
     __enhancd::command::awk ${args[@]} "${awk_scripts}"

@@ -42,6 +42,6 @@ __enhancd::flag::is_default()
 __enhancd::flag::print_help()
 {
     __enhancd::ltsv::open \
-        | __enhancd::command::awk -f "$ENHANCD_ROOT/src/share/help.awk"
+        | __enhancd::command::awk -f "$ENHANCD_ROOT/lib/help.awk"
     return $?
 }

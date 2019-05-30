@@ -31,7 +31,7 @@ __enhancd::filepath::split_list()
 __enhancd::filepath::split()
 {
     __enhancd::command::awk \
-        -f "$ENHANCD_ROOT/src/share/split.awk" \
+        -f "$ENHANCD_ROOT/lib/split.awk" \
         -v arg="${1:-$PWD}"
 }
 
@@ -39,7 +39,7 @@ __enhancd::filepath::split()
 __enhancd::filepath::list_step()
 {
     __enhancd::command::awk \
-        -f "$ENHANCD_ROOT/src/share/step_by_step.awk" \
+        -f "$ENHANCD_ROOT/lib/step_by_step.awk" \
         -v dir="${1:-$PWD}"
 }
 
@@ -67,7 +67,7 @@ __enhancd::filepath::abs()
     fi
 
     __enhancd::command::awk \
-        -f "${ENHANCD_ROOT}/src/share/to_abspath.awk" \
+        -f "${ENHANCD_ROOT}/lib/to_abspath.awk" \
         -v cwd="${cwd}" \
         -v dir="${dir}"
 }
