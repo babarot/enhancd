@@ -1,3 +1,22 @@
+__enhancd::flag::parse()
+{
+    local opt="$1" func
+
+    func="$(__enhancd::ltsv::get "${opt}" "func")"
+
+    if [[ -z ${func} ]]; then
+        echo "${opt}: no such option" >&2
+        return 1
+    fi
+
+    if __enhancd::command::which ${func}; then
+        ${func} "$@"
+    else
+        echo "${func}: no such function defined" >&2
+        return 1
+    fi
+}
+
 __enhancd::flag::is_default()
 {
     local opt=$1
@@ -22,34 +41,7 @@ __enhancd::flag::is_default()
 
 __enhancd::flag::help()
 {
-    local config="$(__enhancd::ltsv::open)"
-
-cat <<HELP
-usage: cd [OPTIONS] [dir]
-
-OPTIONS:
-HELP
-
-if [[ -n ${config} ]]; then
-    echo "${config}" \
-        | __enhancd::filter::exclude_commented \
-        |
-    while IFS=$'\t' read short long desc action
-    do
-        if [[ -z ${short#*:} ]]; then
-            command printf "  %s  %-15s %s\n" "  "          "${long#*:}" "${desc#*:}"
-        elif [[ -z ${long#*:} ]]; then
-            command printf "  %s  %-15s %s\n" "${short#*:}" ""           "${desc#*:}"
-        else
-            command printf "  %s, %-15s %s\n" "${short#*:}" "${long#*:}" "${desc#*:}"
-        fi
-    done
-else
-    printf "  nothing yet\n"
-fi
-
-cat <<HELP
-
-Version: $_ENHANCD_VERSION
-HELP
+    __enhancd::ltsv::open \
+        | __enhancd::command::awk -f "$ENHANCD_ROOT/src/share/help.awk"
+    return $?
 }

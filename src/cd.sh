@@ -17,7 +17,7 @@ __enhancd::cd()
     while (( $# > 0 ))
     do
         case "$1" in
-            --help)
+            -h | --help)
                 __enhancd::flag::help
                 return $?
                 ;;
@@ -53,7 +53,7 @@ __enhancd::cd()
                 if __enhancd::flag::is_default "${1}"; then
                     opts+=( "${1}" )
                 else
-                    args+=( "$(__enhancd::arguments::option "${1}")" )
+                    args+=( "$(__enhancd::flag::parse "${1}")" )
                     code=$?
                 fi
                 ;;

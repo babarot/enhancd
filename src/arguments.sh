@@ -1,22 +1,3 @@
-__enhancd::arguments::option()
-{
-    local opt="$1" func
-
-    func="$(__enhancd::ltsv::get "${opt}" "func")"
-
-    if [[ -z ${func} ]]; then
-        echo "${opt}: no such option" >&2
-        return 1
-    fi
-
-    if __enhancd::command::which ${func}; then
-        ${func} "$@"
-    else
-        echo "${func}: no such function defined" >&2
-        return 1
-    fi
-}
-
 __enhancd::arguments::hyphen()
 {
     if [[ $ENHANCD_DISABLE_HYPHEN == 1 ]]; then
@@ -66,18 +47,14 @@ __enhancd::arguments::none()
     __enhancd::history::list | __enhancd::filter::interactive
 }
 
-__enhancd::arguments::empty()
-{
-    echo "$HOME"
-    return 0
-}
-
 __enhancd::arguments::given()
 {
-    if [[ -d $1 ]]; then
-        echo "$1"
+    local dir="${1}"
+
+    if [[ -d ${dir} ]]; then
+        echo "${dir}"
         return 0
     fi
 
-    __enhancd::history::list "$1" | __enhancd::filter::interactive
+    __enhancd::history::list "${dir}" | __enhancd::filter::interactive
 }
