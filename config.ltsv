@@ -1,0 +1,5 @@
+short:-h	long:--help	desc:show help message	func:	condition:
+short:-q	long:	desc:quiet, no output or use of hooks	func:	condition:[[ $SHELL == *zsh* ]]
+short:-s	long:	desc:refuse to use paths with symlinks	func:	condition:[[ $SHELL == *zsh* ]]
+short:-L	long:	desc:retain symbolic links ignoring CHASE_LINKS	func:	condition:
+short:-P	long:	desc:resolve symbolic links as CHASE_LINKS	func:	condition:

@@ -11,14 +11,12 @@ export ENHANCD_DOT_ARG="${ENHANCD_DOT_ARG:-..}"
 export ENHANCD_HYPHEN_ARG="${ENHANCD_HYPHEN_ARG:--}"
 export ENHANCD_HYPHEN_NUM="${ENHANCD_HYPHEN_NUM:-10}"
 export ENHANCD_HOME_ARG="${ENHANCD_HOME_ARG:-}"
-export ENHANCD_DOT_SHOW_FULLPATH="${ENHANCD_DOT_SHOW_FULLPATH:-0}"
 export ENHANCD_USE_FUZZY_MATCH="${ENHANCD_USE_FUZZY_MATCH:-1}"
-export ENHANCD_AWK
 export ENHANCD_COMPLETION_DEFAULT
 export ENHANCD_COMPLETION_KEYBIND="${ENHANCD_COMPLETION_KEYBIND:-^I}"
 export ENHANCD_COMPLETION_BEHAVIOR="${ENHANCD_COMPLETION_BEHAVIOR:-default}"
 
-_ENHANCD_VERSION="2.2.3"
+export _ENHANCD_VERSION="2.2.4"
 _ENHANCD_SUCCESS=0
 _ENHANCD_FAILURE=60
 
@@ -29,24 +27,27 @@ elif [[ -n $ZSH_VERSION ]]; then
     # ZSH
     ENHANCD_ROOT="${${(%):-%x}:A:h}"
     compdef _cd __enhancd::cd
-    # source $ENHANCD_ROOT/init.zsh
 else
     return 1
 fi
 
 __enhancd::init::init()
 {
+    local src
+
     # core files
     for src in "$ENHANCD_ROOT/src"/*.sh
     do
         source "$src"
     done
 
-    # custom files
-    for src in "$ENHANCD_ROOT/src/custom/"{sources,options}/*.sh
-    do
-        source "$src"
-    done
+    # custom sources
+    if [[ -d "$ENHANCD_DIR/sources" ]]; then
+        for src in $(find "$ENHANCD_DIR/sources" -name "*.sh")
+        do
+            source "$src"
+        done
+    fi
 
     if [[ $SHELL == *zsh* ]]; then
         for src in "$ENHANCD_ROOT/src"/*.zsh
@@ -55,13 +56,11 @@ __enhancd::init::init()
         done
     fi
 
-    unset src
-
     # make a log file and a root directory
-    if [ ! -d "$ENHANCD_DIR" ]; then
+    if [[ ! -d "$ENHANCD_DIR" ]]; then
       mkdir -p "$ENHANCD_DIR"
     fi
-    if [ ! -f "$ENHANCD_DIR/enhancd.log" ]; then
+    if [[ ! -f "$ENHANCD_DIR/enhancd.log" ]]; then
       touch "$ENHANCD_DIR/enhancd.log"
     fi
 
@@ -72,8 +71,6 @@ __enhancd::init::init()
     if [[ -z $ENHANCD_FILTER ]]; then
         ENHANCD_FILTER="fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
     fi
-
-    ENHANCD_AWK="$(__enhancd::utils::awk)"
 }
 
 __enhancd::init::init
