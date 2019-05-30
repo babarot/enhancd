@@ -45,3 +45,10 @@ __enhancd::command::nl()
         i++
     }' 2>/dev/null
 }
+
+__enhancd::command::run()
+{
+    local cond="${1}"
+    ${SHELL:-bash} -c "${cond}" &>/dev/null
+    return ${?}
+}

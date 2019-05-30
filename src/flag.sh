@@ -1,8 +1,14 @@
 __enhancd::flag::parse()
 {
-    local opt="$1" func
+    local opt="$1" arg="$2" func
 
     func="$(__enhancd::ltsv::get "${opt}" "func")"
+    cond="$(__enhancd::ltsv::get "${opt}" "condition")"
+
+    if ! __enhancd::command::run "${cond}"; then
+        echo "${opt}: defined but require '${cond}'" >&2
+        return 1
+    fi
 
     if [[ -z ${func} ]]; then
         echo "${opt}: no such option" >&2
@@ -10,7 +16,7 @@ __enhancd::flag::parse()
     fi
 
     if __enhancd::command::which ${func}; then
-        ${func} "$@"
+        ${func} "${arg}"
     else
         echo "${func}: no such function defined" >&2
         return 1
