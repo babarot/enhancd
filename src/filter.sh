@@ -68,6 +68,11 @@ __enhancd::filter::interactive()
         list="$(cat <&0)"
     fi
 
+    if [[ -z $list ]]; then
+        echo "no entry" >&2
+        return $_ENHANCD_FAILURE
+    fi
+
     filter="$(__enhancd::filepath::split_list "$ENHANCD_FILTER")"
 
     # Count lines in the list
@@ -102,4 +107,15 @@ __enhancd::filter::exclude_by()
 __enhancd::filter::exclude_commented()
 {
     __enhancd::command::grep -v -E '^(//|#)' || true
+}
+
+__enhancd::filter::replace()
+{
+    local old new
+    old="${1:?too few argument}"
+    new="${2:-""}"
+    __enhancd::command::awk \
+        -v old="${old}" \
+        -v new="${new}" \
+        'sub(old, new, $0) {print $0}'
 }
