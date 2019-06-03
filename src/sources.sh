@@ -40,8 +40,8 @@ __enhancd::sources::mru()
     fi
 
     __enhancd::history::list "$1" \
-        | __enhancd::filter::exclude_by "$HOME" \
-        | head -n "$ENHANCD_HYPHEN_NUM" \
+        | __enhancd::filter::exclude "$HOME" \
+        | __enhancd::filter::limit "$ENHANCD_HYPHEN_NUM" \
         | __enhancd::filter::interactive
 }
 

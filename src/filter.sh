@@ -4,8 +4,8 @@ __enhancd::filter::exists()
 
     while read line
     do
-        if [[ -d $line ]]; then
-            echo "$line"
+        if [[ -d ${line} ]]; then
+            echo "${line}"
         fi
     done
 }
@@ -59,49 +59,45 @@ __enhancd::filter::fuzzy()
 
 __enhancd::filter::interactive()
 {
-    # Narrows the ENHANCD_FILTER environment variables down to one
-    # and sets it to the variables filter
-    local list="$1" filter
+    local stdin="${1}"
 
-    # If no argument is given to __enhancd::interface
-    if [[ -z $list ]] || [[ -p /dev/stdin ]]; then
-        list="$(cat <&0)"
+    if [[ -z ${stdin} ]] || [[ -p /dev/stdin ]]; then
+        stdin="$(cat <&0)"
     fi
 
-    if [[ -z $list ]]; then
+    if [[ -z ${stdin} ]]; then
         echo "no entry" >&2
         return $_ENHANCD_FAILURE
     fi
 
+    local filter
     filter="$(__enhancd::filepath::split_list "$ENHANCD_FILTER")"
 
-    # Count lines in the list
-    local wc
-    wc="$(echo "$list" | __enhancd::command::grep -c "")"
+    local -i count
+    count="$(echo "${stdin}" | __enhancd::command::grep -c "")"
 
-    case "$wc" in
-        1 )
-            if [[ -n $list ]]; then
-                echo "$list"
+    case "${count}" in
+        1)
+            if [[ -n ${stdin} ]]; then
+                echo "${stdin}"
             else
                 return $_ENHANCD_FAILURE
             fi
             ;;
-        * )
-            local t
-            t="$(echo "$list" | eval $filter)"
-            if [[ -z $t ]]; then
-                # No selection
+        *)
+            local selected
+            selected="$(echo "${stdin}" | eval ${filter})"
+            if [[ -z ${selected} ]]; then
                 return 0
             fi
-            echo "$t"
+            echo "${selected}"
             ;;
     esac
 }
 
-__enhancd::filter::exclude_by()
+__enhancd::filter::exclude()
 {
-    __enhancd::command::grep -vx "${1}" || true
+    __enhancd::command::grep -v -x "${1}" || true
 }
 
 __enhancd::filter::exclude_commented()
@@ -118,4 +114,9 @@ __enhancd::filter::replace()
         -v old="${old}" \
         -v new="${new}" \
         'sub(old, new, $0) {print $0}'
+}
+
+__enhancd::filter::limit()
+{
+    command head -n "${1:-10}"
 }
