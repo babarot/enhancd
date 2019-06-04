@@ -49,6 +49,12 @@ __enhancd::cd()
                 args+=( "$(__enhancd::sources::default)" )
                 code=$?
                 ;;
+            --)
+                opts+=( "${1}" )
+                shift
+                args+=( "$(__enhancd::sources::argument "$1")" )
+                code=$?
+                ;;
             -* | --*)
                 if __enhancd::flag::is_default "${1}"; then
                     opts+=( "${1}" )
