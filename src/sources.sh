@@ -47,7 +47,7 @@ __enhancd::sources::mru()
 
 __enhancd::sources::default()
 {
-    if [[ $ENHANCD_DISABLE_HOME == 1 ]]; then
+    if [[ $ENHANCD_DISABLE_HOME == 1 && $# == 1 ]]; then
         echo "$HOME"
         return 0
     fi

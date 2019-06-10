@@ -73,7 +73,7 @@ __enhancd::cd()
 
     case ${#args[@]} in
         0)
-            args+=( "$(__enhancd::sources::default)" )
+            args+=( "$(__enhancd::sources::default 0)" )
             code=$?
             ;;
     esac
