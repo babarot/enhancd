@@ -116,7 +116,57 @@ __enhancd::filter::replace()
         'sub(old, new, $0) {print $0}'
 }
 
+__enhancd::filter::trim()
+{
+    local str
+    str="${1:?too few argument}"
+    __enhancd::filter::replace "${str}"
+}
+
 __enhancd::filter::limit()
 {
     command head -n "${1:-10}"
+}
+
+__enhancd::filter::exclude_gitignore()
+{
+    local -a ignores=()
+    if [[ -f $PWD/.gitignore ]]; then
+        ignores+=(".git")
+    else
+        # just do read the input and do output
+        # if no gitignore file
+        cat <&0
+        return 0
+    fi
+
+    local ignore
+    while read ignore
+    do
+        if [[ -d ${ignore} ]]; then
+            ignores+=( "$(basename ${ignore})" )
+        fi
+    done <${PWD}/.gitignore
+
+    contains() {
+        local input ignore
+        input=${1:?need one argument}
+        for ignore in "${ignores[@]}"
+        do
+            # https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
+            if [[ ${input} =~ ${ignore//\./\\.} ]]; then
+                return 0
+            fi
+        done
+        return 1
+    }
+
+    local line
+    while read line
+    do
+        if contains ${line}; then
+            continue
+        fi
+        echo "${line}"
+    done
 }
