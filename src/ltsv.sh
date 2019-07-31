@@ -55,5 +55,5 @@ __enhancd::ltsv::get()
         | __enhancd::ltsv::parse \
         -v opt="${opt}" \
         -v key="${key}" \
-        -q 'ltsv("short")==opt||ltsv("long")==opt{print key=="" ? $0 : ltsv(key)}'
+        -q 'ltsv("short") == opt || ltsv("long") == opt { if (key=="") { print $0 } else { print ltsv(key) } }'
 }
