@@ -71,6 +71,23 @@ __enhancd::init::init()
     if [[ -z $ENHANCD_FILTER ]]; then
         ENHANCD_FILTER="fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
     fi
+
+    # Remove fish sources
+    if [[ -d "$ENHANCD_ROOT"/functions ]]; then
+        rm -rfd "$ENHANCD_ROOT"/functions
+    fi
+
+    if [[ -d "$ENHANCD_ROOT"/conf.d ]]; then
+        rm -rfd "$ENHANCD_ROOT"/conf.d
+    fi
+
+    if [[ -f "$ENHANCD_ROOT"/init.fish ]]; then
+        rm -f "$ENHANCD_ROOT"/init.fish
+    fi
+
+    if [[ -f "$ENHANCD_ROOT"/uninstall.fish ]]; then
+        rm -f "$ENHANCD_ROOT"/uninstall.fish
+    fi
 }
 
 __enhancd::init::init
