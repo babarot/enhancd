@@ -18,6 +18,8 @@
 |
 <b><a href="#features">Features</a></b>
 |
+<b><a href="#issues">Known issues</a></b>
+|
 <b><a href="#requirements">Requirements</a></b>
 |
 <b><a href="#usage">Usage</a></b>
@@ -53,11 +55,17 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
-- Work on Bash, Zsh and fish (Fully compatible)
+- Work on Bash, Zsh and fish (cross-shell compatibility)
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
 - Custom options (user-defined option is acceptable)
+
+## Issues
+
+- Fish version
+  - Because of how fish piping works, it's not possible to pipe to cd like : `ls / | cd`
+
 
 ### Fuzzy search
 
@@ -236,11 +244,12 @@ enhancd works on fish 3.0.0 and above.
 
 - Install on of the interactive filter listed above
 - Install enhancd-fish :
-  - Oh-my-fish
+
+  Oh-my-fish
     ```console
     omf install https://github.com/b4b4r07/enhancd
     ```
-  - Fisher
+  Fisher
     ```console
     fisher add b4b4r07/enhancd
     ```
