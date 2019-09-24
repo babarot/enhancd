@@ -97,7 +97,7 @@ __enhancd::filter::interactive()
 
 __enhancd::filter::exclude()
 {
-    __enhancd::command::grep -v -x "${1}" || true
+    __enhancd::command::grep -v -x -F "${1}" || true
 }
 
 __enhancd::filter::exclude_commented()
