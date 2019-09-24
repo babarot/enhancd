@@ -18,6 +18,8 @@
 |
 <b><a href="#features">Features</a></b>
 |
+<b><a href="#issues">Known issues</a></b>
+|
 <b><a href="#requirements">Requirements</a></b>
 |
 <b><a href="#usage">Usage</a></b>
@@ -53,11 +55,17 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
-- Work on Bash and Zsh (Full compatible)
+- Work on Bash, Zsh and fish (cross-shell compatibility)
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
 - Custom options (user-defined option is acceptable)
+
+## Issues
+
+- Fish version
+  - Because of how fish piping works, it's not possible to pipe to cd like : `ls / | cd`
+
 
 ### Fuzzy search
 
@@ -126,7 +134,7 @@ $ ENHANCD_FILTER=fzy:fzf:peco
 $ export ENHANCD_FILTER
 ```
 
-Also, 
+Also,
 
 <details>
 <summary><strong>Hyphen (<code>-</code>)</strong></summary>
@@ -146,7 +154,7 @@ $ cd -
   /home/lisa/src/github.com/b4b4r07
 > /home/lisa/src/github.com/b4b4r07/portfolio
   10/10
-> _	
+> _
 ```
 
 Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` (`$PWD` is `/home/lisa`, `$OLDPWD` is `/home/lisa/src/github.com/b4b4r07/portfolio`).
@@ -196,24 +204,24 @@ Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/bl
 
 ## Installation
 
-enhancd can work on bash and zsh. But let's say we use bash as default shell at this example:
+### Bash
 
 ```console
 # add the fzy brew tap to homebrew
 $ brew tap jhawthorn/fzy
 
 # install fzy and ccat with homebrew
-$ brew install fzy ccat 
+$ brew install fzy ccat
 
-# alt: brew install fzy ccat percol peco fzf 
+# alt: brew install fzy ccat percol peco fzf
 #  depending on which interactive filter you want to use
 
 # install enhancd into your home directory (or a preferred directory)
-$ cd ~  
+$ cd ~
 $ git clone https://github.com/b4b4r07/enhancd
 
 # if you want to hide the directory in the finder (gui)
-$ chflags hidden enhancd  
+$ chflags hidden enhancd
 
 # add enhancd to your bash profile (or sourced file of choice)
 $ echo "source ~/enhancd/init.sh"  >> ~/.bash_profile
@@ -222,11 +230,29 @@ $ echo "source ~/enhancd/init.sh"  >> ~/.bash_profile
 $ source ~/.bash_profile
 ```
 
+### ZSH
+
 Also if you use zsh as your shell, you can install this via [zplug](https://github.com/zplug/zplug) which is powerfull plugin mananger for zsh:
 
 ```bash
 zplug "b4b4r07/enhancd", use:init.sh
 ```
+
+### Fish
+
+enhancd works on fish 3.0.0 and above.
+
+- Install on of the interactive filter listed above
+- Install enhancd-fish :
+
+  Oh-my-fish
+    ```console
+    omf install https://github.com/b4b4r07/enhancd
+    ```
+  Fisher
+    ```console
+    fisher add b4b4r07/enhancd
+    ```
 
 ## Configurations
 
@@ -321,7 +347,7 @@ If you don't want to use the interactive filter when you call `cd` without an ar
 <details>
 <summary><strong><code>ENHANCD_DOT_ARG</code></strong></summary>
 
-You can customize the double-dot (`..`) argument for enhancd by this environment variable.  
+You can customize the double-dot (`..`) argument for enhancd by this environment variable.
 Default is `..`.
 
 If you set this variable any but `..`, it gives you the _double-dot_ behavior with that argument; i.e. upward search of directory hierarchy.
@@ -334,7 +360,7 @@ In other words, you can keep original `cd ..` behavior by this option.
 <details>
 <summary><strong><code>ENHANCD_HYPHEN_ARG</code></strong></summary>
 
-You can customize the hyphen (`-`) argument for enhancd by this environment variable.  
+You can customize the hyphen (`-`) argument for enhancd by this environment variable.
 Default is `-`.
 
 If you set this variable any but `-`, it gives you the _hyphen_ behavior with that argument; i.e. backward search of directory-change history.
@@ -347,7 +373,7 @@ In other words, you can keep original `cd -` behavior by this option.
 <details>
 <summary><strong><code>ENHANCD_HYPHEN_NUM</code></strong></summary>
 
-You can customize the number of rows by "cd -" 
+You can customize the number of rows by "cd -"
 Default is `10`.
 
 This is passed to `head` comand as `-n` option.
