@@ -14,7 +14,7 @@ __enhancd::sources::go_up()
     fi
 
     __enhancd::filepath::list_step "${PWD}" \
-        | __enhancd::command::grep "$1" \
+        | __enhancd::command::grep -E "${1}" \
         | __enhancd::filter::interactive \
         | __enhancd::filepath::abs
 

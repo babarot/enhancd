@@ -7,7 +7,7 @@ __enhancd::command::grep()
     else
         cat <&0
     fi \
-        | command grep -E "$@" 2>/dev/null
+        | command grep "$@" 2>/dev/null
 }
 
 # Returns true if the argument exists in PATH such as "which" command
