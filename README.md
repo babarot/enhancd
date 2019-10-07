@@ -445,3 +445,7 @@ The "visual filter" (interactive filter) is what is called "Interactive Grep Too
 ## License
 
 [MIT][license-link] :copyright: b4b4r07
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/b4b4r07/enhancd.svg)](https://starchart.cc/b4b4r07/enhancd)
