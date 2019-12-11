@@ -130,9 +130,9 @@ __enhancd::completion::run() {
   tokens=(${(z)LBUFFER})
   cmd=${tokens[1]}
 
-  if [[ "$LBUFFER" =~ "^\ *cd$" ]]; then
+  if [[ "${LBUFFER}" =~ "^\ *${ENHANCD_COMMAND}$" ]]; then
     zle ${ENHANCD_COMPLETION_DEFAULT:-expand-or-complete}
-  elif [ "$cmd" = cd ]; then
+  elif [[ "${cmd}" = ${ENHANCD_COMMAND} ]]; then
     __enhancd::completion::complete ${tokens[2,${#tokens}]/#\~/$HOME}
   else
     zle ${ENHANCD_COMPLETION_DEFAULT:-expand-or-complete}
