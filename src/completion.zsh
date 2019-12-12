@@ -13,7 +13,7 @@ __enhancd::completion::list() {
     if [ "$dir" = "/" ]; then
       length=0
     fi
-    find -L "$dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null \
+    command find -L "$dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null \
         | cut -b $(( ${length} + 2 ))- | \sed '/^$/d' | while read -r line; do
       if [[ "${line[1]}" == "." ]]; then
         continue
@@ -28,7 +28,7 @@ __enhancd::completion::list() {
     fi
     seg=$(basename -- "$1")
     starts_with_dir=$( \
-      find -L "$dir" -mindepth 1 -maxdepth 1 -type d \
+      command find -L "$dir" -mindepth 1 -maxdepth 1 -type d \
           2>/dev/null | cut -b $(( ${length} + 2 ))- | \sed '/^$/d' \
           | while read -r line; do
         if [[ "${seg[1]}" != "." && "${line[1]}" == "." ]]; then
@@ -42,7 +42,7 @@ __enhancd::completion::list() {
     if [ -n "$starts_with_dir" ]; then
       echo "$starts_with_dir"
     else
-      find -L "$dir" -mindepth 1 -maxdepth 1 -type d \
+      command find -L "$dir" -mindepth 1 -maxdepth 1 -type d \
           2>/dev/null | cut -b $(( ${length} + 2 ))- | \sed '/^$/d' \
           | while read -r line; do
         if [[ "${seg[1]}" != "." && "${line[1]}" == "." ]]; then

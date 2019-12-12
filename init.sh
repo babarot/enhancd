@@ -43,7 +43,7 @@ __enhancd::init::init()
 
     # custom sources
     if [[ -d "$ENHANCD_DIR/sources" ]]; then
-        for src in $(find "$ENHANCD_DIR/sources" -name "*.sh")
+        for src in $(command find "$ENHANCD_DIR/sources" -name "*.sh")
         do
             source "$src"
         done
