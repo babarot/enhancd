@@ -3,6 +3,5 @@ function _enhancd_source_default
         echo "$HOME"
         return 0
     end
-    _enhancd_history_list | _enhancd_filter_interactive "$list"
-
+    string split '\n' (_enhancd_entry_git_root) (_enhancd_history_list) | _enhancd_filter_interactive
 end
