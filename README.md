@@ -57,6 +57,7 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 - Easy to filter, using your favorite filter
 - Work on Bash, Zsh and fish (cross-shell compatibility)
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
+- Inside a git repo, the first list element is the git root directory
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
 - Custom options (user-defined option is acceptable)
