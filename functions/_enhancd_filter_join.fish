@@ -1,5 +1,5 @@
 function _enhancd_filter_join
-    if [ -n "$argv[1]" ] && [ -f "$argv[1" ]
+    if [ -n "$argv[1]" ] && [ -f "$argv[1]" ]
         cat "$argv[1]"
     else
         cat <&0
