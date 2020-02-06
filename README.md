@@ -242,7 +242,7 @@ zplug "b4b4r07/enhancd", use:init.sh
 
 enhancd works on fish 3.0.0 and above.
 
-- Install on of the interactive filter listed above
+- Install one of the interactive filter listed above
 - Install enhancd-fish :
 
   Oh-my-fish
