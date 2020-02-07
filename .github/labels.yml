@@ -8,36 +8,25 @@ labels:
 - name: area/zsh
   description: ""
   color: cccccc
+- name: help wanted
+  description: Extra attention is needed
+  color: "008672"
 - name: kind/bug
-  description: "Something isn't working"
+  description: Something isn't working
   color: fc2929
 - name: kind/enhancement
-  description: "New feature or request"
+  description: New feature or request
   color: 84b6eb
 - name: kind/question
-  description: "Further information is requested"
+  description: Further information is requested
   color: cc317c
 - name: lifesycle/stale
-  description: ""
+  description: Denotes an issue or PR has remained open with no activity and has become
+    stale.
   color: e6e6e6
 - name: status/todo
   description: ""
   color: d4c5f9
-- name: duplicate
-  description: This issue or pull request already exists
-  color: cfd3d7
-- name: good first issue
-  description: Good for newcomers
-  color: 7057ff
-- name: help wanted
-  description: Extra attention is needed
-  color: "008672"
-- name: invalid
-  description: This doesn't seem right
-  color: e4e669
-- name: wontfix
-  description: This will not be worked on
-  color: ffffff
 repos:
 - name: b4b4r07/enhancd
   labels:
@@ -50,4 +39,3 @@ repos:
   - kind/question
   - lifesycle/stale
   - status/todo
-
