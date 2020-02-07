@@ -1,0 +1,53 @@
+labels:
+- name: area/bash
+  description: ""
+  color: cccccc
+- name: area/fish
+  description: ""
+  color: cccccc
+- name: area/zsh
+  description: ""
+  color: cccccc
+- name: kind/bug
+  description: "Something isn't working"
+  color: fc2929
+- name: kind/enhancement
+  description: "New feature or request"
+  color: 84b6eb
+- name: kind/question
+  description: "Further information is requested"
+  color: cc317c
+- name: lifesycle/stale
+  description: ""
+  color: e6e6e6
+- name: status/todo
+  description: ""
+  color: d4c5f9
+- name: duplicate
+  description: This issue or pull request already exists
+  color: cfd3d7
+- name: good first issue
+  description: Good for newcomers
+  color: 7057ff
+- name: help wanted
+  description: Extra attention is needed
+  color: "008672"
+- name: invalid
+  description: This doesn't seem right
+  color: e4e669
+- name: wontfix
+  description: This will not be worked on
+  color: ffffff
+repos:
+- name: b4b4r07/enhancd
+  labels:
+  - area/bash
+  - area/fish
+  - area/zsh
+  - help wanted
+  - kind/bug
+  - kind/enhancement
+  - kind/question
+  - lifesycle/stale
+  - status/todo
+
