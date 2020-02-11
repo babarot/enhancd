@@ -1,0 +1,19 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup BATS
+        uses: mig4/setup-bats@master
+        with:
+          bats-version: 1.1.0
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        run: bats -r test
