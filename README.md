@@ -1,9 +1,13 @@
-[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg?style=flat-square
+[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg
 [version-link]: https://github.com/b4b4r07/enhancd/releases
+
+[active-badge]: https://masterminds.github.io/stability/active.svg
+[active-link]:  https://masterminds.github.io/stability/active.html
+
 [awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license-link]: https://b4b4r07.mit-license.org
 
-[![][version-badge]][version-link]
+[![][version-badge]][version-link] [![][active-badge]][active-link]
 
 <a href="top"></a>
 
