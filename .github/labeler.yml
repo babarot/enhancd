@@ -1,0 +1,10 @@
+area/bash:
+  - '**/*.sh'
+  - '**/*.bash'
+
+area/zsh:
+  - '**/*.sh'
+  - '**/*.zsh'
+
+area/fish:
+  - '**/*.fish'

@@ -1,11 +1,13 @@
-[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg?style=flat-square
+[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg
 [version-link]: https://github.com/b4b4r07/enhancd/releases
-[travis-badge]: https://img.shields.io/travis/b4b4r07/enhancd/master.svg?style=flat-square
-[travis-link]: https://travis-ci.org/b4b4r07/enhancd
-[awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
-[license-link]: http://b4b4r07.mit-license.org
 
-[![][travis-badge]][travis-link] [![][version-badge]][version-link]
+[active-badge]: https://masterminds.github.io/stability/active.svg
+[active-link]:  https://masterminds.github.io/stability/active.html
+
+[awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
+[license-link]: https://b4b4r07.mit-license.org
+
+[![][version-badge]][version-link] [![][active-badge]][active-link]
 
 <a href="top"></a>
 
@@ -243,7 +245,7 @@ zplug "b4b4r07/enhancd", use:init.sh
 
 enhancd works on fish 3.0.0 and above.
 
-- Install on of the interactive filter listed above
+- Install one of the interactive filter listed above
 - Install enhancd-fish :
 
   Oh-my-fish

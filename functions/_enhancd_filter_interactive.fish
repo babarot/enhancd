@@ -24,7 +24,7 @@ function _enhancd_filter_interactive
         case '*'
             set -l selected (echo "$stdin" | eval "$filter")
             if [ -z "$selected" ]
-                return 1
+                echo "$PWD"
             end
             echo "$selected"
     end
