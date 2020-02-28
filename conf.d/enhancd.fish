@@ -60,5 +60,10 @@ end
 eval "alias $ENHANCD_COMMAND 'enhancd'"
 
 function $name_uninstall --on-event $name_uninstall
-    rm --force --recursive --dir $ENHANCD_DIR
+    switch (command uname)
+        case Darwin \*BSD
+            rm -rf $ENHANCD_DIR
+        case \*
+            rm --force --recursive --dir $ENHANCD_DIR
+    end
 end
