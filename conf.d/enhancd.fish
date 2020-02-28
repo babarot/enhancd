@@ -60,5 +60,5 @@ end
 eval "alias $ENHANCD_COMMAND 'enhancd'"
 
 function $name_uninstall --on-event $name_uninstall
-    rm --force --recursive --dir $ENHANCD_DIR
+    rm -rf $ENHANCD_DIR
 end
