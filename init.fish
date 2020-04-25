@@ -6,5 +6,5 @@
 # * $dependencies  package dependencies
 
 # set variables
-source $path/init.fish
+source $path/conf.d/enhancd.fish
 if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT $path; end
