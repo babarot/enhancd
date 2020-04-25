@@ -1,6 +1,6 @@
 function _enhancd_filter_exclude_gitignore
     set -la ignores
-    if [ -f $PWD/.gitignore ]
+    if test -f $PWD/.gitignore
         set -a ignores ".git"
     else
         # just do read the input and do output
@@ -12,13 +12,13 @@ function _enhancd_filter_exclude_gitignore
     set -l ignore
 
     while read ignore
-        if [ -d $ignore ]
+        if test -d $ignore
             set -a ignores (basename "$ignore")
         end
     end <"$PWD"/.gitignore
 
     function contains
-        if ! set argv[1]
+        if not set argv[1]
             return 1
         else
             set -l input $argv[1]

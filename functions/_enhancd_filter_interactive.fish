@@ -1,11 +1,11 @@
 function _enhancd_filter_interactive
     set -l stdin "$argv[1]"
 
-    if [ -z "$stdin" ] || [ -p /dev/stdin ]
+    if test -z "$stdin"; or test -p /dev/stdin
         read -z stdin
     end
 
-    if [ -z "$stdin" ]
+    if test -z "$stdin"
         echo "no entry" >&2
         return $_ENHANCD_FAILURE
     end
@@ -15,7 +15,7 @@ function _enhancd_filter_interactive
 
     switch "$count"
         case '1'
-            if [ -n "$stdin" ]
+            if test -n "$stdin"
                 echo "$stdin"
             else
                 return 1
@@ -23,7 +23,7 @@ function _enhancd_filter_interactive
 
         case '*'
             set -l selected (echo "$stdin" | eval "$filter")
-            if [ -z "$selected" ]
+            if test -z "$selected"
                 return 1
             end
             echo "$selected"

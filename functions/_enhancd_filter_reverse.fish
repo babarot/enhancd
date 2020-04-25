@@ -1,6 +1,6 @@
 # _enhancd_filter_reverse reverses a stdin contents
 function _enhancd_filter_reverse
-    if [ -n "$argv[1]" ] && [ -f "$argv[1]" ]
+    if test -n "$argv[1]"; and test -f "$argv[1]"
         cat "$argv[1]"
     else
         cat <&0

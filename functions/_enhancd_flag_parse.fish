@@ -6,12 +6,12 @@ function _enhancd_flag_parse
     set func (_enhancd_ltsv_get "$opt" "func")
     set cond (_enhancd_ltsv_get "$opt" "condition")
 
-    if ! _enhancd_command_run "$cond"
+    if not _enhancd_command_run "$cond"
         echo "$opt: defined but require '$cond'" >&2
         return 1
     end
 
-    if [ -z $func ]
+    if test -z $func
         echo "$opt: no such option" >&2
         return 1
     end

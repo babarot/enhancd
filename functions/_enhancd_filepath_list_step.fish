@@ -1,6 +1,6 @@
 # Lists a path step-wisely
 function _enhancd_filepath_list_step
-    if ! set -q argv[1]
+    if not set -q argv[1]
         set argv[1] "$PWD"
     end
 

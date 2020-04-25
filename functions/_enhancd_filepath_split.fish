@@ -1,6 +1,6 @@
 # Splits a path with a slash
 function _enhancd_filepath_split
-    if ! set -q argv[1]
+    if not set -q argv[1]
         set $argv[1] $PWD
     end
 
