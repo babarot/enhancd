@@ -8,21 +8,21 @@
 # set variables
 set -gx ENHANCD_FILTER
 
-if ! set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
-if ! set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT $path; end
-if ! set -q ENHANCD_DIR; set -gx ENHANCD_DIR $HOME/.enhancd; end
-if ! set -q ENHANCD_DISABLE_DOT; set -gx ENHANCD_DISABLE_DOT 0; end
-if ! set -q ENHANCD_DISABLE_HYPHEN; set -gx ENHANCD_DISABLE_HYPHEN 0; end
-if ! set -q ENHANCD_DISABLE_HOME; set -gx ENHANCD_DISABLE_HOME 0; end
+if not set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
+if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT $path; end
+if not set -q ENHANCD_DIR; set -gx ENHANCD_DIR $HOME/.enhancd; end
+if not set -q ENHANCD_DISABLE_DOT; set -gx ENHANCD_DISABLE_DOT 0; end
+if not set -q ENHANCD_DISABLE_HYPHEN; set -gx ENHANCD_DISABLE_HYPHEN 0; end
+if not set -q ENHANCD_DISABLE_HOME; set -gx ENHANCD_DISABLE_HOME 0; end
 
-if ! set -q ENHANCD_DOT_ARG; set -gx ENHANCD_DOT_ARG ".."; end
-if ! set -q ENHANCD_HYPHEN_ARG; set -gx ENHANCD_HYPHEN_ARG "-"; end
-if ! set -q ENHANCD_HYPHEN_NUM; set -gx ENHANCD_HYPHEN_NUM 10; end
-if ! set -q ENHANCD_HOME_ARG; set -gx ENHANCD_HOME_ARG ""; end
-if ! set -q ENHANCD_USE_FUZZY_MATCH; set -gx ENHANCD_USE_FUZZY_MATCH 1; end
+if not set -q ENHANCD_DOT_ARG; set -gx ENHANCD_DOT_ARG ".."; end
+if not set -q ENHANCD_HYPHEN_ARG; set -gx ENHANCD_HYPHEN_ARG "-"; end
+if not set -q ENHANCD_HYPHEN_NUM; set -gx ENHANCD_HYPHEN_NUM 10; end
+if not set -q ENHANCD_HOME_ARG; set -gx ENHANCD_HOME_ARG ""; end
+if not set -q ENHANCD_USE_FUZZY_MATCH; set -gx ENHANCD_USE_FUZZY_MATCH 1; end
 
-if ! set -q ENHANCD_COMPLETION_DEFAULT; set -gx ENHANCD_COMPLETION_DEFAULT 1; end
-if ! set -q ENHANCD_COMPLETION_BEHAVIOUR; set -gx ENHANCD_COMPLETION_BEHAVIOUR "default"; end
+if not set -q ENHANCD_COMPLETION_DEFAULT; set -gx ENHANCD_COMPLETION_DEFAULT 1; end
+if not set -q ENHANCD_COMPLETION_BEHAVIOUR; set -gx ENHANCD_COMPLETION_BEHAVIOUR "default"; end
 
 set -gx ENHANCD_COMPLETION_KEYBIND "^I";
 
@@ -35,12 +35,12 @@ if test -z "$ENHANCD_FILTER"
     set -gx ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
 end
 
-# make a log file and a root directory
-if ! test -d "$ENHANCD_DIR"
+# make a log file; and a root directory
+if not test -d "$ENHANCD_DIR"
     mkdir -p "$ENHANCD_DIR"
 end
 
-if ! test -f "$ENHANCD_DIR/enhancd.log"
+if not test -f "$ENHANCD_DIR/enhancd.log"
     touch "$ENHANCD_DIR/enhancd.log"
 end
 

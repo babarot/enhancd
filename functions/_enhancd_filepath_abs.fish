@@ -3,7 +3,7 @@ function _enhancd_filepath_abs
     set -l cwd (string match --regex '^/.*/' "$PWD")
     set -l dir "$argv"
 
-    if test -z "$dir" || test -p /dev/stdin
+    if test -z "$dir"; or test -p /dev/stdin
         read -z dir
         # trim newline for awk scripts to works correctly
         string trim -c '\n' "$dir"

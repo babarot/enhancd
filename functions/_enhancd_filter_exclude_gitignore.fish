@@ -18,7 +18,7 @@ function _enhancd_filter_exclude_gitignore
     end <"$PWD"/.gitignore
 
     function contains
-        if ! set argv[1]
+        if not set argv[1]
             return 1
         else
             set -l input $argv[1]

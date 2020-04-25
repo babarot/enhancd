@@ -2,7 +2,7 @@ function _enhancd_ltsv_get
     set -l opt
     set -l key
 
-    if ! set -q argv[1]
+    if not set -q argv[1]
         return 1
     else
         set opt $argv[1]

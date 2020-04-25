@@ -1,5 +1,5 @@
 function _enhancd_filepath_walk
-    if ! set -q argv[1]
+    if not set -q argv[1]
         set argv[1] $PWD
     end
 
