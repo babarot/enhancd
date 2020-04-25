@@ -47,15 +47,6 @@ if ! [ -f "$ENHANCD_DIR/enhancd.log" ]
     touch "$ENHANCD_DIR/enhancd.log"
 end
 
-# Remove bash/zsh sources
-if [ -d "$ENHANCD_ROOT/src" ]
-    rm -rf "$ENHANCD_ROOT/src"
-end
-
-if [ -f "$ENHANCD_ROOT/init.sh" ]
-    rm -f "$ENHANCD_ROOT/init.sh"
-end
-
 # alias to enhancd
 eval "alias $ENHANCD_COMMAND 'enhancd'"
 
