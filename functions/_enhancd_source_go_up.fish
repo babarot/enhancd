@@ -1,5 +1,5 @@
 function _enhancd_source_go_up
-    if [ "$ENHANCD_DISABLE_DOT" = 1 ]
+    if test "$ENHANCD_DISABLE_DOT" = 1
         echo ".."
         return 0
     end
@@ -11,8 +11,8 @@ function _enhancd_source_go_up
 
     # Returns false if _enhancd_filepath_abs fails
     # _enhancd_filepath_abs returns false if _enhancd_filter_interactive doesn't output anything
-    if [ "$status" = 1 ]
-        if [ -n $argv[1] ]
+    if test "$status" = 1
+        if test -n $argv[1]
             # Returns false if an argument is given
             return $_ENHANCD_FAILURE
         else

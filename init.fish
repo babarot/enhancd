@@ -31,16 +31,16 @@ set -gx _ENHANCD_SUCCESS 0
 set -gx _ENHANCD_FAILURE 60
 
 # Set the filters if empty
-if [ -z "$ENHANCD_FILTER" ]
+if test -z "$ENHANCD_FILTER"
     set -gx ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
 end
 
 # make a log file and a root directory
-if ! [ -d "$ENHANCD_DIR" ]
+if ! test -d "$ENHANCD_DIR"
     mkdir -p "$ENHANCD_DIR"
 end
 
-if ! [ -f "$ENHANCD_DIR/enhancd.log" ]
+if ! test -f "$ENHANCD_DIR/enhancd.log"
     touch "$ENHANCD_DIR/enhancd.log"
 end
 

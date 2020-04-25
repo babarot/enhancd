@@ -1,5 +1,5 @@
 function _enhancd_source_mru
-    if [ $ENHANCD_DISABLE_HYPHEN = 1 ]
+    if test $ENHANCD_DISABLE_HYPHEN = 1
         echo "$OLDPWD"
         return 0
     end

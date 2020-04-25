@@ -11,7 +11,7 @@ function _enhancd_flag_parse
         return 1
     end
 
-    if [ -z $func ]
+    if test -z $func
         echo "$opt: no such option" >&2
         return 1
     end

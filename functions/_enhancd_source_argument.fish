@@ -1,7 +1,7 @@
 function _enhancd_source_argument
     set -l dir "$argv[1]"
 
-    if [ -d "$dir" ]
+    if test -d "$dir"
         echo "$dir"
         return 0
     end

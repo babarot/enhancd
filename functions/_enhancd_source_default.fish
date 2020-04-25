@@ -1,5 +1,5 @@
 function _enhancd_source_default
-    if [ "$ENHANCD_DISABLE_HOME" = 1 ]
+    if test "$ENHANCD_DISABLE_HOME" = 1
         echo "$HOME"
         return 0
     end
