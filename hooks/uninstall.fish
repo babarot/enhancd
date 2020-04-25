@@ -1,0 +1,21 @@
+rm --force --recursive --dir $ENHANCD_DIR
+
+set --erase ENHANCD_FILTER
+set --erase ENHANCD_COMMAND
+set --erase ENHANCD_ROOT
+set --erase ENHANCD_DIR
+set --erase ENHANCD_DISABLE_DOT
+set --erase ENHANCD_DISABLE_HYPHEN
+set --erase ENHANCD_DISABLE_HOME
+set --erase ENHANCD_DOT_ARG
+set --erase ENHANCD_HYPHEN_ARG
+set --erase ENHANCD_HYPHEN_NUM
+set --erase ENHANCD_HOME_ARG
+set --erase ENHANCD_USE_FUZZY_MATCH
+set --erase ENHANCD_COMPLETION_DEFAULT
+set --erase ENHANCD_COMPLETION_BEHAVIOUR
+set --erase ENHANCD_COMPLETION_KEYBIND
+set --erase ENHANCD_FILTER
+set --erase _ENHANCD_VERSION
+set --erase _ENHANCD_SUCCESS
+set --erase _ENHANCD_FAILURE
