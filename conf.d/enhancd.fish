@@ -6,8 +6,7 @@
 # * $dependencies  package dependencies
 
 set -l name (basename (status -f) .fish)
-set -l name_uninstall $name{_uninstall}
-
+set -l name_uninstall {$name}_uninstall
 # set variables
 set -gx ENHANCD_FILTER
 
@@ -59,6 +58,6 @@ end
 # alias to enhancd
 eval "alias $ENHANCD_COMMAND 'enhancd'"
 
-function $name_uninstall --on-event $name_uninstall
+function __$name_uninstall --on-event $name_uninstall
     rm --force --recursive --dir $ENHANCD_DIR
 end
