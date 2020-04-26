@@ -12,7 +12,7 @@ set -gx ENHANCD_FILTER
 
 if not set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
 
-if set -q $path
+if set -q path
     if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT $path; end
 else
     if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.config/fisher/github.com/Gazorby/$name"; end
