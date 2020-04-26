@@ -12,7 +12,7 @@ set -l name_uninstall $name{_uninstall}
 set -gx ENHANCD_FILTER
 
 if not set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
-if ! set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.config/fisher/github.com/b4b4r07/$name"; end
+if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.config/fisher/github.com/b4b4r07/$name"; end
 if not set -q ENHANCD_DIR; set -gx ENHANCD_DIR "$HOME/.enhancd"; end
 if not set -q ENHANCD_DISABLE_DOT; set -gx ENHANCD_DISABLE_DOT 0; end
 if not set -q ENHANCD_DISABLE_HYPHEN; set -gx ENHANCD_DISABLE_HYPHEN 0; end
