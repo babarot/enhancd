@@ -7,4 +7,4 @@
 
 # set variables
 source $path/conf.d/enhancd.fish
-if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT $path; end
+set -gx ENHANCD_ROOT $path
