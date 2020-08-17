@@ -12,7 +12,15 @@ set -l name_uninstall $name{_uninstall}
 set -gx ENHANCD_FILTER
 
 if ! set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
-if ! set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.config/fisher/github.com/b4b4r07/$name"; end
+# Fisher moved their data directory in PR jorgebucaran/fisher#571
+# So now we need to check for the new directory and use that, else use the old one
+if ! set -q ENHANCD_ROOT
+    if [ -d "$HOME/.local/share/fisher/github.com/b4b4r07/$name" ]
+        set -gx ENHANCD_ROOT "$HOME/.local/share/fisher/github.com/b4b4r07/$name"
+    else
+        set -gx ENHANCD_ROOT "$HOME/.config/fisher/github.com/b4b4r07/$name"
+    end
+end
 if ! set -q ENHANCD_DIR; set -gx ENHANCD_DIR "$HOME/.enhancd"; end
 if ! set -q ENHANCD_DISABLE_DOT; set -gx ENHANCD_DISABLE_DOT 0; end
 if ! set -q ENHANCD_DISABLE_HYPHEN; set -gx ENHANCD_DISABLE_HYPHEN 0; end
