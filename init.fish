@@ -15,7 +15,7 @@ if not set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
 if set -q path
     if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT $path; end
 else
-    if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.local/share/fisher/github.com/gazorby/enhancd"; end
+    if not set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.local/share/fisher/gazorby/enhancd"; end
 end
 
 if not set -q ENHANCD_DIR; set -gx ENHANCD_DIR "$HOME/.enhancd"; end
