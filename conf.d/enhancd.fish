@@ -12,7 +12,11 @@ function __enhancd_install --on-event enhancd_install
         end
     else
         if not set -q ENHANCD_ROOT
-            set -gx ENHANCD_ROOT "$HOME/.local/share/fisher/gazorby/enhancd"
+            if set -q XDG_DATA_HOME
+                set -gx ENHANCD_ROOT "$XDG_DATA_HOME/fisher/gazorby/enhancd"
+            else
+                set -gx ENHANCD_ROOT "$HOME/.local/share/fisher/gazorby/enhancd"
+            end
         end
     end
 
