@@ -1,71 +1,38 @@
 function __enhancd_install --on-event enhancd_install
     # set variables
-    set -gx ENHANCD_FILTER
+    set -Ux ENHANCD_FILTER
+    set -Ux ENHANCD_COMMAND "cd"
 
-    if not set -q ENHANCD_COMMAND
-        set -gx ENHANCD_COMMAND "cd"
-    end
+    set -Ux ENHANCD_ROOT $path
 
-    if set -q path
-        if not set -q ENHANCD_ROOT
-            set -gx ENHANCD_ROOT $path
-        end
+    if set -q XDG_DATA_HOME
+        set -Ux ENHANCD_ROOT "$XDG_DATA_HOME/fisher/gazorby/enhancd"
     else
-        if not set -q ENHANCD_ROOT
-            if set -q XDG_DATA_HOME
-                set -gx ENHANCD_ROOT "$XDG_DATA_HOME/fisher/gazorby/enhancd"
-            else
-                set -gx ENHANCD_ROOT "$HOME/.local/share/fisher/gazorby/enhancd"
-            end
-        end
+        set -Ux ENHANCD_ROOT "$HOME/.local/share/fisher/gazorby/enhancd"
     end
 
-    if not set -q ENHANCD_DIR
-        set -gx ENHANCD_DIR "$HOME/.enhancd"
-    end
-    if not set -q ENHANCD_DISABLE_DOT
-        set -gx ENHANCD_DISABLE_DOT 0
-    end
-    if not set -q ENHANCD_DISABLE_HYPHEN
-        set -gx ENHANCD_DISABLE_HYPHEN 0
-    end
-    if not set -q ENHANCD_DISABLE_HOME
-        set -gx ENHANCD_DISABLE_HOME 0
-    end
+    set -Ux ENHANCD_DIR "$HOME/.enhancd"
+    set -Ux ENHANCD_DISABLE_DOT 0
+    set -Ux ENHANCD_DISABLE_HYPHEN 0
+    set -Ux ENHANCD_DISABLE_HOME 0
 
-    if not set -q ENHANCD_DOT_ARG
-        set -gx ENHANCD_DOT_ARG ".."
-    end
-    if not set -q ENHANCD_HYPHEN_ARG
-        set -gx ENHANCD_HYPHEN_ARG "-"
-    end
-    if not set -q ENHANCD_HYPHEN_NUM
-        set -gx ENHANCD_HYPHEN_NUM 10
-    end
-    if not set -q ENHANCD_HOME_ARG
-        set -gx ENHANCD_HOME_ARG ""
-    end
-    if not set -q ENHANCD_USE_FUZZY_MATCH
-        set -gx ENHANCD_USE_FUZZY_MATCH 1
-    end
+    set -Ux ENHANCD_DOT_ARG ".."
+    set -Ux ENHANCD_HYPHEN_ARG "-"
+    set -Ux ENHANCD_HYPHEN_NUM 10
+    set -Ux ENHANCD_HOME_ARG ""
+    set -Ux ENHANCD_USE_FUZZY_MATCH 1
 
-    if not set -q ENHANCD_COMPLETION_DEFAULT
-        set -gx ENHANCD_COMPLETION_DEFAULT 1
-    end
-    if not set -q ENHANCD_COMPLETION_BEHAVIOUR
-        set -gx ENHANCD_COMPLETION_BEHAVIOUR "default"
-    end
+    set -Ux ENHANCD_COMPLETION_DEFAULT 1
+    set -Ux ENHANCD_COMPLETION_BEHAVIOUR "default"
 
-    set -gx ENHANCD_COMPLETION_KEYBIND "^I"
+    set -Ux ENHANCD_COMPLETION_KEYBIND "^I"
 
-    set -gx _ENHANCD_VERSION "2.2.4"
-    set -gx _ENHANCD_SUCCESS 0
-    set -gx _ENHANCD_FAILURE 60
+    set -Ux _ENHANCD_VERSION "2.2.4"
+    set -Ux _ENHANCD_SUCCESS 0
+    set -Ux _ENHANCD_FAILURE 60
 
     # Set the filters if empty
-    if test -z "$ENHANCD_FILTER"
-        set -gx ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
-    end
+    set -Ux ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
 
     # make a log file and a root directory
     if not test -d "$ENHANCD_DIR"
