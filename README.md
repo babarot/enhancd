@@ -246,15 +246,11 @@ zplug "b4b4r07/enhancd", use:init.sh
 enhancd works on fish 3.0.0 and above.
 
 - Install one of the interactive filter listed above
-- Install enhancd-fish :
+- Install enhancd :
 
-  Oh-my-fish
-    ```console
-    omf install https://github.com/b4b4r07/enhancd
-    ```
   Fisher
     ```console
-    fisher add b4b4r07/enhancd
+    fisher install b4b4r07/enhancd
     ```
 
 ## Configurations
