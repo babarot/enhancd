@@ -69,3 +69,6 @@ end
 
 # alias to enhancd
 eval "alias $ENHANCD_COMMAND 'enhancd'"
+
+# bindings
+bind \ef '_enhancd_complete'

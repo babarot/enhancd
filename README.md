@@ -191,6 +191,11 @@ When moving to the parent directory, the current directory is removed from the c
 
 </details>
 
+
+### Enhancd complete (fish)
+
+On fish shell, you can use `alt+f` to trigger `enhancd` when typing a command, the selected item will be appended to the commandline
+
 ### Options
 
 ```console
