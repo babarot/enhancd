@@ -5,11 +5,7 @@ function __enhancd_install --on-event enhancd_install
 
     set -Ux ENHANCD_ROOT $path
 
-    if set -q XDG_DATA_HOME
-        set -Ux ENHANCD_ROOT "$XDG_DATA_HOME/fisher/gazorby/enhancd"
-    else
-        set -Ux ENHANCD_ROOT "$HOME/.local/share/fisher/gazorby/enhancd"
-    end
+    set -Ux ENHANCD_ROOT "$fisher_path/functions"
 
     set -Ux ENHANCD_DIR "$HOME/.enhancd"
     set -Ux ENHANCD_DISABLE_DOT 0
