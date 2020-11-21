@@ -5,6 +5,6 @@ function _enhancd_filepath_split
     end
 
     _enhancd_command_awk \
-        -f "$ENHANCD_ROOT/lib/split.awk" \
+        -f "$ENHANCD_ROOT/functions/enhancd/lib/split.awk" \
         -v arg=$argv[1]
 end

@@ -5,6 +5,6 @@ function _enhancd_filepath_list_step
     end
 
     _enhancd_command_awk \
-        -f "$ENHANCD_ROOT/lib/step_by_step.awk" \
+        -f "$ENHANCD_ROOT/functions/enhancd/lib/step_by_step.awk" \
         -v dir="$argv[1]"
 end

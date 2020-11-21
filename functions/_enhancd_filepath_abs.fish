@@ -16,7 +16,7 @@ function _enhancd_filepath_abs
     echo "cwd : -$cwd- -- dir : -$dir-" >$HOME/debug.txt
 
     _enhancd_command_awk \
-        -f "$ENHANCD_ROOT/lib/to_abspath.awk" \
+        -f "$ENHANCD_ROOT/functions/enhancd/lib/to_abspath.awk" \
         -v cwd="$cwd" \
         -v dir="$dir"
 end
