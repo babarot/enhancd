@@ -45,8 +45,7 @@ __enhancd::filepath::list_step()
 
 __enhancd::filepath::walk()
 {
-    command find "${1:-$PWD}" -maxdepth 1 -type d \
-        | __enhancd::command::grep -v -E "\/\."
+    command find "${1:-$PWD}" -maxdepth 1 -type d -name '\.*' -prune -o -type d -print
 }
 
 __enhancd::filepath::current_dir()
