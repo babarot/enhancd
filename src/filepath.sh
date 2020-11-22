@@ -66,7 +66,7 @@ __enhancd::filepath::abs()
     fi
 
     __enhancd::command::awk \
-        -f "${ENHANCD_ROOT}/lib/to_abspath.awk" \
+        -f "${ENHANCD_ROOT}/functions/enhancd/lib/to_abspath.awk" \
         -v cwd="${cwd}" \
         -v dir="${dir}"
 }
