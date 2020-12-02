@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup BATS
-        uses: b4b4r07/action-bats@master
+        uses: mig4/setup-bats@v1
 
       - name: Test
         run: bats -r test
