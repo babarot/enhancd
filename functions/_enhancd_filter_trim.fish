@@ -1,5 +1,5 @@
 function _enhancd_filter_trim
-    if ! set -q $argv[1]
+    if not set -q $argv[1]
         return 1
     else
         set -l str $argv[1]

@@ -59,6 +59,7 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 - Easy to filter, using your favorite filter
 - Work on Bash, Zsh and fish (cross-shell compatibility)
 - Go back to a specific parent directory like [zsh-bd](https://github.com/Tarrasch/zsh-bd)
+- Inside a git repo, the first list element is the git root directory
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
 - Custom options (user-defined option is acceptable)
@@ -190,6 +191,11 @@ When moving to the parent directory, the current directory is removed from the c
 
 </details>
 
+
+### Enhancd complete (fish)
+
+On fish shell, you can use `alt+f` to trigger `enhancd` when typing a command, the selected item will be appended to the commandline
+
 ### Options
 
 ```console
@@ -245,15 +251,11 @@ zplug "b4b4r07/enhancd", use:init.sh
 enhancd works on fish 3.0.0 and above.
 
 - Install one of the interactive filter listed above
-- Install enhancd-fish :
+- Install enhancd :
 
-  Oh-my-fish
-    ```console
-    omf install https://github.com/b4b4r07/enhancd
-    ```
   Fisher
     ```console
-    fisher add b4b4r07/enhancd
+    fisher install b4b4r07/enhancd
     ```
 
 ## Configurations

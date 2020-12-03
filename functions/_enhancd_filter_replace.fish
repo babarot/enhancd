@@ -1,11 +1,11 @@
 function _enhancd_filter_replace
-    if ! set -q argv[1]
+    if not set -q argv[1]
         return 1
     else
         set -l old $argv[1]
     end
 
-    if ! set -q argv[2]
+    if not set -q argv[2]
         set -l new $argv[2]
     else
         set -l new ""

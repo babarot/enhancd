@@ -1,6 +1,6 @@
 function _enhancd_command_run
     set -l cond $argv[1]
-    if ! set -q $SHELL
+    if not set -q $SHELL
         set SHELL "fish"
     end
     $SHELL -c $cond

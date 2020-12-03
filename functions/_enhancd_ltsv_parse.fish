@@ -11,7 +11,7 @@ function _enhancd_ltsv_parse
             case "-v"
                 set -a args "-v" $argv[(math "$i + 1")]
             case "-f"
-                set -a args "-f" "$ENHANCD_ROOT/lib/ltsv.awk"
+                set -a args "-f" "$ENHANCD_ROOT/functions/enhancd/lib/ltsv.awk"
                 set -a args "-f" $argv[(math "$i + 1")]
                 set query ""
         end
@@ -19,9 +19,9 @@ function _enhancd_ltsv_parse
     end
 
     set -l default_query '{print $0}'
-    set -l ltsv_script (cat "$ENHANCD_ROOT/lib/ltsv.awk")
+    set -l ltsv_script (cat "$ENHANCD_ROOT/functions/enhancd/lib/ltsv.awk")
 
-    if ! set -q query
+    if not set -q query
         set query $default_query
     end
     set -l awk_scripts "$ltsv_script $query"

@@ -4,8 +4,8 @@ function enhancd
     set -l opts
     set -l code 0
 
-    if ! _enhancd_source_is_available
-        if ! set -q argv[1]
+    if not _enhancd_source_is_available
+        if not set -q argv[1]
             _enhancd_cd_builtin "$HOME"
         else
             _enhancd_cd_builtin "$argv"

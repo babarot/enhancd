@@ -31,7 +31,7 @@ __enhancd::filepath::split_list()
 __enhancd::filepath::split()
 {
     __enhancd::command::awk \
-        -f "$ENHANCD_ROOT/lib/split.awk" \
+        -f "$ENHANCD_ROOT/functions/enhancd/lib/split.awk" \
         -v arg="${1:-$PWD}"
 }
 
@@ -39,14 +39,13 @@ __enhancd::filepath::split()
 __enhancd::filepath::list_step()
 {
     __enhancd::command::awk \
-        -f "$ENHANCD_ROOT/lib/step_by_step.awk" \
+        -f "$ENHANCD_ROOT/functions/enhancd/lib/step_by_step.awk" \
         -v dir="${1:-$PWD}"
 }
 
 __enhancd::filepath::walk()
 {
-    command find "${1:-$PWD}" -maxdepth 1 -type d \
-        | __enhancd::command::grep -v -E "\/\."
+    command find "${1:-$PWD}" -maxdepth 1 -type d -name '\.*' -prune -o -type d -print
 }
 
 __enhancd::filepath::current_dir()
@@ -67,7 +66,7 @@ __enhancd::filepath::abs()
     fi
 
     __enhancd::command::awk \
-        -f "${ENHANCD_ROOT}/lib/to_abspath.awk" \
+        -f "${ENHANCD_ROOT}/functions/enhancd/lib/to_abspath.awk" \
         -v cwd="${cwd}" \
         -v dir="${dir}"
 }

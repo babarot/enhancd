@@ -1,64 +1,70 @@
-# enhancd-fish initialization hook
-#
-# You can use the following variables in this file:
-# * $package       package name
-# * $path          package path
-# * $dependencies  package dependencies
+function __enhancd_install --on-event enhancd_install
+    # set variables
+    set -Ux ENHANCD_FILTER
+    set -Ux ENHANCD_COMMAND "cd"
 
-set -l name (basename (status -f) .fish)
-set -l name_uninstall $name{_uninstall}
+    set -Ux ENHANCD_ROOT $path
 
-# set variables
-set -gx ENHANCD_FILTER
+    set -Ux ENHANCD_ROOT "$fisher_path/functions/enhancd"
 
-if ! set -q ENHANCD_COMMAND; set -gx ENHANCD_COMMAND "cd"; end
-if ! set -q ENHANCD_ROOT; set -gx ENHANCD_ROOT "$HOME/.config/fisher/github.com/b4b4r07/$name"; end
-if ! set -q ENHANCD_DIR; set -gx ENHANCD_DIR "$HOME/.enhancd"; end
-if ! set -q ENHANCD_DISABLE_DOT; set -gx ENHANCD_DISABLE_DOT 0; end
-if ! set -q ENHANCD_DISABLE_HYPHEN; set -gx ENHANCD_DISABLE_HYPHEN 0; end
-if ! set -q ENHANCD_DISABLE_HOME; set -gx ENHANCD_DISABLE_HOME 0; end
+    set -Ux ENHANCD_DIR "$HOME/.enhancd"
+    set -Ux ENHANCD_DISABLE_DOT 0
+    set -Ux ENHANCD_DISABLE_HYPHEN 0
+    set -Ux ENHANCD_DISABLE_HOME 0
 
-if ! set -q ENHANCD_DOT_ARG; set -gx ENHANCD_DOT_ARG ".."; end
-if ! set -q ENHANCD_HYPHEN_ARG; set -gx ENHANCD_HYPHEN_ARG "-"; end
-if ! set -q ENHANCD_HYPHEN_NUM; set -gx ENHANCD_HYPHEN_NUM 10; end
-if ! set -q ENHANCD_HOME_ARG; set -gx ENHANCD_HOME_ARG ""; end
-if ! set -q ENHANCD_USE_FUZZY_MATCH; set -gx ENHANCD_USE_FUZZY_MATCH 1; end
+    set -Ux ENHANCD_DOT_ARG ".."
+    set -Ux ENHANCD_HYPHEN_ARG "-"
+    set -Ux ENHANCD_HYPHEN_NUM 10
+    set -Ux ENHANCD_HOME_ARG ""
+    set -Ux ENHANCD_USE_FUZZY_MATCH 1
 
-if ! set -q ENHANCD_COMPLETION_DEFAULT; set -gx ENHANCD_COMPLETION_DEFAULT 1; end
-if ! set -q ENHANCD_COMPLETION_BEHAVIOUR; set -gx ENHANCD_COMPLETION_BEHAVIOUR "default"; end
+    set -Ux ENHANCD_COMPLETION_DEFAULT 1
+    set -Ux ENHANCD_COMPLETION_BEHAVIOUR "default"
 
-set -gx ENHANCD_COMPLETION_KEYBIND "^I";
+    set -Ux ENHANCD_COMPLETION_KEYBIND "^I"
 
-set -gx _ENHANCD_VERSION "2.2.4"
-set -gx _ENHANCD_SUCCESS 0
-set -gx _ENHANCD_FAILURE 60
+    set -Ux _ENHANCD_VERSION "2.2.4"
+    set -Ux _ENHANCD_SUCCESS 0
+    set -Ux _ENHANCD_FAILURE 60
 
-# Set the filters if empty
-if [ -z "$ENHANCD_FILTER" ]
-    set -gx ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+    # Set the filters if empty
+    set -Ux ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+
+    # make a log file and a root directory
+    if not test -d "$ENHANCD_DIR"
+        mkdir -p "$ENHANCD_DIR"
+    end
+
+    if not test -f "$ENHANCD_DIR/enhancd.log"
+        touch "$ENHANCD_DIR/enhancd.log"
+    end
 end
 
-# make a log file and a root directory
-if ! [ -d "$ENHANCD_DIR" ]
-    mkdir -p "$ENHANCD_DIR"
-end
-
-if ! [ -f "$ENHANCD_DIR/enhancd.log" ]
-    touch "$ENHANCD_DIR/enhancd.log"
-end
-
-# Remove bash/zsh sources
-if [ -d "$ENHANCD_ROOT/src" ]
-    rm -rf "$ENHANCD_ROOT/src"
-end
-
-if [ -f "$ENHANCD_ROOT/init.sh" ]
-    rm -f "$ENHANCD_ROOT/init.sh"
+function __enhancd_uninstall --on-event enhancd_uninstall
+    rm --force --recursive --dir $ENHANCD_DIR
+    set --erase ENHANCD_FILTER
+    set --erase ENHANCD_COMMAND
+    set --erase ENHANCD_ROOT
+    set --erase ENHANCD_DIR
+    set --erase ENHANCD_DISABLE_DOT
+    set --erase ENHANCD_DISABLE_HYPHEN
+    set --erase ENHANCD_DISABLE_HOME
+    set --erase ENHANCD_DOT_ARG
+    set --erase ENHANCD_HYPHEN_ARG
+    set --erase ENHANCD_HYPHEN_NUM
+    set --erase ENHANCD_HOME_ARG
+    set --erase ENHANCD_USE_FUZZY_MATCH
+    set --erase ENHANCD_COMPLETION_DEFAULT
+    set --erase ENHANCD_COMPLETION_BEHAVIOUR
+    set --erase ENHANCD_COMPLETION_KEYBIND
+    set --erase ENHANCD_FILTER
+    set --erase _ENHANCD_VERSION
+    set --erase _ENHANCD_SUCCESS
+    set --erase _ENHANCD_FAILURE
 end
 
 # alias to enhancd
 eval "alias $ENHANCD_COMMAND 'enhancd'"
 
-function $name_uninstall --on-event $name_uninstall
-    rm --force --recursive --dir $ENHANCD_DIR
-end
+# bindings
+bind \ef '_enhancd_complete'

@@ -51,8 +51,11 @@ __enhancd::sources::default()
         echo "$HOME"
         return 0
     fi
+    local list=($(__enhancd::entry::git::root) $(__enhancd::history::list))
 
-    __enhancd::history::list | __enhancd::filter::interactive
+    for item in ${list[*]}; do
+        echo $item
+    done | __enhancd::filter::interactive
 }
 
 __enhancd::sources::argument()

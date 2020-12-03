@@ -31,7 +31,7 @@ __enhancd::ltsv::parse()
                 shift
                 ;;
             -f)
-                args+=("-f" "$ENHANCD_ROOT/lib/ltsv.awk")
+                args+=("-f" "$ENHANCD_ROOT/functions/enhancd/lib/ltsv.awk")
                 args+=("-f" "$2")
                 query=""
                 shift
@@ -41,7 +41,7 @@ __enhancd::ltsv::parse()
     done
 
     local default_query='{print $0}'
-    local ltsv_script="$(cat "$ENHANCD_ROOT/lib/ltsv.awk")"
+    local ltsv_script="$(cat "$ENHANCD_ROOT/functions/enhancd/lib/ltsv.awk")"
     local awk_scripts="${ltsv_script} ${query:-$default_query}"
 
     __enhancd::command::awk ${args[@]} "${awk_scripts}"
