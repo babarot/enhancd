@@ -4,7 +4,7 @@ function _enhancd_filter_fuzzy
     else
         if test "$ENHANCD_USE_FUZZY_MATCH" = 1
             _enhancd_command_awk \
-                -f "$ENHANCD_ROOT/functions/enhancd/lib/fuzzy.awk" \
+                -f "$ENHANCD_ROOT/lib/fuzzy.awk" \
                 -v search_string="$argv[1]"
         else
             # Case-insensitive (don't use fuzzy searhing)

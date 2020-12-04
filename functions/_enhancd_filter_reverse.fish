@@ -5,6 +5,6 @@ function _enhancd_filter_reverse
     else
         cat <&0
     end \
-        | _enhancd_command_awk -f "$ENHANCD_ROOT/functions/enhancd/lib/reverse.awk" \
+        | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/reverse.awk" \
         2>/dev/null
 end
