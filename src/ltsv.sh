@@ -10,7 +10,7 @@ __enhancd::ltsv::open()
     for config in "${configs[@]}"
     do
         if [[ -f ${config} ]]; then
-            cat "${config}"
+            command cat "${config}"
         fi
     done
 }
@@ -41,7 +41,7 @@ __enhancd::ltsv::parse()
     done
 
     local default_query='{print $0}'
-    local ltsv_script="$(cat "$ENHANCD_ROOT/functions/enhancd/lib/ltsv.awk")"
+    local ltsv_script="$(command cat "$ENHANCD_ROOT/functions/enhancd/lib/ltsv.awk")"
     local awk_scripts="${ltsv_script} ${query:-$default_query}"
 
     __enhancd::command::awk ${args[@]} "${awk_scripts}"

@@ -3,7 +3,7 @@ function _enhancd_ltsv_open
 
     for config in "$configs"
         if test -f "$config"
-            cat "$config"
+            command cat "$config"
         end
     end
 end

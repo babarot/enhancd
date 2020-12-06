@@ -13,12 +13,12 @@ BEGIN {
     print substr(arg, 1, 1)
 
     if (show_fullpath == 1) {
-        # get dirname from /
-        num = split(s, dirname, "/")
+        # get command dirname from /
+        num = split(s, command dirname, "/")
         for (i = 1; i < num; i++) {
             pre_dir = ""
             for (ii = 1; ii <= i; ii++) {
-                pre_dir = pre_dir "/" dirname[ii]
+                pre_dir = pre_dir "/" command dirname[ii]
             }
             print pre_dir
         }

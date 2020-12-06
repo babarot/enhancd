@@ -59,7 +59,7 @@ __enhancd::filepath::abs()
     cwd="${PWD%/*}"
     dir="${1}"
     if [[ -p /dev/stdin ]]; then
-        dir="$(cat <&0)"
+        dir="$(command cat <&0)"
     fi
     if [[ -z ${dir} ]]; then
         return 1

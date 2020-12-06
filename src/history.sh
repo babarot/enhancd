@@ -1,7 +1,7 @@
 __enhancd::history::open()
 {
     if [[ -f $ENHANCD_DIR/enhancd.log ]]; then
-        cat "$ENHANCD_DIR/enhancd.log"
+        command cat "$ENHANCD_DIR/enhancd.log"
         return $?
     fi
     return 1
