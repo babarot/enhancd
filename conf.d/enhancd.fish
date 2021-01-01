@@ -3,7 +3,8 @@ function __enhancd_install --on-event enhancd_install
     set -Ux ENHANCD_FILTER
     set -Ux ENHANCD_COMMAND "cd"
 
-    set -Ux ENHANCD_ROOT "$fisher_path/functions/enhancd"
+    set --local root (status filename | string replace --regex '/[^/]+$' '' | string replace --regex '/[^/]+$' '')
+    set -Ux ENHANCD_ROOT "$root/functions/enhancd"
 
     set -Ux ENHANCD_DIR "$HOME/.enhancd"
     set -Ux ENHANCD_DISABLE_DOT 0
