@@ -1,9 +1,9 @@
 function __enhancd_install --on-event enhancd_install
-    # set variables
+    set -l root (string join / (status filename | string split /)[1..-3])
+    
     set -Ux ENHANCD_FILTER
     set -Ux ENHANCD_COMMAND "cd"
 
-    set --local root (status filename | string replace --regex '/[^/]+$' '' | string replace --regex '/[^/]+$' '')
     set -Ux ENHANCD_ROOT "$root/functions/enhancd"
 
     set -Ux ENHANCD_DIR "$HOME/.enhancd"
