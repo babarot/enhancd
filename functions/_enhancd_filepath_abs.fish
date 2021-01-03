@@ -6,7 +6,7 @@ function _enhancd_filepath_abs
     if test -z "$dir"; or test -p /dev/stdin
         read -z dir
         # trim newline for awk scripts to works correctly
-        string trim -c '\n' "$dir"
+        set dir (string trim -c '\n' "$dir")
     end
 
     if test -z "$dir"
