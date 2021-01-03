@@ -1,8 +1,5 @@
 function _enhancd_source_mru
-    if test $ENHANCD_DISABLE_HYPHEN = 1
-        echo "$OLDPWD"
-        return 0
-    end
+    test $ENHANCD_DISABLE_HYPHEN = 1 && echo "$OLDPWD" && return
 
     _enhancd_history_list "$argv[1]" \
         | _enhancd_filter_exclude "$HOME" \
