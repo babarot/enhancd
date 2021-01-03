@@ -1,15 +1,7 @@
 function _enhancd_filter_replace
-    if not set -q argv[1]
-        return 1
-    else
-        set -l old $argv[1]
-    end
-
-    if not set -q argv[2]
-        set -l new $argv[2]
-    else
-        set -l new ""
-    end
+    set -q argv[1] || return   
+    set -l old $argv[1]
+    set -q argv[2] && set -l new "" || set -l new $argv[2]
 
     _enhancd_command_awk \
         -v old="$old" \
