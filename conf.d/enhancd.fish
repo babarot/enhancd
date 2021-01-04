@@ -38,7 +38,7 @@ function __enhancd_install --on-event enhancd_install
         touch "$ENHANCD_DIR/enhancd.log"
     end
 
-    alias $ENHANCD_COMMAND 'enhancd'
+    _enhancd_alias
 end
 
 function __enhancd_uninstall --on-event enhancd_uninstall
@@ -66,7 +66,7 @@ end
 
 # alias to enhancd
 if test -n "$ENHANCD_COMMAND"
-    alias $ENHANCD_COMMAND 'enhancd'
+    _enhancd_alias
 end
 
 # bindings
