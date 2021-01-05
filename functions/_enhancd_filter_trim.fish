@@ -1,8 +1,4 @@
 function _enhancd_filter_trim
-    if not set -q $argv[1]
-        return 1
-    else
-        set -l str $argv[1]
-    end
-    __enhancd::filter::replace "$str"
+    set --query argv[1] || return
+    __enhancd::filter::replace "$argv[1]"
 end
