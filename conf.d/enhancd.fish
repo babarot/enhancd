@@ -42,7 +42,7 @@ function __enhancd_install --on-event enhancd_install
 end
 
 function __enhancd_uninstall --on-event enhancd_uninstall
-    rm --force --recursive --dir $ENHANCD_DIR
+    command rm -rf $ENHANCD_DIR
     set --erase ENHANCD_FILTER
     set --erase ENHANCD_COMMAND
     set --erase ENHANCD_ROOT
