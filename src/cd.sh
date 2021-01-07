@@ -11,7 +11,7 @@ __enhancd::cd()
 
     # Read from standard input
     if [[ -p /dev/stdin ]]; then
-        args+=( "$(cat <&0)" )
+        args+=( "$(command cat <&0)" )
     fi
 
     while (( $# > 0 ))

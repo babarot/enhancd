@@ -13,9 +13,9 @@ __enhancd::filter::exists()
 __enhancd::filter::join()
 {
     if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
+        command cat "$1"
     else
-        cat <&0
+        command cat <&0
     fi | __enhancd::command::awk 'a[$0]++' 2>/dev/null
 }
 
@@ -23,9 +23,9 @@ __enhancd::filter::join()
 __enhancd::filter::unique()
 {
     if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
+        command cat "$1"
     else
-        cat <&0
+        command cat <&0
     fi | __enhancd::command::awk '!a[$0]++' 2>/dev/null
 }
 
@@ -33,9 +33,9 @@ __enhancd::filter::unique()
 __enhancd::filter::reverse()
 {
     if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
+        command cat "$1"
     else
-        cat <&0
+        command cat <&0
     fi \
         | __enhancd::command::awk -f "$ENHANCD_ROOT/functions/enhancd/lib/reverse.awk" \
         2>/dev/null
@@ -62,7 +62,7 @@ __enhancd::filter::interactive()
     local stdin="${1}"
 
     if [[ -z ${stdin} ]] || [[ -p /dev/stdin ]]; then
-        stdin="$(cat <&0)"
+        stdin="$(command cat <&0)"
     fi
 
     if [[ -z ${stdin} ]]; then
@@ -136,7 +136,7 @@ __enhancd::filter::exclude_gitignore()
     else
         # just do read the input and do output
         # if no gitignore file
-        cat <&0
+        command cat <&0
         return 0
     fi
 
@@ -144,7 +144,7 @@ __enhancd::filter::exclude_gitignore()
     while read ignore
     do
         if [[ -d ${ignore} ]]; then
-            ignores+=( "$(basename ${ignore})" )
+            ignores+=( "$(command basename ${ignore})" )
         fi
     done <${PWD}/.gitignore
 

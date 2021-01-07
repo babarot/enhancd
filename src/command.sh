@@ -2,10 +2,10 @@
 __enhancd::command::grep()
 {
     if [[ -n $1 ]] && [[ -f $1 ]]; then
-        cat "$1"
+        command cat "$1"
         shift
     else
-        cat <&0
+        command cat <&0
     fi \
         | command grep "$@" 2>/dev/null
 }
@@ -27,7 +27,7 @@ __enhancd::command::awk()
     if type gawk &>/dev/null; then
         gawk ${1:+"${@}"}
     else
-        awk ${1:+"${@}"}
+        command awk ${1:+"${@}"}
     fi
 }
 

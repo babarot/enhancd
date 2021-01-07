@@ -22,7 +22,7 @@ _ENHANCD_FAILURE=60
 
 if [[ -n $BASH_VERSION ]]; then
     # BASH
-    ENHANCD_ROOT="$(builtin cd "$(dirname "$BASH_SOURCE")" && pwd)"
+    ENHANCD_ROOT="$(builtin cd "$(command dirname dirname "$BASH_SOURCE")" && pwd)"
 elif [[ -n $ZSH_VERSION ]]; then
     # ZSH
     ENHANCD_ROOT="${${(%):-%x}:A:h}"

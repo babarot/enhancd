@@ -1,6 +1,6 @@
 function _enhancd_filter_fuzzy
     if test -z "$argv[1]"
-        cat <&0
+        command cat <&0
     else
         if test "$ENHANCD_USE_FUZZY_MATCH" = 1
             _enhancd_command_awk \

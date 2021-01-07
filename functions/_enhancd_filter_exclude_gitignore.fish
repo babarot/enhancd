@@ -5,7 +5,7 @@ function _enhancd_filter_exclude_gitignore
     else
         # just do read the input and do output
         # if no gitignore file
-        cat <&0
+        command cat <&0
         return 0
     end
 
@@ -13,7 +13,7 @@ function _enhancd_filter_exclude_gitignore
 
     while read ignore
         if test -d $ignore
-            set -a ignores (basename "$ignore")
+            set -a ignores (command basename "$ignore")
         end
     end <"$PWD"/.gitignore
 
