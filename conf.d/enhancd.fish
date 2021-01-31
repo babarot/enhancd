@@ -18,7 +18,7 @@ function __enhancd_install --on-event enhancd_install
     set -Ux ENHANCD_USE_FUZZY_MATCH 1
 
     set -Ux ENHANCD_COMPLETION_DEFAULT 1
-    set -Ux ENHANCD_COMPLETION_BEHAVIOUR "default"
+    set -Ux ENHANCD_COMPLETION_BEHAVIOR "default"
 
     set -Ux ENHANCD_COMPLETION_KEYBIND "^I"
 
@@ -56,7 +56,7 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_HOME_ARG
     set --erase ENHANCD_USE_FUZZY_MATCH
     set --erase ENHANCD_COMPLETION_DEFAULT
-    set --erase ENHANCD_COMPLETION_BEHAVIOUR
+    set --erase ENHANCD_COMPLETION_BEHAVIOR
     set --erase ENHANCD_COMPLETION_KEYBIND
     set --erase ENHANCD_FILTER
     set --erase _ENHANCD_VERSION
