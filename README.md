@@ -28,7 +28,7 @@
 <br>
 <b><a href="#installation">Installation</a></b>
 |
-<b><a href="#configuration">Configuration</a></b>
+<b><a href="#configurations">Configurations</a></b>
 |
 <b><a href="#references">References</a></b>
 |
