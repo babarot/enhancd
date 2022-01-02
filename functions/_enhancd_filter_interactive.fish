@@ -1,5 +1,5 @@
 function _enhancd_filter_interactive
-    set -l stdin "$argv[1]"
+    read --local --list stdin
 
     if test -z "$stdin"; or test -p /dev/stdin
         read -z stdin
@@ -38,7 +38,7 @@ function _enhancd_filter_interactive
             end
 
         case '*'
-            set -l selected (echo "$stdin" | eval "$filter")
+            set -l selected (for item in $stdin; echo $item; end | eval "$filter")
             if test -z "$selected"
                 return 1
             end

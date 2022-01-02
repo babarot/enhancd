@@ -8,3 +8,8 @@ function _enhancd_filter_reverse
         | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/reverse.awk" \
         2>/dev/null
 end
+
+function _enhancd_filter_reverse
+    read --list --local str
+    echo $str[-1..1]
+end
