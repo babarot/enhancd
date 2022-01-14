@@ -20,10 +20,10 @@ export _ENHANCD_VERSION="2.2.4"
 _ENHANCD_SUCCESS=0
 _ENHANCD_FAILURE=60
 
-if [[ -n $BASH_VERSION ]]; then
+if ps -p $$ | grep -i --quiet 'bash$'; then
     # BASH
     ENHANCD_ROOT="$( dirname "${BASH_SOURCE[0]}" )"
-elif [[ -n $ZSH_VERSION ]]; then
+elif ps -p $$ | grep -i --quiet 'zsh$'; then
     # ZSH
     ENHANCD_ROOT="${${(%):-%x}:A:h}"
     compdef _cd __enhancd::cd
