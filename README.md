@@ -240,11 +240,25 @@ $ source ~/.bash_profile
 
 ### ZSH
 
-Also if you use zsh as your shell, you can install this via [zplug](https://github.com/zplug/zplug) which is powerfull plugin mananger for zsh:
+Also if you use zsh as your shell, you can install this via several plugin managers.
 
-```bash
-zplug "b4b4r07/enhancd", use:init.sh
-```
+#### Installation with [zplug](https://github.com/zplug/zplug)
+
+zplug is a powerfull plugin mananger for zsh
+
+        ```bash
+        zplug "b4b4r07/enhancd", use:init.sh
+        ```
+
+#### Installation with [oh-my-zsh](http://github.com/robbyrussell/oh-my-zsh)
+
+* Clone the repository inside your oh-my-zsh repo:
+
+        git clone --depth 1 https://github.com/b4b4r07/enhancd ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/enhancd
+
+* Enable it in your `.zshrc` by adding it to your plugin list and reloading the completion:
+
+        plugins=(… enhancd)
 
 ### Fish
 
