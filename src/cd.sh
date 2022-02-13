@@ -103,7 +103,8 @@ __enhancd::cd::builtin()
 
 __enhancd::cd::before()
 {
-    :
+    # take backup
+    cp -f "$ENHANCD_DIR/enhancd.log" "$ENHANCD_DIR/enhancd.log.backup" &>/dev/null
 }
 
 __enhancd::cd::after()
