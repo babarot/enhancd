@@ -204,13 +204,34 @@ usage: cd [OPTIONS] [dir]
 
 OPTIONS:
   -h, --help       Show help message
-  -G, --ghq        Filter ghq list
-
 ```
 
-Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/src/custom/sources/ghq.sh).　Of cource, you can disable those options if you do not like it.
+Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/src/custom/sources/ghq.sh). Of cource, you can disable those options if you do not like it.
 
 ## Installation
+
+### Declarative way (bash/zsh/fish):
+
+Using CLI package manager "[afx](https://github.com/b4b4r07/afx)". YAML for the installation is here:
+
+```yaml
+github:
+- name: b4b4r07/enhancd
+  description: A next-generation cd command with your interactive filter
+  owner: b4b4r07
+  repo: enhancd
+  plugin:
+    env:
+      ENHANCD_FILTER: fzf --height 25% --reverse --ansi:fzy
+    sources:
+    - init.sh
+```
+
+then,
+
+```console
+afx install
+```
 
 ### Bash
 
@@ -238,7 +259,7 @@ $ echo "source ~/enhancd/init.sh"  >> ~/.bash_profile
 $ source ~/.bash_profile
 ```
 
-### ZSH
+### Zsh
 
 Also if you use zsh as your shell, you can install this via [zplug](https://github.com/zplug/zplug) which is powerfull plugin mananger for zsh:
 
