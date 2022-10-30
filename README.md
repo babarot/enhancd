@@ -1,9 +1,7 @@
 [version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg
 [version-link]: https://github.com/b4b4r07/enhancd/releases
-
 [active-badge]: https://masterminds.github.io/stability/active.svg
-[active-link]:  https://masterminds.github.io/stability/active.html
-
+[active-link]: https://masterminds.github.io/stability/active.html
 [awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
 [license-link]: https://b4b4r07.mit-license.org
 
@@ -68,7 +66,6 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 
 - Fish version
   - Because of how fish piping works, it's not possible to pipe to cd like : `ls / | cd`
-
 
 ### Fuzzy search
 
@@ -191,7 +188,6 @@ When moving to the parent directory, the current directory is removed from the c
 
 </details>
 
-
 ### Enhancd complete (fish)
 
 On fish shell, you can use `alt+f` to trigger `enhancd` when typing a command, the selected item will be appended to the commandline
@@ -216,15 +212,15 @@ Using CLI package manager "[afx](https://github.com/b4b4r07/afx)". YAML for the 
 
 ```yaml
 github:
-- name: b4b4r07/enhancd
-  description: A next-generation cd command with your interactive filter
-  owner: b4b4r07
-  repo: enhancd
-  plugin:
-    env:
-      ENHANCD_FILTER: fzf --height 25% --reverse --ansi:fzy
-    sources:
-    - init.sh
+  - name: b4b4r07/enhancd
+    description: A next-generation cd command with your interactive filter
+    owner: b4b4r07
+    repo: enhancd
+    plugin:
+      env:
+        ENHANCD_FILTER: fzf --height 25% --reverse --ansi:fzy
+      sources:
+        - init.sh
 ```
 
 then,
@@ -265,6 +261,18 @@ Also if you use zsh as your shell, you can install this via [zplug](https://gith
 
 ```bash
 zplug "b4b4r07/enhancd", use:init.sh
+```
+
+You can also use it with [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh):
+
+```bash
+ git clone https://github.com/b4b4r07/enhancd.git $ZSH_CUSTOM/plugins/enhancd
+```
+
+and then load as a plugin in your `.zshrc`:
+
+```bash
+  plugins+=(enhancd)
 ```
 
 ### Fish
