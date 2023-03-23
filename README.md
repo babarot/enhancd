@@ -233,6 +233,12 @@ then,
 afx install
 ```
 
+### Fig
+
+Install `enhancd` with [Fig](https://fig.io) on zsh, bash, or fish with just one click.
+
+<a href="https://fig.io/plugins/other/enhancd" target="_blank"><img src="https://fig.io/badges/install-with-fig.svg" /></a>
+
 ### Bash
 
 ```console
