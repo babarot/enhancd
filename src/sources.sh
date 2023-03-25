@@ -24,10 +24,10 @@ __enhancd::sources::go_up()
     if [[ $? -eq 1 ]]; then
         if [[ -n $1 ]]; then
             # Returns false if an argument is given
-            return $_ENHANCD_FAILURE
+            return 1
         else
             # Returns true when detecting to press Ctrl-C in selection
-            return $_ENHANCD_SUCCESS
+            return 0
         fi
     fi
 }

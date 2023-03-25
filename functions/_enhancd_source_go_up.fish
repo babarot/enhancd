@@ -14,10 +14,10 @@ function _enhancd_source_go_up
     if test "$status" = 1
         if test -n $argv[1]
             # Returns false if an argument is given
-            return $_ENHANCD_FAILURE
+            return 1
         else
             # Returns true when detecting to press Ctrl-C in selection
-            return $_ENHANCD_SUCCESS
+            return 0
         end
     end
 end
