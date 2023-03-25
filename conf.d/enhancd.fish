@@ -1,6 +1,6 @@
 function __enhancd_install --on-event enhancd_install
     set -l root (string join / (status filename | string split /)[1..-3])
-    
+
     set -Ux ENHANCD_FILTER
     set -Ux ENHANCD_COMMAND "cd"
 
@@ -16,6 +16,7 @@ function __enhancd_install --on-event enhancd_install
     set -Ux ENHANCD_HYPHEN_NUM 10
     set -Ux ENHANCD_HOME_ARG ""
     set -Ux ENHANCD_USE_FUZZY_MATCH 1
+    set -Ux ENHANCD_FILTER_ABBREV 0
 
     set -Ux ENHANCD_COMPLETION_DEFAULT 1
     set -Ux ENHANCD_COMPLETION_BEHAVIOR "default"
@@ -43,6 +44,7 @@ end
 
 function __enhancd_uninstall --on-event enhancd_uninstall
     command rm -rf $ENHANCD_DIR
+    set --erase ENHANCD_FILTER_ABBREV
     set --erase ENHANCD_FILTER
     set --erase ENHANCD_COMMAND
     set --erase ENHANCD_ROOT

@@ -466,6 +466,32 @@ It can be taken following words:
 
 </details>
 
+<details>
+<summary><strong><code>ENHANCD_FILTER_ABBREV</code></strong></summary>
+
+Set this to `1` to abbreviate the home directory prefix to `~` when performing an interactive search.
+Using the example shown previously, all entries when searching will be shown as follows:
+
+```console
+$ cd
+  ...
+  ~/src/github.com/b4b4r07/enhancd/zsh
+  ~/src/github.com/b4b4r07/gotcha
+  ~/src/github.com/b4b4r07/blog/public
+  ~/src/github.com/b4b4r07/blog
+  ~/src/github.com/b4b4r07/link_test
+  ~/src/github.com/b4b4r07
+  ~/Dropbox/etc/dotfiles
+  ~/src/github.com/b4b4r07/enhancd
+> ~
+  247/247
+> _
+```
+
+Default is 0 (disable).
+
+</details>
+
 ## References
 
 The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.

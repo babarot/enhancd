@@ -73,6 +73,26 @@ __enhancd::filter::interactive()
     local filter
     filter="$(__enhancd::filepath::split_list "$ENHANCD_FILTER")"
 
+    if [[ $ENHANCD_FILTER_ABBREV == 1 ]]; then
+        __enhancd::filter::interactive::abbrev()
+        {
+            local line
+            while read line; do
+                echo "${line/#$HOME/~}"
+            done
+        }
+
+        __enhancd::filter::interactive::expand()
+        {
+            local line
+            while read line; do
+                echo "${line/#\~/$HOME}"
+            done
+        }
+
+        filter="__enhancd::filter::interactive::abbrev | $filter | __enhancd::filter::interactive::expand"
+    fi
+
     local -i count
     count="$(echo "${stdin}" | __enhancd::command::grep -c "")"
 
