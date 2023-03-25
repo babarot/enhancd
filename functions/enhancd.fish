@@ -43,7 +43,7 @@ function enhancd
 
             case '--'
                 set -a opts "$argv[1]"
-                set -a args (_enhancd_source_argument "$argv[2]")
+                set -a args (_enhancd_source_history "$argv[2]")
                 set code $status
 
             case '-*' '--*'
@@ -55,7 +55,7 @@ function enhancd
                 end
 
             case '*'
-                set -a args (_enhancd_source_argument "$argv[1]")
+                set -a args (_enhancd_source_history "$argv[1]")
 
         end
         set i (math "$i + 1")

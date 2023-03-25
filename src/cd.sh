@@ -52,7 +52,7 @@ __enhancd::cd()
             --)
                 opts+=( "${1}" )
                 shift
-                args+=( "$(__enhancd::sources::argument "$1")" )
+                args+=( "$(__enhancd::sources::history "${1}")" )
                 code=$?
                 ;;
             -* | --*)
@@ -64,7 +64,7 @@ __enhancd::cd()
                 fi
                 ;;
             *)
-                args+=( "$(__enhancd::sources::argument "$1")" )
+                args+=( "$(__enhancd::sources::history "${1}")" )
                 code=$?
                 ;;
         esac

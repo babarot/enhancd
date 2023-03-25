@@ -1,4 +1,4 @@
-function _enhancd_source_argument
+function _enhancd_source_history
     set -l dir "$argv[1]"
 
     if test -d "$dir"

@@ -58,10 +58,9 @@ __enhancd::sources::default()
   } | __enhancd::filter::interactive
 }
 
-__enhancd::sources::argument()
+__enhancd::sources::history()
 {
   local dir="${1}"
-
   if [[ -d ${dir} ]]; then
     echo "${dir}"
     return 0
