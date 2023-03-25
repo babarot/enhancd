@@ -67,7 +67,7 @@ __enhancd::filter::interactive()
 
     if [[ -z ${stdin} ]]; then
         echo "no entry" >&2
-        return $_ENHANCD_FAILURE
+        return 1
     fi
 
     local filter
@@ -101,7 +101,7 @@ __enhancd::filter::interactive()
             if [[ -n ${stdin} ]]; then
                 echo "${stdin}"
             else
-                return $_ENHANCD_FAILURE
+                return 1
             fi
             ;;
         *)

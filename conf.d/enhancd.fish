@@ -24,8 +24,6 @@ function __enhancd_install --on-event enhancd_install
     set -Ux ENHANCD_COMPLETION_KEYBIND "^I"
 
     set -Ux _ENHANCD_VERSION "2.2.4"
-    set -Ux _ENHANCD_SUCCESS 0
-    set -Ux _ENHANCD_FAILURE 60
 
     # Set the filters if empty
     set -Ux ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
@@ -62,8 +60,6 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_COMPLETION_KEYBIND
     set --erase ENHANCD_FILTER
     set --erase _ENHANCD_VERSION
-    set --erase _ENHANCD_SUCCESS
-    set --erase _ENHANCD_FAILURE
 end
 
 # alias to enhancd

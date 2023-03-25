@@ -7,7 +7,7 @@ function _enhancd_filter_interactive
 
     if test -z "$stdin"
         echo "no entry" >&2
-        return $_ENHANCD_FAILURE
+        return 1
     end
 
     set -l filter (_enhancd_filepath_split_list "$ENHANCD_FILTER")
