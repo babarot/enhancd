@@ -51,7 +51,7 @@ __enhancd::ltsv::get()
 {
     local opt="${1:?value of key short or long required}" key="${2}"
     __enhancd::ltsv::open \
-        | __enhancd::filter::exclude_commented \
+        | __enhancd::command::grep -v -E '^(//|#)' \
         | __enhancd::ltsv::parse \
         -v opt="${opt}" \
         -v key="${key}" \

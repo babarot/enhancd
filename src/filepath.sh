@@ -27,7 +27,6 @@ __enhancd::filepath::split_list()
     return 1
 }
 
-# Splits a path with a slash
 __enhancd::filepath::split()
 {
     __enhancd::command::awk \
@@ -35,7 +34,6 @@ __enhancd::filepath::split()
         -v arg="${1:-$PWD}"
 }
 
-# Lists a path step-wisely
 __enhancd::filepath::list_step()
 {
     __enhancd::command::awk \
@@ -53,6 +51,7 @@ __enhancd::filepath::current_dir()
     echo "${PWD:-$(command pwd)}"
 }
 
+# Currently this is not used
 __enhancd::filepath::abs()
 {
     local cwd dir
