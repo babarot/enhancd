@@ -4,7 +4,7 @@ __enhancd::filepath::split()
   __enhancd::command::awk -f "$ENHANCD_ROOT/functions/enhancd/lib/split.awk" -v arg="${1:-$PWD}"
 }
 
-__enhancd::filepath::list_step()
+__enhancd::filepath::get_parent_dirs()
 {
   __enhancd::command::awk -f "$ENHANCD_ROOT/functions/enhancd/lib/step_by_step.awk" -v dir="${1:-$PWD}"
 }

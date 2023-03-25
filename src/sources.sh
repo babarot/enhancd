@@ -5,7 +5,7 @@ __enhancd::sources::parent_dirs()
     return 0
   fi
 
-  __enhancd::filepath::list_step "${PWD}"
+  __enhancd::filepath::get_parent_dirs "${PWD}"
 }
 
 __enhancd::sources::mru()

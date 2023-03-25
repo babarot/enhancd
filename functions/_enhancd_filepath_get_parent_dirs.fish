@@ -1,5 +1,5 @@
 # Lists a path step-wisely
-function _enhancd_filepath_list_step
+function _enhancd_filepath_get_parent_dirs
     if not set -q argv[1]
         set argv[1] "$PWD"
     end
