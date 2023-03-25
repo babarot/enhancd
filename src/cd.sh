@@ -24,7 +24,7 @@ __enhancd::cd()
             "$ENHANCD_HYPHEN_ARG")
                 # If a hyphen is passed as the argument,
                 # searchs from the last 10 directory items in the log
-                args+=( "$(__enhancd::sources::mru "$2")" )
+                args+=( "$(__enhancd::sources::mru "$2" | __enhancd::filter::interactive)" )
                 code=$?
                 ;;
             "-")
@@ -37,7 +37,7 @@ __enhancd::cd()
                 # it behaves like a zsh-bd plugin
                 # In short, you can jump back to a specific directory,
                 # without doing `cd ../../..`
-                args+=( "$(__enhancd::sources::parent_dirs "$2")" )
+                args+=( "$(__enhancd::sources::parent_dirs "$2" | __enhancd::filter::interactive)" )
                 code=$?
                 ;;
             "..")
@@ -46,13 +46,13 @@ __enhancd::cd()
                 args+=( ".." )
                 ;;
             "$ENHANCD_HOME_ARG")
-                args+=( "$(__enhancd::sources::home)" )
+                args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
                 code=$?
                 ;;
             --)
                 opts+=( "${1}" )
                 shift
-                args+=( "$(__enhancd::sources::history "${1}")" )
+                args+=( "$(__enhancd::sources::history "${1}" | __enhancd::filter::interactive)" )
                 code=$?
                 ;;
             -* | --*)
@@ -64,7 +64,7 @@ __enhancd::cd()
                 fi
                 ;;
             *)
-                args+=( "$(__enhancd::sources::history "${1}")" )
+                args+=( "$(__enhancd::sources::history "${1}" | __enhancd::filter::interactive)" )
                 code=$?
                 ;;
         esac
@@ -73,7 +73,7 @@ __enhancd::cd()
 
     case ${#args[@]} in
         0)
-            args+=( "$(__enhancd::sources::home)" )
+            args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
             code=$?
             ;;
     esac

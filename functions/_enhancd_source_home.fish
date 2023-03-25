@@ -7,5 +7,5 @@ function _enhancd_source_home
     begin
         echo "$HOME"
         _enhancd_history_list
-    end | _enhancd_filter_unique | _enhancd_filter_interactive
+    end | _enhancd_filter_unique
 end

@@ -6,5 +6,5 @@ function _enhancd_source_history
         return 0
     end
 
-    _enhancd_history_list "$dir" | _enhancd_filter_interactive
+    _enhancd_history_list "$dir"
 end

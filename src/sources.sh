@@ -5,7 +5,7 @@ __enhancd::sources::parent_dirs()
     return 0
   fi
 
-  __enhancd::filepath::list_step "${PWD}" | __enhancd::filter::interactive
+  __enhancd::filepath::list_step "${PWD}"
 }
 
 __enhancd::sources::mru()
@@ -17,8 +17,7 @@ __enhancd::sources::mru()
 
   __enhancd::history::list "${1}" \
     | __enhancd::filter::exclude "${HOME}" \
-    | __enhancd::filter::limit "${ENHANCD_HYPHEN_NUM}" \
-    | __enhancd::filter::interactive
+    | __enhancd::filter::limit "${ENHANCD_HYPHEN_NUM}"
 }
 
 __enhancd::sources::home()
@@ -31,7 +30,7 @@ __enhancd::sources::home()
   {
     echo "${HOME}"
     __enhancd::history::list
-  } | __enhancd::filter::unique | __enhancd::filter::interactive
+  } | __enhancd::filter::unique
 }
 
 __enhancd::sources::history()
@@ -42,5 +41,5 @@ __enhancd::sources::history()
     return 0
   fi
 
-  __enhancd::history::list "${dir}" | __enhancd::filter::interactive
+  __enhancd::history::list "${dir}"
 }

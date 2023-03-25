@@ -4,5 +4,5 @@ function _enhancd_source_parent_dirs
         return 0
     end
 
-    _enhancd_filepath_list_step "$PWD" | _enhancd_filter_interactive
+    _enhancd_filepath_list_step "$PWD"
 end
