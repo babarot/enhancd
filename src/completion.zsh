@@ -81,7 +81,7 @@ __enhancd::completion::complete() {
     return
   fi
 
-  filter=$(__enhancd::filepath::split_list "$ENHANCD_FILTER")
+  filter=$(__enhancd::helper::parse_filter_string "$ENHANCD_FILTER")
 
   if [ $(echo $l | wc -l) -eq 1 ]; then
     matches=${(q)l}

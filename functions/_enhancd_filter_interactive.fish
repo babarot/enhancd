@@ -10,7 +10,7 @@ function _enhancd_filter_interactive
         return 1
     end
 
-    set -l filter (_enhancd_filepath_split_list "$ENHANCD_FILTER")
+    set -l filter (_enhancd_helper_parse_filter_string "$ENHANCD_FILTER")
     set -l count (echo "$stdin" | _enhancd_command_grep -c "")
 
     if test $ENHANCD_FILTER_ABBREV = 1

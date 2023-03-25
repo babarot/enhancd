@@ -54,7 +54,7 @@ __enhancd::filter::interactive()
   fi
 
   local filter
-  filter="$(__enhancd::filepath::split_list "${ENHANCD_FILTER}")"
+  filter="$(__enhancd::helper::parse_filter_string "${ENHANCD_FILTER}")"
 
   if [[ ${ENHANCD_FILTER_ABBREV} == 1 ]]; then
     filter="__enhancd::filter::replace ${HOME} \~ | ${filter} | __enhancd::filter::replace \~ ${HOME}"
