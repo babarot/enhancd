@@ -16,5 +16,5 @@ function _enhancd_flag_run_custom_source
         return 1
     end
 
-    $func "$arg"
+    _enhancd_command_run $func "$arg"
 end

@@ -5,7 +5,7 @@ __enhancd::flag::run_custom_source()
   func="$(__enhancd::ltsv::get "${opt}" "func")"
   cond="$(__enhancd::ltsv::get "${opt}" "condition")"
 
-  if ! __enhancd::command::run "${cond}"; then
+  if ! __enhancd::command::run "${cond}" &>/dev/null; then
     echo "${opt}: defined but require '${cond}'" >&2
     return 1
   fi
@@ -15,7 +15,7 @@ __enhancd::flag::run_custom_source()
     return 1
   fi
 
-  ${func} "${arg}"
+  __enhancd::command::run "${func}" "${arg}"
 }
 
 __enhancd::flag::is_default()

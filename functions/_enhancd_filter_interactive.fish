@@ -6,7 +6,7 @@ function _enhancd_filter_interactive
     end
 
     if test -z "$stdin"
-        echo "no entry" >&2
+        # echo "no entry" >&2
         return 1
     end
 
