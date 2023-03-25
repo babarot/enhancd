@@ -36,12 +36,7 @@ __enhancd::filter::fuzzy()
   if [[ -z ${1} ]]; then
     cat <&0
   else
-    if [[ ${ENHANCD_USE_FUZZY_MATCH} == 1 ]]; then
-      __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/fuzzy.awk" -v search_string="${1}"
-    else
-      # Case-insensitive (don't use fuzzy searhing)
-      __enhancd::command::awk '$0 ~ /\/.?'"${1}"'[^\/]*$/{print $0}' 2>/dev/null
-    fi
+    __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/fuzzy.awk" -v search_string="${1}"
   fi
 }
 
