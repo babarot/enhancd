@@ -11,7 +11,7 @@ function _enhancd_ltsv_get
     set key "$argv[2]"
 
     _enhancd_ltsv_open \
-        | _enhancd_filter_exclude_commented \
+        | _enhancd_command_grep -v -E '^(//|#)' \
         | _enhancd_ltsv_parse \
         -v opt="$opt" \
         -v key="$key" \
