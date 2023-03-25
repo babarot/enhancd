@@ -1,5 +1,5 @@
 function _enhancd_filter_replace
-    set -q argv[1] || return   
+    set -q argv[1] || return
     set -l old $argv[1]
     set -q argv[2] && set -l new $argv[2]
 

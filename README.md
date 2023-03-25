@@ -202,7 +202,25 @@ OPTIONS:
   -h, --help       Show help message
 ```
 
-Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv). As it is written in this json, the user have to make a directory list file or script that generate the list like [this script](https://github.com/b4b4r07/enhancd/blob/master/src/custom/sources/ghq.sh). Of cource, you can disable those options if you do not like it.
+Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv). You can add your custom option by writting the config file with [LTSV format](http://ltsv.org/).
+
+The default config is below:
+
+```tsv
+short:-h	long:--help	desc:Show help message	func:	condition:
+```
+
+For example, let's say you want to use [`ghq list`](https://github.com/x-motemen/ghq) as custom source for cd command, all you have to do is adding this one line to `config.ltsv`:
+
+```tsv
+short:-G	long:--ghq	desc:Show ghq path	func:ghq list --full-path	condition:which ghq
+```
+
+enhancd will load these `config.ltsv` from the top of the list:
+
+- `${ENHANCD_ROOT}/config.ltsv`
+- `${ENHANCD_DIR}/config.ltsv`
+- `${HOME}/.config/enhancd/config.ltsv`
 
 ## Installation
 
@@ -436,13 +454,6 @@ In other words, you can keep original behavior of `cd` with no argument by this 
 <summary><strong><code>ENHANCD_HOOK_AFTER_CD</code></strong></summary>
 
 Default is empty. You can run any commands after changing directory with enhancd (e.g. `ls`: like `cd && ls`).
-
-</details>
-
-<details>
-<summary><strong><code>ENHANCD_USE_FUZZY_MATCH</code></strong></summary>
-
-Default is 1 (enable). See [#33](https://github.com/b4b4r07/enhancd/issues/33).
 
 </details>
 

@@ -1,5 +1,5 @@
 function _enhancd_complete
-    set -l query (_enhancd_source_default)/
+    set -l query (_enhancd_source_home)/
     if test -n "$query"
         commandline -t "$query"
     end
