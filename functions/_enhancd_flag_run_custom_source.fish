@@ -1,4 +1,4 @@
-function _enhancd_flag_parse
+function _enhancd_flag_run_custom_source
     set -l opt "$argv[1]"
     set -l arg "$argv[2]"
     set -l func
@@ -16,10 +16,5 @@ function _enhancd_flag_parse
         return 1
     end
 
-    if _enhancd_command_which $func
-        $func "$arg"
-    else
-        echo "$func: no such function defined" >&2
-        return 1
-    end
+    $func "$arg"
 end

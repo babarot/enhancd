@@ -50,7 +50,7 @@ function enhancd
                 if _enhancd_flag_is_default "$argv[1]"
                     set -a opts "$argv[1]"
                 else
-                    set -a args (_enhancd_flag_parse "$argv[1]")
+                    set -a args (_enhancd_flag_run_custom_source "$argv[1]" | _enhancd_filter_interactive)
                     set code $status
                 end
 
