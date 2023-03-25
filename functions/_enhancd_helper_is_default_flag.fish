@@ -1,4 +1,4 @@
-function _enhancd_flag_is_default
+function _enhancd_helper_is_default_flag
     set -l opt $argv[1]
     switch $SHELL
         case "*bash"

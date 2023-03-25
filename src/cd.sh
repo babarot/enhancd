@@ -17,7 +17,7 @@ __enhancd::cd()
   do
     case "${1}" in
       -h | --help)
-        __enhancd::flag::print_help
+        __enhancd::ltsv::open | __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/help.awk"
         return ${?}
         ;;
       "${ENHANCD_HYPHEN_ARG}")
@@ -55,10 +55,21 @@ __enhancd::cd()
         code=${?}
         ;;
       -* | --*)
-        if __enhancd::flag::is_default "${1}"; then
+        if __enhancd::helper::is_default_flag "${1}"; then
           opts+=( "${1}" )
         else
-          args+=( "$(__enhancd::flag::run_custom_source "${1}" | __enhancd::filter::interactive)" )
+          local opt="${1}" arg="${2}" func
+          func="$(__enhancd::ltsv::get "${opt}" "func")"
+          cond="$(__enhancd::ltsv::get "${opt}" "condition")"
+          if ! __enhancd::command::run "${cond}" &>/dev/null; then
+            echo "${opt}: defined but require '${cond}'" >&2
+            return 1
+          fi
+          if [[ -z ${func} ]]; then
+            echo "${opt}: no such option" >&2
+            return 1
+          fi
+          args+=( "$(__enhancd::command::run "${func}" "${arg}" | __enhancd::filter::interactive)" )
           code=${?}
         fi
         ;;

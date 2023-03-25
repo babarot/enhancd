@@ -1,8 +1,8 @@
 __enhancd::ltsv::open()
 {
-  cat "${ENHANCD_ROOT}/config.ltsv" 2>/dev/null
-  cat "${ENHANCD_DIR}/config.ltsv" 2>/dev/null
-  cat "${HOME}/.config/enhancd/config.ltsv" 2>/dev/null
+  command cat "${ENHANCD_ROOT}/config.ltsv" 2>/dev/null
+  command cat "${ENHANCD_DIR}/config.ltsv" 2>/dev/null
+  command cat "${HOME}/.config/enhancd/config.ltsv" 2>/dev/null
 }
 
 __enhancd::ltsv::parse()

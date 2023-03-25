@@ -26,3 +26,25 @@ __enhancd::helper::parse_filter_string()
 
   return 1
 }
+
+__enhancd::helper::is_default_flag()
+{
+  local opt="${1}"
+  case ${SHELL} in
+    *bash)
+      case "${opt}" in
+        "-P" | "-L" | "-e" | "-@")
+          return 0
+          ;;
+      esac
+      ;;
+    *zsh)
+      case "${opt}" in
+        "-q" | "-s" | "-L" | "-P")
+          return 0
+          ;;
+      esac
+      ;;
+  esac
+  return 1
+}

@@ -49,7 +49,7 @@ __enhancd::filter::interactive()
   fi
 
   if [[ -z ${stdin} ]]; then
-    # echo "no entry" >&2
+    echo "no entry" >&2
     return 1
   fi
 
