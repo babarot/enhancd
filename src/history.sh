@@ -20,7 +20,7 @@ __enhancd::history::list()
 __enhancd::history::update()
 {
     {
-        __enhancd::filepath::list_step | __enhancd::filter::reverse
+        __enhancd::filepath::get_parent_dirs | __enhancd::filter::reverse
         __enhancd::filepath::walk
         __enhancd::history::open
         echo "$HOME"

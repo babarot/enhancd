@@ -121,7 +121,7 @@ __enhancd::cd::after()
 
 __enhancd::cd::ready()
 {
-  __enhancd::filepath::split_list "${ENHANCD_FILTER}" \
+  __enhancd::helper::parse_filter_string "${ENHANCD_FILTER}" \
   &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
   return ${?}
 }

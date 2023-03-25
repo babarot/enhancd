@@ -1,5 +1,5 @@
 # Splits a list of commands joined by the colon, found in PATH environment variables
-function _enhancd_filepath_split_list
+function _enhancd_helper_parse_filter_string
     set -l str
 
     if test -z "$argv[1]"
