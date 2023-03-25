@@ -1,11 +1,3 @@
-# Returns true if enhancd is ready to be available
-__enhancd::sources::is_available()
-{
-  __enhancd::filepath::split_list "${ENHANCD_FILTER}" \
-    &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
-  return ${?}
-}
-
 __enhancd::sources::parent_dirs()
 {
   if [[ ${ENHANCD_DISABLE_DOT} == 1 ]]; then

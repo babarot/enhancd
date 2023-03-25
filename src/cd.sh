@@ -4,7 +4,7 @@ __enhancd::cd()
     local -i code=0
     local -a args opts
 
-    if ! __enhancd::sources::is_available; then
+    if ! __enhancd::cd::ready; then
         __enhancd::cd::builtin "${@:-$HOME}"
         return $?
     fi
@@ -118,4 +118,11 @@ __enhancd::cd::after()
     if [[ -n $ENHANCD_HOOK_AFTER_CD ]]; then
         eval "$ENHANCD_HOOK_AFTER_CD"
     fi
+}
+
+__enhancd::cd::ready()
+{
+  __enhancd::filepath::split_list "${ENHANCD_FILTER}" \
+    &>/dev/null && [[ -s ${ENHANCD_DIR}/enhancd.log ]]
+  return ${?}
 }
