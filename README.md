@@ -440,13 +440,6 @@ Default is empty. You can run any commands after changing directory with enhancd
 </details>
 
 <details>
-<summary><strong><code>ENHANCD_USE_FUZZY_MATCH</code></strong></summary>
-
-Default is 1 (enable). See [#33](https://github.com/b4b4r07/enhancd/issues/33).
-
-</details>
-
-<details>
 <summary><strong><code>ENHANCD_COMPLETION_KEYBIND</code></strong></summary>
 
 Default is <kbd>Tab</kbd> (`^I`). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
