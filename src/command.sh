@@ -34,6 +34,6 @@ __enhancd::command::awk()
 __enhancd::command::run()
 {
   local cond="${1}"
-  ${SHELL:-bash} -c "${cond}" &>/dev/null
+  ${SHELL:-bash} -c "${cond}"
   return ${?}
 }
