@@ -38,7 +38,7 @@ function enhancd
                 set -a args ".."
 
             case "$ENHANCED_HOME_ARG"
-                set -a args (_enhancd_source_default)
+                set -a args (_enhancd_source_home)
                 set code $status
 
             case '--'
@@ -63,7 +63,7 @@ function enhancd
 
     switch (count $argv)
         case '0'
-            set -a args (_enhancd_source_default)
+            set -a args (_enhancd_source_home)
             set code $status
     end
 

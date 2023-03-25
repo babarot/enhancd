@@ -37,7 +37,7 @@ __enhancd::sources::mru()
     | __enhancd::filter::interactive
 }
 
-__enhancd::sources::default()
+__enhancd::sources::home()
 {
   if [[ ${ENHANCD_DISABLE_HOME} == 1 ]]; then
     echo "${HOME}"
@@ -45,9 +45,9 @@ __enhancd::sources::default()
   fi
 
   {
-    __enhancd::entry::git::root
+    echo "${HOME}"
     __enhancd::history::list
-  } | __enhancd::filter::interactive
+  } | __enhancd::filter::unique | __enhancd::filter::interactive
 }
 
 __enhancd::sources::history()
