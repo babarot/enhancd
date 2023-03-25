@@ -5,23 +5,7 @@ __enhancd::sources::parent_dirs()
     return 0
   fi
 
-  __enhancd::filepath::list_step "${PWD}" \
-    | __enhancd::command::grep -E "${1}" \
-    | __enhancd::filter::interactive \
-    | __enhancd::filepath::abs
-
-  # Returns false if __enhancd::filepath::abs fails
-  # __enhancd::filepath::abs returns false
-  # if __enhancd::filter::interactive doesn't output anything
-  if [[ ${?} -eq 1 ]]; then
-    if [[ -n ${1} ]]; then
-      # Returns false if an argument is given
-      return 1
-    else
-      # Returns true when detecting to press Ctrl-C in selection
-      return 0
-    fi
-  fi
+  __enhancd::filepath::list_step "${PWD}" | __enhancd::filter::interactive
 }
 
 __enhancd::sources::mru()
