@@ -3,6 +3,5 @@ function _enhancd_source_mru
 
     _enhancd_history_list "$argv[1]" \
         | _enhancd_filter_exclude "$HOME" \
-        | _enhancd_filter_limit "$ENHANCD_HYPHEN_NUM" \
-        | _enhancd_filter_interactive "$list"
+        | _enhancd_filter_limit "$ENHANCD_HYPHEN_NUM"
 end

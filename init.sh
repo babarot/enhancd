@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim: ft=zsh
 
 export ENHANCD_ROOT
 export ENHANCD_COMMAND
@@ -24,7 +25,8 @@ if [[ -n ${BASH_VERSION} ]]; then
   ENHANCD_ROOT="$(builtin cd "$(command dirname "${BASH_SOURCE}")" && pwd)"
 elif [[ -n ${ZSH_VERSION} ]]; then
   # ZSH
-  source enhancd_root.zsh
+  ENHANCD_ROOT="${${(%):-%x}:A:h}"
+  compdef _cd __enhancd::cd
 fi
 
 # core files

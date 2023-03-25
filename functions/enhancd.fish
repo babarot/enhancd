@@ -4,7 +4,7 @@ function enhancd
     set -l opts
     set -l code 0
 
-    if not _enhancd_source_is_available
+    if not _enhancd_cd_ready
         if not set -q argv[1]
             _enhancd_cd_builtin "$HOME"
         else
@@ -24,26 +24,26 @@ function enhancd
             case "$ENHANCD_HYPHEN_ARG"
                 # If a hyphen is passed as the argument,
                 # searchs from the last 10 directory items in the log
-                set -a args (_enhancd_source_mru "$argv[2]")
+                set -a args (_enhancd_source_mru "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
 
             case '-'
                 set -a args "$OLDPWD"
 
             case "$ENHANCD_DOT_ARG"
-                set -a args (_enhancd_source_go_up "$argv[2]")
+                set -a args (_enhancd_source_parent_dirs "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
 
             case '..'
                 set -a args ".."
 
             case "$ENHANCED_HOME_ARG"
-                set -a args (_enhancd_source_default)
+                set -a args (_enhancd_source_home | _enhancd_filter_interactive)
                 set code $status
 
             case '--'
                 set -a opts "$argv[1]"
-                set -a args (_enhancd_source_argument "$argv[2]")
+                set -a args (_enhancd_source_history "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
 
             case '-*' '--*'
@@ -55,7 +55,7 @@ function enhancd
                 end
 
             case '*'
-                set -a args (_enhancd_source_argument "$argv[1]")
+                set -a args (_enhancd_source_history "$argv[1]" | _enhancd_filter_interactive)
 
         end
         set i (math "$i + 1")
@@ -63,7 +63,7 @@ function enhancd
 
     switch (count $argv)
         case '0'
-            set -a args (_enhancd_source_default)
+            set -a args (_enhancd_source_home | _enhancd_filter_interactive)
             set code $status
     end
 
