@@ -20,10 +20,6 @@ labels:
 - name: kind/question
   description: Further information is requested
   color: cc317c
-- name: lifesycle/stale
-  description: Denotes an issue or PR has remained open with no activity and has become
-    stale.
-  color: e6e6e6
 - name: status/todo
   description: ""
   color: d4c5f9
@@ -37,5 +33,4 @@ repos:
   - kind/bug
   - kind/enhancement
   - kind/question
-  - lifesycle/stale
   - status/todo
