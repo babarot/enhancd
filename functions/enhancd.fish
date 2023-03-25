@@ -31,7 +31,7 @@ function enhancd
                 set -a args "$OLDPWD"
 
             case "$ENHANCD_DOT_ARG"
-                set -a args (_enhancd_source_go_up "$argv[2]")
+                set -a args (_enhancd_source_parent_dirs "$argv[2]")
                 set code $status
 
             case '..'

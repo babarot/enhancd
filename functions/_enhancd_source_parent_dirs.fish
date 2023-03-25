@@ -1,4 +1,4 @@
-function _enhancd_source_go_up
+function _enhancd_source_parent_dirs
     if test "$ENHANCD_DISABLE_DOT" = 1
         echo ".."
         return 0

@@ -37,7 +37,7 @@ __enhancd::cd()
                 # it behaves like a zsh-bd plugin
                 # In short, you can jump back to a specific directory,
                 # without doing `cd ../../..`
-                args+=( "$(__enhancd::sources::go_up "$2")" )
+                args+=( "$(__enhancd::sources::parent_dirs "$2")" )
                 code=$?
                 ;;
             "..")
