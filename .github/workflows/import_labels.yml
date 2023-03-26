@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@1.0.0
+        uses: actions/checkout@3
       - name: Import between existing labels
         uses: b4b4r07/github-labeler@master
         with:
@@ -20,7 +20,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Import existing labels"
