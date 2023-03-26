@@ -62,5 +62,5 @@ eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
 
 # Set the filter if empty
 if [[ -z ${ENHANCD_FILTER} ]]; then
-  ENHANCD_FILTER="fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+  ENHANCD_FILTER="fzy:fzf:peco:percol:sk:zf:gof:selecta"
 fi

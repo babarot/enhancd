@@ -25,7 +25,7 @@ function __enhancd_install --on-event enhancd_install
     set -Ux _ENHANCD_VERSION "2.3.0"
 
     # Set the filters if empty
-    set -Ux ENHANCD_FILTER "fzy:fzf-tmux:fzf:peco:percol:gof:pick:icepick:sentaku:selecta"
+    set -Ux ENHANCD_FILTER "fzy:fzf:peco:percol:sk:zf:gof:selecta"
 
     # make a log file and a root directory
     if not test -d "$ENHANCD_DIR"
