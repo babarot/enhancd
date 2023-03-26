@@ -12,8 +12,6 @@ BEGIN {
 /^(#|\/\/)/ { next }
 
 {
-    len++;
-
     condition = ltsv("condition")
     if (condition != "") {
         command = sprintf("%s &>/dev/null", condition);
@@ -21,6 +19,8 @@ BEGIN {
         close(command);
         if (code == 1) { next }
     }
+
+    len++;
 
     short = ltsv("short")
     long  = ltsv("long")
