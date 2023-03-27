@@ -1,0 +1,40 @@
+name: Check Release
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-ecosystem/action-release-label@v1
+        id: release-label
+        if: ${{ startsWith(github.event.label.name, 'release/') }}
+
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+        if: ${{ steps.release-label.outputs.level != null }}
+        with:
+          semver_only: true
+
+      - uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-semver
+        if: ${{ steps.release-label.outputs.level != null }}
+        with:
+          current_version: ${{ steps.get-latest-tag.outputs.tag }}
+          level: ${{ steps.release-label.outputs.level }}
+
+      - uses: actions-ecosystem/action-create-comment@v1
+        if: ${{ steps.bump-semver.outputs.new_version != null }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            This PR will update [${{ github.repository }}](https://github.com/${{ github.repository }}) from [${{ steps.get-latest-tag.outputs.tag }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-latest-tag.outputs.tag }}) to **${{ steps.bump-semver.outputs.new_version }}** :rocket:
+
+            Changes: https://github.com/${{ github.repository }}/compare/${{ steps.get-latest-tag.outputs.tag }}...${{ github.event.pull_request.head.ref }}
+
+            If this update isn't as you expected, you may want to change or remove the *release label*.
