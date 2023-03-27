@@ -48,3 +48,17 @@ __enhancd::filepath::abs()
     -v cwd="${cwd}" \
     -v dir="${dir}"
 }
+
+__enhancd::filepath::get_dirs_in_cwd()
+{
+  # https://github.com/sharkdp/fd
+  if type fd &>/dev/null; then
+    # using fd command gives better results than find command
+    command fd --type d --hidden -E .git
+    return ${?}
+  fi
+
+  # https://unix.stackexchange.com/questions/611685/finding-all-directories-except-hidden-ones
+  # cut is needed fot triming "./" from the output
+  LC_ALL=C command find . ! -name . \( -name '.*' -prune -o -type d -print \) | cut -c3-
+}

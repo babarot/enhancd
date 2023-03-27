@@ -7,6 +7,7 @@ export ENHANCD_FILTER
 export ENHANCD_FILTER_ABBREV="${ENHANCD_FILTER_ABBREV:-0}"
 export ENHANCD_DIR="${ENHANCD_DIR:-$HOME/.enhancd}"
 export ENHANCD_DISABLE_DOT="${ENHANCD_DISABLE_DOT:-0}"
+export ENHANCD_DISABLE_DOT_CURRENT=${ENHANCD_DISABLE_DOT_CURRENT:-0}
 export ENHANCD_DISABLE_HYPHEN="${ENHANCD_DISABLE_HYPHEN:-0}"
 export ENHANCD_DISABLE_HOME="${ENHANCD_DISABLE_HOME:-0}"
 export ENHANCD_DOT_ARG="${ENHANCD_DOT_ARG:-..}"
@@ -62,5 +63,5 @@ eval "alias ${ENHANCD_COMMAND:=cd}=__enhancd::cd"
 
 # Set the filter if empty
 if [[ -z ${ENHANCD_FILTER} ]]; then
-  ENHANCD_FILTER="fzy:fzf:peco:percol:sk:zf:gof:selecta"
+  ENHANCD_FILTER="fzy:fzf:peco:sk:zf"
 fi
