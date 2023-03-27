@@ -1,7 +1,6 @@
 function _enhancd_history_update
     function sub
-        _enhancd_filepath_get_parent_dirs | _enhancd_filter_reverse
-        _enhancd_filepath_walk
+        _enhancd_history_exists; or _enhancd_filepath_walk
         _enhancd_history_open
         echo "$HOME"
     end
