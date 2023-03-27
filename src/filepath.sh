@@ -1,17 +1,26 @@
 # Currently this is not used
 __enhancd::filepath::split()
 {
-  __enhancd::command::awk -f "$ENHANCD_ROOT/functions/enhancd/lib/split.awk" -v arg="${1:-$PWD}"
+  __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/split.awk" -v arg="${1:-$PWD}"
 }
 
 __enhancd::filepath::get_parent_dirs()
 {
-  __enhancd::command::awk -f "$ENHANCD_ROOT/functions/enhancd/lib/step_by_step.awk" -v dir="${1:-$PWD}"
+  __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/step_by_step.awk" -v dir="${1:-$PWD}"
 }
 
 __enhancd::filepath::walk()
 {
-  command find "${1:-$PWD}" -maxdepth 1 -type d -name '\.*' -prune -o -type d -print
+  local -a dirs
+
+  # __enhancd::filepath::get_parent_dirs does not return $PWD itself
+  # so add it to array expressly
+  dirs=( "${PWD}" $(__enhancd::filepath::get_parent_dirs "${1:-${PWD}}") )
+
+  for dir in "${dirs[@]}"
+  do
+    command find "${dir}" -maxdepth 1 -type d -name '\.*' -prune -o -type d -print
+  done
 }
 
 __enhancd::filepath::current_dir()
