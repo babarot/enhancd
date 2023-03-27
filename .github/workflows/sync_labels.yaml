@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - .github/labels.yml
+      - .github/labels.yaml
 
 jobs:
   sync:
