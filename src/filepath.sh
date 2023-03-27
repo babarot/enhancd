@@ -11,8 +11,13 @@ __enhancd::filepath::get_parent_dirs()
 
 __enhancd::filepath::walk()
 {
-  local dir
-  for dir in $(__enhancd::filepath::get_parent_dirs "${1:-${PWD}}")
+  local -a dirs
+
+  # __enhancd::filepath::get_parent_dirs does not return $PWD itself
+  # so add it to array expressly
+  dirs=( "${PWD}" $(__enhancd::filepath::get_parent_dirs "${1:-${PWD}}") )
+
+  for dir in "${dirs[@]}"
   do
     command find "${dir}" -maxdepth 1 -type d -name '\.*' -prune -o -type d -print
   done
