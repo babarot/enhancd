@@ -23,36 +23,42 @@ __enhancd::cd()
       "${ENHANCD_HYPHEN_ARG}")
         # If a hyphen is passed as the argument,
         # searchs from the last 10 directory items in the log
-        args+=( "$(__enhancd::sources::mru "${2}" | __enhancd::filter::interactive)" )
+        args+=( "$(__enhancd::sources::mru | __enhancd::filter::interactive)" )
         code=${?}
+        break
         ;;
       "-")
         # When $ENHANCD_HYPHEN_ARG is configured,
         # this behaves like `cd -`
         args+=( "${OLDPWD}" )
+        break
         ;;
       "${ENHANCD_DOT_ARG}")
         # If a double-dot is passed as the argument,
         # it behaves like a zsh-bd plugin
         # In short, you can jump back to a specific directory,
         # without doing `cd ../../..`
-        args+=( "$(__enhancd::sources::parent_dirs "${2}" | __enhancd::filter::interactive)" )
+        args+=( "$(__enhancd::sources::parent_dirs | __enhancd::filter::interactive)" )
         code=${?}
+        break
         ;;
       "..")
         # When $ENHANCD_DOT_ARG is configured,
         # ".." is passed to builtin cd
         args+=( ".." )
+        break
         ;;
       "${ENHANCD_HOME_ARG}")
         args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
         code=${?}
+        break
         ;;
       --)
         opts+=( "${1}" )
         shift
         args+=( "$(__enhancd::sources::history "${1}" | __enhancd::filter::interactive)" )
         code=${?}
+        break
         ;;
       -* | --*)
         if __enhancd::helper::is_default_flag "${1}"; then

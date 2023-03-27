@@ -7,6 +7,16 @@ __enhancd::history::open()
   return 1
 }
 
+__enhancd::history::exists()
+{
+  local dir="${1}"
+  if [[ -z ${dir} ]]; then
+    return 1
+  fi
+
+  __enhancd::history::open | __enhancd::command::grep "${dir}" &>/dev/null
+}
+
 __enhancd::history::list()
 {
   __enhancd::history::open \
@@ -20,8 +30,8 @@ __enhancd::history::list()
 __enhancd::history::update()
 {
   {
-    __enhancd::filepath::get_parent_dirs | __enhancd::filter::reverse
-    __enhancd::filepath::walk
+    #__enhancd::filepath::get_parent_dirs | __enhancd::filter::reverse
+    __enhancd::history::exists "${PWD}" || __enhancd::filepath::walk
     __enhancd::history::open
     echo "${HOME}"
   } | __enhancd::filter::reverse  | __enhancd::filter::unique  | __enhancd::filter::reverse
