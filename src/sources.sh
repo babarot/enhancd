@@ -1,6 +1,6 @@
 __enhancd::sources::parent_dirs()
 {
-  if [[ ${ENHANCD_DISABLE_DOT} == 1 ]]; then
+  if ! ${ENHANCD_ENABLE_DOUBLE_DOT}; then
     echo ".."
     return 0
   fi
@@ -10,7 +10,7 @@ __enhancd::sources::parent_dirs()
 
 __enhancd::sources::current_dirs()
 {
-  if [[ ${ENHANCD_DISABLE_DOT_CURRENT} == 1 ]]; then
+  if ! ${ENHANCD_ENABLE_SINGLE_DOT}; then
     echo "."
     return 0
   fi
@@ -20,7 +20,7 @@ __enhancd::sources::current_dirs()
 
 __enhancd::sources::mru()
 {
-  if [[ ${ENHANCD_DISABLE_HYPHEN} == 1 ]]; then
+  if ! ${ENHANCD_ENABLE_HYPHEN}; then
     echo "${OLDPWD}"
     return 0
   fi
@@ -32,7 +32,7 @@ __enhancd::sources::mru()
 
 __enhancd::sources::home()
 {
-  if [[ ${ENHANCD_DISABLE_HOME} == 1 ]]; then
+  if ! ${ENHANCD_ENABLE_HOME}; then
     echo "${HOME}"
     return 0
   fi
