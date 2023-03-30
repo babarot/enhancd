@@ -1,11 +1,15 @@
 BEGIN {
+    # add 'delete lines' essentially declares it as an array.
+    # https://groups.google.com/g/comp.lang.awk/c/jrRiumpwr20
+    lines["dummy"]; delete lines["dummy"]
+
     hit_leven_dist = 0;
     FS = "/";
 }
 
 # https://stackoverflow.com/questions/11534173/how-to-use-awk-variables-in-regular-expressions
 # https://www.nixcraft.com/t/how-to-use-awk-regex-as-match-variable-passed-from-shell/3669/3
-$0 ~ "\/.?" search_string "[^\/]*$" {
+$0 ~ "\\/.?" search_string "[^\\/]*$" {
   lines[length(lines)+1] = $0
 }
 
