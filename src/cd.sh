@@ -53,6 +53,11 @@ __enhancd::cd()
         code=${?}
         break
         ;;
+      ".")
+        args+=( "$(__enhancd::sources::current_dirs | __enhancd::filter::interactive)" )
+        code=${?}
+        break
+        ;;
       --)
         opts+=( "${1}" )
         shift

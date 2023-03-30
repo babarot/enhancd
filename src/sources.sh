@@ -8,6 +8,16 @@ __enhancd::sources::parent_dirs()
   __enhancd::filepath::get_parent_dirs "${PWD}"
 }
 
+__enhancd::sources::current_dirs()
+{
+  if [[ ${ENHANCD_DISABLE_DOT_CURRENT} == 1 ]]; then
+    echo "."
+    return 0
+  fi
+
+  __enhancd::filepath::get_dirs_in_cwd
+}
+
 __enhancd::sources::mru()
 {
   if [[ ${ENHANCD_DISABLE_HYPHEN} == 1 ]]; then

@@ -5,31 +5,33 @@
 
 <div align="center">
 
-# enhan/cd
+enhan/cd
+===
 
-<!-- [![][version-badge]][version-link] -->
+[![][version-badge]][version-link] ![](https://img.shields.io/github/commit-activity/m/b4b4r07/enhancd)
 
-enhancd is ***an enhanced cd command*** integrated with an UNIX interactive filter.
+enhancd is ***an enhanced cd command*** integrated with a command line fuzzy finder based on UNIX concept.
 
-Typing "cd" in your console, enhancd provides you a new directory moving. Basic concept is almost similar with the original cd command but totally differenent in that you can choose where to go from the list of visited directories in the past. You can select the directory you want to move using your favorite interactive filter (e.g. fzf). It just extends original cd but brings you completely new experience.
+Typing “cd” in your console, enhancd provides you a new window to visit a directory. The basic UX of enhancd is almost same as builtin cd command but totally differenent in that you can choose where to go from the list of visited directories in the past. You can select the directory you want to visit using your favorite command line interactive filter (e.g. fzf). It just extends original cd command but brings you completely new experience.
 
+<!--
 [Getting Started](#getting-started) •
 [Installation](#installation) •
 [Configuration](#configuration) •
 [References](#references)
-
-[![][version-badge]][version-link] ![](https://img.shields.io/github/commit-activity/m/b4b4r07/enhancd)
-===
+-->
 
 </div>
 
-`cd` command is one of the frequently used commands.
+<!--
 
-Nevertheless, it is not so easy to handle unfortunately. A directory path given as an argument to `cd` command must be a valid path that exists and is able to resolve. In other words, you cannot pass a partial path such as "dir" (you are in `/home/babarot`, dir is `/home/babarot/work/dir`) to `cd` command.
+Naming:
 
-The new cd command called "enhancd" enhanced the flexibility and usability for a user. enhancd will memorize all directories visited by a user and use it for the pathname resolution. If the log of enhancd have more than one directory path with the same name, enhancd will pass the candidate directories list to the filter within the ENHANCD_FILTER environment variable in order to narrow it down to one directory.
+- enhan/cd
+- enhanc<sup>e</sup>d
+- enhan<sup>/</sup>cd
 
-Thanks to this mechanism, the user can intuitively and easily change the directory you want to go.
+Features:
 
 - Go to the visited directory in the past
 - Easy to filter, using your favorite filter
@@ -39,191 +41,227 @@ Thanks to this mechanism, the user can intuitively and easily change the directo
 - Fuzzy search in a similar name directory
 - Support standard input (`echo $HOME | cd` is acceptable)
 - Custom options (user-defined option is acceptable)
+-->
 
-![demo](https://user-images.githubusercontent.com/4442708/227760682-3db43c23-c31e-454f-9e9c-003c3eb7a693.gif)
+<!-- vim-markdown-toc GFM -->
+
+* [Getting Started](#getting-started)
+* [Usage](#usage)
+  * [Basics](#basics)
+  * [Arguments](#arguments)
+    * [Hyphen (`-`)](#hyphen--)
+    * [Double-dot (`..`)](#double-dot-)
+    * [Single-dot (`.`)](#single-dot-)
+* [Options](#options)
+* [Installation](#installation)
+  * [Manual](#manual)
+  * [Using package manager](#using-package-manager)
+* [Configuration](#configuration)
+* [Known issues](#known-issues)
+* [References](#references)
+* [Versus](#versus)
+* [License](#license)
+
+<!-- vim-markdown-toc -->
 
 ## Getting Started
 
-### Usage
+![demo](https://user-images.githubusercontent.com/4442708/227760682-3db43c23-c31e-454f-9e9c-003c3eb7a693.gif)
 
-Under Zsh or Bourne shells such as sh and bash, you just source `init.sh` into your shell:
+Trying enhancd on the current shell, you need to run this command:
 
-```console
-$ source ./init.sh
+```bash
+source ./init.sh
 ```
 
-Because enhancd functions must be executed in the context of the current shell, you should run something like above command.
+After that, `cd` is aliased to `__enhancd::cd` so you can use enhancd feature by typing `cd` as usual.
 
-The basic usage of the `cd` command that has been implemented by `enhancd` is the same as the normal builtin `cd` command.
+Using enhancd feature requires a command line fuzzy finder tool (as known as an interactive filter), for example, [fzf](https://github.com/junegunn/fzf). The `ENHANCD_FILTER` is the command name for interactive filters. It is a colon-separated list of executables. Each arguments can be also included to the list. It searches from the top of the list and uses the first installed one. A default value is `fzy:fzf:peco:sk:zf`.
 
-```console
-$ cd [-|..] <directory>
-```
-
-If no arguments are given, enhancd `cd` command will display a list of the directory you've visited once, encourage you to filter the directory that you want to move.
+Changing the order of each executables in the list, you can change the interactive filter command used by enhancd. Let’s configure what’s your favorite one!
 
 ```console
-$ cd
-  ...
-  /home/babarot/src/github.com/b4b4r07/enhancd/zsh
-  /home/babarot/src/github.com/b4b4r07/gotcha
-  /home/babarot/src/github.com/b4b4r07/blog/public
-  /home/babarot/src/github.com/b4b4r07/blog
-  /home/babarot/src/github.com/b4b4r07/link_test
-  /home/babarot/src/github.com/b4b4r07
-  /home/babarot/Dropbox/etc/dotfiles
-  /home/babarot/src/github.com/b4b4r07/enhancd
-> /home/babarot
-  247/247
-> _
+$ export ENHANCD_FILTER="fzf --height 40%:fzy"
 ```
 
-The ENHANCD_FILTER variable is specified as a list of one or more visual filter command such as [this](#heartbeat-requirements) separated by colon (`:`) characters.
+## Usage
 
-It is likely the only environment variable you'll need to set when starting enhancd.
+### Basics
+
+The usage of `cd` command powered by `enhancd` is almost same as built-in `cd` command.
 
 ```console
-$ export ENHANCD_FILTER=peco
+$ cd [-|..|.] <dir>
 ```
 
-Since the `$ENHANCD_FILTER` variable can be a list, enhancd will use `$ENHANCD_FILTER` to mean the first element unless otherwise specified.
+Argument | Behavior
+---|---
+ (none) | List all directories visited in the past. The `HOME` is always shown at a top of the list as builtin `cd` does. <br> <img width="500" alt="no-arg" src="https://user-images.githubusercontent.com/4442708/228423384-6bb527f1-e6f3-442a-9a04-3da50a46de76.png">
+`<dir>` (exists in cwd) | Go to `dir` without the filter command (same as builtin `cd`) <br> <img width="500" alt="exist" src="https://user-images.githubusercontent.com/4442708/228421666-1a7f1cad-7e8d-4111-9e8e-04f215835d9f.png">
+`<dir>` (not exists in cwd) | Find directories matched with `dir` or being similar to `dir` and then pass them to the filter command. A directory named "afx" is not in the current directory but enhancd `cd` can show where to go from the visited log. <br> <img width="500" alt="not-exist" src="https://user-images.githubusercontent.com/4442708/228421661-e66e4ae5-fa0d-4dfc-a235-d914e249810c.png">
+`-` | List latest 10 directories <br> <img width="500" alt="hyphen" src="https://user-images.githubusercontent.com/4442708/228717962-40189613-3d0f-4b21-a84c-81f5d6b429d5.png">
+`..` | List all parent directories of cwd <br> <img width="500" alt="double-dot" src="https://user-images.githubusercontent.com/4442708/228717954-58681d3e-0797-4328-bc3a-ae4da4f1abdb.png">
+`.` | List all sub directories in cwd <br> <img width="500" alt="single-dot" src="https://user-images.githubusercontent.com/4442708/228717947-097e408b-10e8-4db2-9998-ee676fbf072a.png">
 
-```console
-$ export ENHANCD_FILTER=fzy:fzf:peco
-```
+### Arguments
 
-Also,
+#### Hyphen (`-`)
 
-<details>
-<summary><strong>Hyphen (<code>-</code>)</strong></summary>
-
-When enhancd takes a hyphen (`-`) string as an argument, it searchs from the last 10 directory items in the log. With it, you can search easily the directory you used last.
+List latest 10 directories. This is useful for choosing the directory recently visited only. The number of directories shown as the choices can be changed as you like by editing `ENHANCD_HYPHEN_NUM` (Defaults to `10`).
 
 ```console
 $ cd -
-  /home/babarot/Dropbox/etc/dotfiles
-  /home/babarot/Dropbox
-  /home/babarot/src/github.com
-  /home/babarot/src/github.com/b4b4r07/cli
-  /home
-  /home/babarot/src
-  /home/babarot/src/github.com/b4b4r07/enhancd
-  /home/babarot/src/github.com/b4b4r07/gotcha
-  /home/babarot/src/github.com/b4b4r07
-> /home/babarot/src/github.com/b4b4r07/portfolio
-  10/10
-> _
+❯ enhancd
+  2/10
+> /Users/babarot/src/github.com/b4b4r07/enhancd
+  /Users/babarot/src/github.com/b4b4r07/enhancd/src
 ```
 
-Then, since the current directory will be delete from the candidate, you just press Enter key to return to the previous directory after type `cd -` (`$PWD` is `/home/babarot`, `$OLDPWD` is `/home/babarot/src/github.com/b4b4r07/portfolio`).
+To disable this feature (revert to the original behavior on `cd -`), please set `ENHANCD_DISABLE_HYPHEN` to `0`.
 
-![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/cd_hyphen.gif)
+#### Double-dot (`..`)
 
-</details>
+List all parent directories of the current working directory to quickly go back to any directory instead of typing `cd ../../..` redundantly.
 
-<details>
-<summary><strong>Double-dot (<code>..</code>)</strong></summary>
-
-From the beginning, `..` means the directory's parent directory, that is, the directory that contains it. When enhancd takes a double-dot (`..`) string as an argument, it behaves like a [zsh-bd](https://github.com/Tarrasch/zsh-bd) plugin. In short, you can jump back to a specific directory, without doing `cd ../../..`.
-
-For example, when you are in `/home/babarot/src/github.com/b4b4r07/enhancd`, type `cd ..` in your terminal:
+Let's say you're in `~/src/github.com/b4b4r07/enhancd`. The result of `cd ..` will be:
 
 ```console
 $ cd ..
-  /
-  home
-  babarot
-  src
-  github.com
-> b4b4r07
+❯ _
   6/6
-> _
+> /Users/babarot/src/github.com/b4b4r07
+  /Users/babarot/src/github.com
+  /Users/babarot/src
+  /Users/babarot
+  /Users
+  /
 ```
 
-When moving to the parent directory, the current directory is removed from the candidate.
+To disable this feature (revert to the original behavior on `cd ..`), please set `ENHANCD_DISABLE_DOT` to `0`.
 
-![](https://raw.githubusercontent.com/b4b4r07/screenshots/master/enhancd/bd.gif)
+#### Single-dot (`.`)
 
-</details>
+List all sub directories recursively located under the current directory. The built-in `cd` command does nothing even if a dot (`.`) is passed. Whereas, in enhancd `cd`, it's useful for visiting any sub directory easily (the example below is that if you're in "enhancd" directory):
 
-### Options
+```console
+$ cd .
+❯ _
+  8/8
+> .github/
+  .github/ISSUE_TEMPLATE/
+  .github/workflows/
+  conf.d/
+  functions/
+  functions/enhancd/
+  functions/enhancd/lib/
+  src/
+```
+
+This would be very useful to find a directory you want to visit within current directory. It uses `find` command internally to list directories but it would be good to install `fd` ([sharkdp/fd](https://github.com/sharkdp/fd)) command. It'll be more fast and also be included hidden directories into the list if `fd` is used.
+
+To disable this feature (revert to the original behavior on `cd .`), please set `ENHANCD_DISABLE_DOT_CURRENT` to `0`.
+
+## Options
 
 ```console
 $ cd --help
-usage: cd [OPTIONS] [dir]
+Usage: cd [OPTIONS] [dir]
 
 OPTIONS:
-  -h, --help       Show help message
+  -h, --help          Show help message
+  -q                  (default) quiet, no output or use of hooks
+  -s                  (default) refuse to use paths with symlinks
+  -L                  (default) retain symbolic links ignoring CHASE_LINKS
+  -P                  (default) resolve symbolic links as CHASE_LINKS
+
+Version: 2.3.0
 ```
 
-Those options are defined at [config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv). You can add your custom option by writting the config file with [LTSV format](http://ltsv.org/).
+In enhancd, all options are defined at a configuration file ([config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv)). This mechanism allows you to add what you want as new option or delete unneeded default options. It uses [LTSV](http://ltsv.org/) (Labeled Tab-Separated Values) format.
 
-The default config is below:
-
-```tsv
-short:-h	long:--help	desc:Show help message	func:	condition:
-```
-
-For example, let's say you want to use [`ghq list`](https://github.com/x-motemen/ghq) as custom source for cd command, all you have to do is adding this one line to `config.ltsv`:
+For example, let's say you want to use [`ghq list`](https://github.com/x-motemen/ghq) as custom inputs for `cd` command. In this case, all you have to do is just to add this one line to your any `config.ltsv`:
 
 ```tsv
 short:-G	long:--ghq	desc:Show ghq path	func:ghq list --full-path	condition:which ghq
 ```
 
-enhancd will load these `config.ltsv` from the top of the list:
+Label | Description
+---|---
+short | a short option (e.g. `-G`)
+long | a long option (e.g. `--ghq`)
+desc | a description for the option
+func | a command which returns directory list (e.g. `ghq list --full-path`)
+condition | a command which determine that the option should be implemented or not (e.g. `which ghq`)
 
-- `${ENHANCD_ROOT}/config.ltsv`
-- `${ENHANCD_DIR}/config.ltsv`
-- `${HOME}/.config/enhancd/config.ltsv`
+<img width="600" alt="ghq-soruce" src="https://user-images.githubusercontent.com/4442708/228717958-c0535b20-404f-4e21-aa69-efb5c31ed30d.png">
 
-### Enhancd complete (fish)
+enhancd loads these `config.ltsv` files located in:
 
-On fish shell, you can use <kbd>alt+f</kbd> to trigger `enhancd` when typing a command, the selected item will be appended to the commandline
+1. `$ENHANCD_ROOT/config.ltsv`
+2. `$ENHANCD_DIR/config.ltsv`
+3. `$HOME/.config/enhancd/config.ltsv`
+
+Thanks to this feature, it's easy to add your custom option as you hope.
 
 ## Installation
 
-<table>
+### Manual
 
-<tr><td> <strong>Case</strong> </td><td> <strong>Way</strong> </td></tr>
+enhancd is consists of a bunch of shell scripts. Running this command to clone repo and to run an entrypoint script enables you to try it out.
 
-<tr>
-<td>
-
-Git (for Trial)
-
-</td>
-<td>
-
-```console
-$ git clone https://github.com/b4b4r07/enhancd
-$ source enhancd/init.sh
+```bash
+git clone https://github.com/b4b4r07/enhancd && source enhancd/init.sh
 ```
 
-</td>
-</tr>
+### Using package manager
 
-<tr>
-<td>
-
-All (bash/zsh/fish)
-
-</td>
-
-<td>
-
-Using CLI package manager "[afx](https://github.com/b4b4r07/afx)". YAML for the installation is here:
+Using [AFX](https://github.com/b4b4r07/afx) for installing and managing shell plugins is heavily recommended now because it's better solution to manage enhancd and your favorite interactive filter at the same way.
 
 ```yaml
 github:
-  - name: b4b4r07/enhancd
-    description: A next-generation cd command with your interactive filter
-    owner: b4b4r07
-    repo: enhancd
-    plugin:
-      env:
-        ENHANCD_FILTER: fzf --height 25% --reverse --ansi:fzy
-      sources:
-        - init.sh
+- name: b4b4r07/enhancd
+  description: A next-generation cd command with your interactive filter
+  owner: b4b4r07
+  repo: enhancd
+  plugin:
+    env:
+      ENHANCD_FILTER: >
+        fzf --preview 'exa -al --tree --level 1 --group-directories-first --git-ignore
+        --header --git --no-user --no-time --no-filesize --no-permissions {}'
+        --preview-window right,50% --height 35% --reverse --ansi
+        :fzy
+        :peco
+    sources:
+    - init.sh
+- name: junegunn/fzf
+  description: A command-line fuzzy finder
+  owner: junegunn
+  repo: fzf
+  command:
+    build:
+      steps:
+        - ./install --bin --no-update-rc --no-key-bindings
+    link:
+    - from: 'bin/fzf'
+    - from: 'bin/fzf-tmux'
+  plugin:
+    sources:
+    - shell/completion.zsh
+    env:
+      FZF_DEFAULT_COMMAND: fd --type f
+      FZF_DEFAULT_OPTS: >
+        --height 75% --multi --reverse --margin=0,1
+        --bind ctrl-f:page-down,ctrl-b:page-up,ctrl-/:toggle-preview
+        --bind pgdn:preview-page-down,pgup:preview-page-up
+        --marker="✚" --pointer="▶" --prompt="❯ "
+        --no-separator --scrollbar="█"
+        --color bg+:#262626,fg+:#dadada,hl:#f09479,hl+:#f09479
+        --color border:#303030,info:#cfcfb0,header:#80a0ff,spinner:#36c692
+        --color prompt:#87afff,pointer:#ff5189,marker:#f09479
+      FZF_CTRL_T_COMMAND: rg --files --hedden --follow --glob "!.git/*"
+      FZF_CTRL_T_OPTS: --preview "bat --color=always --style=header,grid --line-range :100 {}"
+      FZF_ALT_C_COMMAND: fd --type d
+      FZF_ALT_C_OPTS: --preview "tree -C {} | head -100"
 ```
 
 then,
@@ -232,8 +270,15 @@ then,
 $ afx install
 ```
 
-</td>
-</tr>
+For more details, see [the full documentation](https://babarot.me/afx/).
+
+<details><summary>Other installations are here!</summary>
+
+<br>
+
+<table>
+
+<tr><td> <strong>Case</strong> </td><td> <strong>Way</strong> </td></tr>
 
 <tr>
 <td>
@@ -262,7 +307,7 @@ Almost same as Git case. But plus one more actions.
 
 ```console
 # add enhancd to your bash profile (or sourced file of choice)
-$ echo "source ~/enhancd/init.sh"  >> ~/.bash_profile
+$ echo "source ~/enhancd/init.sh" >> ~/.bash_profile
 ```
 
 ```console
@@ -318,35 +363,24 @@ Install with [Fisher](https://github.com/jorgebucaran/fisher):
 $ fisher install b4b4r07/enhancd
 ```
 
-
 </td>
 </tr>
 
 </table>
 
+</details>
+
 ## Configuration
 
-<table>
+<details>
+<summary><strong><code>ENHANCD_DIR</code></strong></summary>
 
-<tr><td> <strong>Variable</strong> </td><td> <strong>Description</strong> </td></tr>
+The ENHANCD_DIR variable is a base directory path. It defaults to `~/.enhancd`.
 
-<tr><td>
+</details>
 
-`ENHANCD_DIR`
-
-</td><td>
-
-The ENHANCD_DIR variable is a base directory path.
-
-It defaults to `~/.enhancd`.
-
-</td></tr>
-
-<tr><td>
-
-`ENHANCD_FILTER`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_FILTER</code></strong></summary>
 
 1. What is ENHANCD_FILTER?
 
@@ -379,13 +413,10 @@ It defaults to `~/.enhancd`.
    /usr/local/bin/peco:fzf:non-existing-filter
    ```
 
-</td></tr>
+</details>
 
-<tr><td>
-
-`ENHANCD_COMMAND`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_COMMAND</code></strong></summary>
 
 The ENHANCD_COMMAND environment variable is to change the command name of enhancd `cd`. It defaults to `cd`.
 
@@ -406,40 +437,38 @@ Besides putting a setting such as this one in your `~/.bash_profile` or `.zshenv
 ENHANCD_COMMAND=ecd; export ENHANCD_COMMAND
 ```
 
-</td></tr>
-<tr><td>
+</details>
 
-`ENHANCD_DISABLE_DOT`
+<details>
+<summary><strong><code>ENHANCD_DISABLE_DOT</code></strong></summary>
 
-</td><td>
+If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Defaults to 0 (enable).
 
-If you don't want to use the interactive filter, when specifing a double dot (`..`), you should set not zero value to `$ENHANCD_DISABLE_DOT`. Defaults to 0.
+</details>
 
-</td></tr>
+<details>
+<summary><strong><code>ENHANCD_DISABLE_DOT_CURRENT</code></strong></summary>
 
-<tr><td>
+If you don't want a feature to find sub directories in cwd, when specifing a single dot (`.`), you should set not zero value to `$ENHANCD_DISABLE_DOT_CURRENT`. Defaults to 0 (enable).
 
-`ENHANCD_DISABLE_HYPHEN`
+</details>
 
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_DISABLE_HYPHEN</code></strong></summary>
 
-This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0.
+This option is similar to `ENHANCD_DISABLE_DOT`. Defaults to 0 (enable).
 
-</td></tr>
-<tr><td>
+</details>
 
-`ENHANCD_DISABLE_HOME`
+<details>
+<summary><strong><code>ENHANCD_DISABLE_HOME</code></strong></summary>
 
-</td><td>
+If you don't want to use the interactive filter when you call `cd` without an argument, you can set any value but `0` for `$ENHANCD_DISABLE_HOME`. Defaults to 0 (enable).
 
-If you don't want to use the interactive filter when you call `cd` without an argument, you can set any value but `0` for `$ENHANCD_DISABLE_HOME`. Defaults to `0`.
+</details>
 
-</td></tr>
-<tr><td>
-
-`ENHANCD_DOT_ARG`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_DOT_ARG</code></strong></summary>
 
 You can customize the double-dot (`..`) argument for enhancd by this environment variable.
 Default is `..`.
@@ -449,13 +478,10 @@ Then `cd ..` changes current directory to parent directory without interactive f
 
 In other words, you can keep original `cd ..` behavior by this option.
 
-</td></tr>
+</details>
 
-<tr><td>
-
-`ENHANCD_HYPHEN_ARG`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_HYPHEN_ARG</code></strong></summary>
 
 You can customize the hyphen (`-`) argument for enhancd by this environment variable.
 Default is `-`.
@@ -465,26 +491,20 @@ Then `cd -` changes current directory to `$OLDPWD` without interactive filter.
 
 In other words, you can keep original `cd -` behavior by this option.
 
-</td></tr>
+</details>
 
-<tr><td>
-
-`ENHANCD_HYPHEN_NUM`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_HYPHEN_NUM</code></strong></summary>
 
 You can customize the number of rows by "cd -"
 Default is `10`.
 
 This is passed to `head` comand as `-n` option.
 
-</td></tr>
+</details>
 
-<tr><td>
-
-`ENHANCD_HOME_ARG`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_HOME_ARG</code></strong></summary>
 
 You can customize to trigger the argumentless `cd` behavior by giving the string specified by this environment variable as an argument.
 Default is empty string.
@@ -494,37 +514,24 @@ Then `cd` with no argument changes current directory to `$HOME` without interact
 
 In other words, you can keep original behavior of `cd` with no argument by this option.
 
-</td></tr>
+</details>
 
-<tr><td>
-
-`ENHANCD_HOOK_AFTER_CD`
-
-</td><td>
+<details>
+<summary><strong><code>ENHANCD_HOOK_AFTER_CD</code></strong></summary>
 
 Default is empty. You can run any commands after changing directory with enhancd (e.g. `ls`: like `cd && ls`).
 
-</td></tr>
+</details>
 
-<tr>
-<td>
-
-`ENHANCD_COMPLETION_KEYBIND`
-
-</td>
-<td>
+<details>
+<summary><strong><code>ENHANCD_COMPLETION_KEYBIND</code></strong></summary>
 
 Default is <kbd>Tab</kbd> (`^I`). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
 
-</td>
+</details>
 
-</tr>
-<td>
-
-`ENHANCD_COMPLETION_BEHAVIOR`
-
-</td>
-<td>
+<details>
+<summary><strong><code>ENHANCD_COMPLETION_BEHAVIOR</code></strong></summary>
 
 Default is the word of `default` (Regular completion). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
 
@@ -534,62 +541,58 @@ It can be taken following words:
 - list (dir list with `$ENHANCD_FILTER`)
 - history (dir history list with `$ENHANCD_FILTER`)
 
-</td>
-</tr>
+</details>
 
-<tr>
-<td>
-
-`ENHANCD_FILTER_ABBREV`
-
-</td>
-<td>
+<details>
+<summary><strong><code>ENHANCD_FILTER_ABBREV</code></strong></summary>
 
 Set this to `1` to abbreviate the home directory prefix to `~` when performing an interactive search.
 Using the example shown previously, all entries when searching will be shown as follows:
 
 ```console
-$ cd
-  ...
-  ~/src/github.com/b4b4r07/enhancd/zsh
-  ~/src/github.com/b4b4r07/gotcha
-  ~/src/github.com/b4b4r07/blog/public
-  ~/src/github.com/b4b4r07/blog
-  ~/src/github.com/b4b4r07/link_test
-  ~/src/github.com/b4b4r07
-  ~/Dropbox/etc/dotfiles
-  ~/src/github.com/b4b4r07/enhancd
-> ~
-  247/247
-> _
+$ cd -
+❯ _
+  10/10
+  ~/src
+> ~/src/github.com/b4b4r07/enhancd/src
+  ~/enhancd
+  ~/src/github.com/b4b4r07/dotfiles
+  ~/src/github.com/b4b4r07/dotfiles/.config/nvim/lua/plugins
+  ~/src/github.com/b4b4r07/enhancd/functions/enhancd/lib
+  ~/src/github.com/b4b4r07/tmux-git-prompt
+  ~/.tmux/plugins/tmux-git-prompt
+  ~/.tmux/plugins/tmux-colors-solarized
+  ~/.afx/github.com/b4b4r07
 ```
 
 Default is 0 (disable).
 
-</td>
-</tr>
-</table>
+</details>
 
-## Uknown issues
+## Known issues
+
+**Enhancd complete (fish)**:
+
+On fish shell, you can use <kbd>alt+f</kbd> to trigger `enhancd` when typing a command, the selected item will be appended to the commandline
 
 - Fish version
   - Because of how fish piping works, it's not possible to pipe to cd like : `ls / | cd`
 
 ## References
 
-The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX.
+The "visual filter" (interactive filter) is what is called "Interactive Grep Tool" according to [percol](https://github.com/mooz/percol) that is a pioneer in interactive selection to the traditional pipe concept on UNIX. Some candidates of an interactive filter are listed on here.
 
-Interactive filter | Stars | Activity | Language
+Name | Stars | Language | Activity
 ---|---|---|---
-[junegunn/fzf][fzf-link]              | ![][fzf-star] | ![][fzf-last] | ![][fzf-lang]
-[mooz/percol][percol-link]            | ![][percol-star] | ![][percol-last] | ![][percol-lang]
-[peco/peco][peco-link]                | ![][peco-star] | ![][peco-last] | ![][peco-lang]
-[jhawthorn/fzy][fzy-link]             | ![][fzy-star] | ![][fzy-last] | ![][fzy-lang]
-[mattn/gof][gof-link]                 | ![][gof-star] | ![][gof-last] | ![][gof-lang]
-[garybernhardt/selecta][selecta-link] | ![][selecta-star] | ![][selecta-last] | ![][selecta-lang]
-[mptre/pick][pick-link]               | ![][pick-star] | ![][pick-last] | ![][pick-lang]
-[lotabout/skim][skim-link]            | ![][skim-star] | ![][skim-last] | ![][skim-lang]
-[natecraddock/zf][zf-link]            | ![][zf-star] | ![][zf-last] | ![][zf-lang]
+[junegunn/fzf][fzf-link]              | ![][fzf-star]     | ![][fzf-lang]     | ![][fzf-last]    
+[mooz/percol][percol-link]            | ![][percol-star]  | ![][percol-lang]  | ![][percol-last] 
+[peco/peco][peco-link]                | ![][peco-star]    | ![][peco-lang]    | ![][peco-last]   
+[jhawthorn/fzy][fzy-link]             | ![][fzy-star]     | ![][fzy-lang]     | ![][fzy-last]    
+[mattn/gof][gof-link]                 | ![][gof-star]     | ![][gof-lang]     | ![][gof-last]    
+[garybernhardt/selecta][selecta-link] | ![][selecta-star] | ![][selecta-lang] | ![][selecta-last]
+[mptre/pick][pick-link]               | ![][pick-star]    | ![][pick-lang]    | ![][pick-last]   
+[lotabout/skim][skim-link]            | ![][skim-star]    | ![][skim-lang]    | ![][skim-last]   
+[natecraddock/zf][zf-link]            | ![][zf-star]      | ![][zf-lang]      | ![][zf-last]     
 
 [fzf-link]: https://github.com/junegunn/fzf
 [fzf-star]: https://img.shields.io/github/stars/junegunn/fzf
@@ -638,18 +641,18 @@ Interactive filter | Stars | Activity | Language
 
 ## Versus
 
-Similar projects are below:
+Similar projects.
 
 (But the basic concept of `enhancd` is totally different from jump tool)
 
-- https://github.com/wting/autojump
-- https://github.com/gsamokovarov/jump
-- https://github.com/rupa/z
-- https://github.com/skywind3000/z.lua
-- https://github.com/ajeetdsouza/zoxide
-- https://github.com/changyuheng/zsh-interactive-cd
-- https://github.com/clvv/fasd (archived)
+- [wting/autojump](https://github.com/wting/autojump)
+- [gsamokovarov/jump](https://github.com/gsamokovarov/jump)
+- [rupa/z](https://github.com/rupa/z)
+- [skywind3000/z.lua](https://github.com/skywind3000/z.lua)
+- [ajeetdsouza/zoxide](https://github.com/ajeetdsouza/zoxide)
+- [changyuheng/zsh-interactive-cd](https://github.com/changyuheng/zsh-interactive-cd)
+- [clvv/fasd](https://github.com/clvv/fasd) (archived)
 
 ## License
 
-[MIT][license-link] :copyright:
+[MIT][license-link]
