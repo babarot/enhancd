@@ -76,19 +76,34 @@ __enhancd::cd()
         if __enhancd::helper::is_default_flag "${1}"; then
           opts+=( "${1}" )
         else
-          local opt="${1}" arg="${2}" func
-          func="$(__enhancd::ltsv::get "${opt}" "func")"
+          local opt="${1}"
+          local func cond format
           cond="$(__enhancd::ltsv::get "${opt}" "condition")"
+          func="$(__enhancd::ltsv::get "${opt}" "func")"
+          format="$(__enhancd::ltsv::get "${opt}" "format")"
           if ! __enhancd::command::run "${cond}" &>/dev/null; then
-            echo "${opt}: defined but require '${cond}'" >&2
+            echo "${opt}: does not meet '${cond}'" >&2
             return 1
           fi
           if [[ -z ${func} ]]; then
-            echo "${opt}: no such option" >&2
+            echo "${opt}: 'func' label is required" >&2
             return 1
           fi
-          args+=( "$(__enhancd::command::run "${func}" "${arg}" | __enhancd::filter::interactive)" )
-          code=${?}
+          if [[ ${format//\%/} == ${format} ]]; then
+            echo "${opt}: 'format' label needs to include '%' (selected line)" >&2
+            return 1
+          fi
+          local selected
+          if [[ -z ${format} ]]; then
+            selected="$(__enhancd::command::run "${func}" | __enhancd::filter::interactive)"
+            code=${?}
+          else
+            # format is maybe including $HOME etc. need magic line of 'eval printf' to expand that.
+            selected="$(__enhancd::command::run "${func}" | __enhancd::filter::interactive | xargs -I% echo $(eval printf "%s" "${format}"))"
+            code=${?}
+          fi
+          args+=( "${selected}" )
+          break
         fi
         ;;
       *)

@@ -10,6 +10,8 @@ BEGIN {
 
 # Skip commented line starting with # or //
 /^(#|\/\/)/ { next }
+# Skip empty line
+/^ *$/ { next }
 
 {
     condition = ltsv("condition")
