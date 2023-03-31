@@ -22,7 +22,7 @@ function __enhancd_install --on-event enhancd_install
 
     set -Ux ENHANCD_COMPLETION_KEYBIND "^I"
 
-    set -Ux _ENHANCD_VERSION "2.4.0"
+    set -Ux _ENHANCD_VERSION (command cat "$root/VERSION")
 
     # Set the filters if empty
     set -Ux ENHANCD_FILTER "fzy:fzf:peco:sk:zf"
