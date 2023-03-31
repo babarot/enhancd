@@ -22,7 +22,7 @@ function enhancd
                 _enhancd_ltsv_open \
                   | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/help.awk"
 
-            case "$ENHANCD_HYPHEN_ARG"
+            case "$ENHANCD_ARG_HYPHEN"
                 # If a hyphen is passed as the argument,
                 # searchs from the last 10 directory items in the log
                 set -a args (_enhancd_source_mru "$argv[2]" | _enhancd_filter_interactive)
@@ -31,7 +31,7 @@ function enhancd
             case '-'
                 set -a args "$OLDPWD"
 
-            case "$ENHANCD_DOT_ARG"
+            case "$ENHANCD_ARG_DOUBLE_DOT"
                 set -a args (_enhancd_source_parent_dirs "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
 

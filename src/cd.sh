@@ -20,7 +20,7 @@ __enhancd::cd()
         __enhancd::ltsv::open | __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/help.awk"
         return ${?}
         ;;
-      "${ENHANCD_HYPHEN_ARG}")
+      "${ENHANCD_ARG_HYPHEN}")
         # If a hyphen is passed as the argument,
         # searchs from the last 10 directory items in the log
         args+=( "$(__enhancd::sources::mru | __enhancd::filter::interactive)" )
@@ -28,12 +28,12 @@ __enhancd::cd()
         break
         ;;
       "-")
-        # When $ENHANCD_HYPHEN_ARG is configured,
+        # When $ENHANCD_ARG_HYPHEN is configured,
         # this behaves like `cd -`
         args+=( "${OLDPWD}" )
         break
         ;;
-      "${ENHANCD_DOT_ARG}")
+      "${ENHANCD_ARG_DOUBLE_DOT}")
         # If a double-dot is passed as the argument,
         # it behaves like a zsh-bd plugin
         # In short, you can jump back to a specific directory,
@@ -43,12 +43,12 @@ __enhancd::cd()
         break
         ;;
       "..")
-        # When $ENHANCD_DOT_ARG is configured,
+        # When $ENHANCD_ARG_DOUBLE_DOT is configured,
         # ".." is passed to builtin cd
         args+=( ".." )
         break
         ;;
-      "${ENHANCD_HOME_ARG}")
+      "${ENHANCD_ARG_HOME}")
         args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
         code=${?}
         break

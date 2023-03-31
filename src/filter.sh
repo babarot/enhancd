@@ -56,7 +56,7 @@ __enhancd::filter::interactive()
   local filter
   filter="$(__enhancd::helper::parse_filter_string "${ENHANCD_FILTER}")"
 
-  if [[ ${ENHANCD_FILTER_ABBREV} == 1 ]]; then
+  if ${ENHANCD_USE_ABBREV}; then
     filter="__enhancd::filter::replace ${HOME} \~ | ${filter} | __enhancd::filter::replace \~ ${HOME}"
   fi
 
@@ -73,7 +73,7 @@ __enhancd::filter::interactive()
       ;;
     *)
       local selected
-      selected="$(echo "${stdin}" | eval ${filter})"
+      selected="$(echo "${stdin}" | eval "${filter}")"
       if [[ -z ${selected} ]]; then
         return 0
       fi
