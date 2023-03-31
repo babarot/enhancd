@@ -40,3 +40,5 @@
 	vPrefix = true
 	releaseBranch = master
 	versionFile = VERSION
+  majorLabels = release/major
+  minorLabels = release/minor
