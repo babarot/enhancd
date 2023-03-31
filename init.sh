@@ -18,8 +18,6 @@ export ENHANCD_COMPLETION_DEFAULT
 export ENHANCD_COMPLETION_KEYBIND="${ENHANCD_COMPLETION_KEYBIND:-^I}"
 export ENHANCD_COMPLETION_BEHAVIOR="${ENHANCD_COMPLETION_BEHAVIOR:-default}"
 
-export _ENHANCD_VERSION="2.4.0"
-
 if [[ -n ${BASH_VERSION} ]]; then
   # BASH
   ENHANCD_ROOT="$(builtin cd "$(command dirname "${BASH_SOURCE}")" && pwd)"
@@ -28,6 +26,8 @@ elif [[ -n ${ZSH_VERSION} ]]; then
   ENHANCD_ROOT="${${(%):-%x}:A:h}"
   compdef _cd __enhancd::cd
 fi
+
+export _ENHANCD_VERSION="$(command cat "${ENHANCD_ROOT}/VERSION" 2>/dev/null)"
 
 # core files
 for src in ${ENHANCD_ROOT}/src/*.sh
