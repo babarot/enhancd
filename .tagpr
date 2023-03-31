@@ -39,4 +39,4 @@
 [tagpr]
 	vPrefix = true
 	releaseBranch = master
-	versionFile = -
+	versionFile = VERSION
