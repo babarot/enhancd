@@ -27,7 +27,7 @@ elif [[ -n ${ZSH_VERSION} ]]; then
   compdef _cd __enhancd::cd
 fi
 
-export _ENHANCD_VERSION="$(cat "${ENHANCD_ROOT}/VERSION" 2>/dev/null)"
+export _ENHANCD_VERSION="$(command cat "${ENHANCD_ROOT}/VERSION" 2>/dev/null)"
 
 # core files
 for src in ${ENHANCD_ROOT}/src/*.sh
