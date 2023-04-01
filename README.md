@@ -449,15 +449,14 @@ ref: [Double-dot (`..`)](#double-dot-)
 </details>
 
 <details>
-<summary><strong><code>ENHANCD_ENABLE_SINGLE_DOT</code></strong> <sup>(bash/zsh)</sup> </summary>
+<summary><strong><code>ENHANCD_ENABLE_SINGLE_DOT</code></strong></summary>
 
 Enable to list sub directories in the current directory when `.` is given. Defaults to `true`.
 
 ref: [Single-dot (`.`)](#single-dot-)
 
 > **Note**
->
-> This is not implemented in Fish. [#188](https://github.com/b4b4r07/enhancd/pull/188)
+> Added in [#188](https://github.com/b4b4r07/enhancd/pull/188) [#198](https://github.com/b4b4r07/enhancd/pull/198)
 
 </details>
 
@@ -487,6 +486,14 @@ If you set this variable any but `..`, it gives you the _double-dot_ behavior wi
 Then `cd ..` changes current directory to parent directory without interactive filter.
 
 In other words, you can keep original `cd ..` behavior by this option.
+
+</details>
+
+<details>
+<summary><strong><code>ENHANCD_ARG_SINGLE_DOT</code></strong></summary>
+
+You can customize the single-dot (`.`) argument for enhancd by this environment variable.
+Default is `.`.
 
 </details>
 

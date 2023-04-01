@@ -25,18 +25,25 @@ function enhancd
             case "$ENHANCD_ARG_HYPHEN"
                 # If a hyphen is passed as the argument,
                 # searchs from the last 10 directory items in the log
-                set -a args (_enhancd_source_mru "$argv[2]" | _enhancd_filter_interactive)
+                set -a args (_enhancd_source_mru | _enhancd_filter_interactive)
                 set code $status
 
             case '-'
                 set -a args "$OLDPWD"
 
             case "$ENHANCD_ARG_DOUBLE_DOT"
-                set -a args (_enhancd_source_parent_dirs "$argv[2]" | _enhancd_filter_interactive)
+                set -a args (_enhancd_source_parent_dirs | _enhancd_filter_interactive)
                 set code $status
 
             case '..'
                 set -a args ".."
+
+            case "$ENHANCD_ARG_SINGLE_DOT"
+                set -a args (_enhancd_sources_current_dirs | _enhancd_filter_interactive)
+                set code $status
+
+            case '.'
+                set -a args "."
 
             case "$ENHANCED_HOME_ARG"
                 set -a args (_enhancd_source_home | _enhancd_filter_interactive)

@@ -6,10 +6,12 @@ function __enhancd_install --on-event enhancd_install
     set -Ux ENHANCD_COMMAND "cd"
 
     set -Ux ENHANCD_ENABLE_DOUBLE_DOT true
+    set -Ux ENHANCD_ENABLE_SINGLE_DOT true
     set -Ux ENHANCD_ENABLE_HYPHEN true
     set -Ux ENHANCD_ENABLE_HOME true
 
     set -Ux ENHANCD_ARG_DOUBLE_DOT ".."
+    set -Ux ENHANCD_ARG_SINGLE_DOT "."
     set -Ux ENHANCD_ARG_HYPHEN "-"
     set -Ux ENHANCD_ARG_HOME ""
     set -Ux ENHANCD_HYPHEN_NUM 10
@@ -44,9 +46,11 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_ROOT
     set --erase ENHANCD_DIR
     set --erase ENHANCD_ENABLE_DOUBLE_DOT
+    set --erase ENHANCD_ENABLE_SINGLE_DOT
     set --erase ENHANCD_ENABLE_HYPHEN
     set --erase ENHANCD_ENABLE_HOME
     set --erase ENHANCD_ARG_DOUBLE_DOT
+    set --erase ENHANCD_ARG_SINGLE_DOT
     set --erase ENHANCD_ARG_HYPHEN
     set --erase ENHANCD_HYPHEN_NUM
     set --erase ENHANCD_ARG_HOME
