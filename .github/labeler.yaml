@@ -1,10 +1,14 @@
+# Rules for labeling
+
 area/bash:
-  - '**/*.sh'
-  - '**/*.bash'
+- '**/*.sh'
+- '**/*.bash'
 
 area/zsh:
-  - '**/*.sh'
-  - '**/*.zsh'
+- '**/*.zsh'
 
 area/fish:
-  - '**/*.fish'
+- '**/*.fish'
+
+area/awk:
+- '**/*.awk'
