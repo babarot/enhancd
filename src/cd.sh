@@ -10,7 +10,8 @@ __enhancd::cd()
 
   # Read from standard input
   if [[ -p /dev/stdin ]]; then
-    args+=( "$(command cat <&0)" )
+    # only zsh
+    args+=( "$(command cat <&0 | __enhancd::filter::interactive)" )
   fi
 
   while (( ${#} > 0 ))

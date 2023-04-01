@@ -49,6 +49,7 @@ Features:
   * [Hyphen (`-`)](#hyphen--)
   * [Double-dot (`..`)](#double-dot-)
   * [Single-dot (`.`)](#single-dot-)
+  * [Piping](#piping)
 * [Options](#options)
 * [Installation](#installation)
   * [Manual](#manual)
@@ -67,7 +68,7 @@ Features:
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229218449-8725c080-38ff-4c32-ba40-926fe7a09303.gif">
   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229218456-a8671129-3e73-4952-a876-fe8419f23d23.gif">
-  <img alt="https://user-images.githubusercontent.com/4442708/229218449-8725c080-38ff-4c32-ba40-926fe7a09303.gif" src="">
+  <img alt="" src="https://user-images.githubusercontent.com/4442708/229218449-8725c080-38ff-4c32-ba40-926fe7a09303.gif">
 </picture>
 
 Trying enhancd on the current shell, you need to run this command:
@@ -96,12 +97,12 @@ $ cd [-|..|.] <dir>
 
 Argument | Behavior
 ---|---
- (none) | List all directories visited in the past. The `HOME` is always shown at a top of the list as builtin `cd` does. <br> <img width="500" alt="no-arg" src="https://user-images.githubusercontent.com/4442708/228423384-6bb527f1-e6f3-442a-9a04-3da50a46de76.png">
-`<dir>` (exists in cwd) | Go to `dir` without the filter command (same as builtin `cd`) <br> <img width="500" alt="exist" src="https://user-images.githubusercontent.com/4442708/228421666-1a7f1cad-7e8d-4111-9e8e-04f215835d9f.png">
-`<dir>` (not exists in cwd) | Find directories matched with `dir` or being similar to `dir` and then pass them to the filter command. A directory named "afx" is not in the current directory but enhancd `cd` can show where to go from the visited log. <br> <img width="500" alt="not-exist" src="https://user-images.githubusercontent.com/4442708/228421661-e66e4ae5-fa0d-4dfc-a235-d914e249810c.png">
-`-` | List latest 10 directories <br> <img width="500" alt="hyphen" src="https://user-images.githubusercontent.com/4442708/228717962-40189613-3d0f-4b21-a84c-81f5d6b429d5.png">
-`..` | List all parent directories of cwd <br> <img width="500" alt="double-dot" src="https://user-images.githubusercontent.com/4442708/228717954-58681d3e-0797-4328-bc3a-ae4da4f1abdb.png">
-`.` | List all sub directories in cwd <br> <img width="500" alt="single-dot" src="https://user-images.githubusercontent.com/4442708/228717947-097e408b-10e8-4db2-9998-ee676fbf072a.png">
+ (none) | List all directories visited in the past. The `HOME` is always shown at a top of the list as builtin `cd` does. <br> <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298754-9dcd8e18-5777-4b23-bdcf-1aa4e06ac92b.png">
+`<dir>` (exists in cwd) | Go to `dir` without the filter command (same as builtin `cd`) <br> <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298751-ed509919-4ebc-4b59-90d9-bb7792aa9fd0.png">
+`<dir>` (not exists in cwd) | Find directories matched with `dir` or being similar to `dir` and then pass them to the filter command. A directory named "afx" is not in the current directory but enhancd `cd` can show where to go from the visited log. <br> <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298749-ec8c0bca-100f-4b8a-9d21-510ce1666831.png">
+`-` | List latest 10 directories <br> <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298748-ad6380ff-4498-4b30-9f8a-46b792ca4669.png">
+`..` | List all parent directories of cwd <br> <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298747-039a2d06-2e1a-4b27-b009-e78a9c74c6ea.png">
+`.` | List all sub directories in cwd <br> <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298744-b6f8cab1-654b-4197-855b-9f1d84c4c933.png">
 
 ### Hyphen (`-`)
 
@@ -159,6 +160,22 @@ This would be very useful to find a directory you want to visit within current d
 
 To disable this feature, set `ENHANCD_ENABLE_SINGLE_DOT` to `false`.
 
+### Piping
+
+:bulb: Zsh only.
+
+enhancd allows you to pass one or multiple directory paths to cd commands like this:
+
+```conosle
+$ (paths) | cd
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229297681-f6c4404d-ebb9-463e-81b1-d80408abd1ba.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229297676-2ddd4593-9ac6-4933-96fc-a2b0801179e6.gif">
+  <img alt="" src="https://user-images.githubusercontent.com/4442708/229297681-f6c4404d-ebb9-463e-81b1-d80408abd1ba.gif" width="600">
+</picture>
+
 ## Options
 
 ```console
@@ -191,7 +208,7 @@ desc | a description for the option
 func | a command which returns directory list (e.g. `ghq list --full-path`)
 condition | a command which determine that the option should be implemented or not (e.g. `which ghq`)
 
-<img width="600" alt="ghq-soruce" src="https://user-images.githubusercontent.com/4442708/228717958-c0535b20-404f-4e21-aa69-efb5c31ed30d.png">
+<img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298741-236f2920-cde2-4184-9fd3-72849af7a223.png">
 
 enhancd loads these `config.ltsv` files located in:
 
