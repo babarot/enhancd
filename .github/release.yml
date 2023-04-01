@@ -12,6 +12,9 @@ changelog:
     - title: Bug fixes
       labels:
         - kind/bug
+    - title: Refactorings
+      labels:
+        - kind/cleanup
     - title: Others
       labels:
         - "*"

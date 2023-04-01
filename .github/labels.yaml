@@ -36,7 +36,7 @@
   color: cccccc
 
 # triage/ - The state of an issue being triaged
-- name: triage/needs
+- name: triage/waiting
   description: Needs to be placed into a milestone, or be closed by maintainers
   color: f58442
 - name: triage/blocked
@@ -76,13 +76,16 @@
   description: Labeled by GitHub actions after 30 days of inactivity
   color: f3f5da
 - name: lifecycle/rotten
-  description: >
-    Labeled by GitHub actions after 30 days of having the lifecycle/stale label.
+  description: >- # join lines with spaces (>) and remove last newline (-)
+    Labeled by GitHub actions after 30 days of having the 'lifecycle/stale' label.
     Issues and PRs with this label will close after another 30 days of inactivity.
   color: f3f5da
 - name: lifecycle/frozen
-  description: Prevents GitHub actions from labeling Issues and PRs with lifecycle/stale or lifecycle/rotten
+  description: Prevents GitHub actions from labeling Issues and PRs with 'lifecycle/stale' or 'lifecycle/rotten'.
+  color: f3f5da
+- name: lifecycle/todo
+  description: Denote issues or PRs that the maintainer has determined to be willing to work on
   color: f3f5da
 - name: lifecycle/wont-do
-  description: For issues and PRs the community has determined are not a priority and will not execute against
+  description: Denote issues or PRs that the maintainer has determined to be willing not to execute against
   color: f3f5da
