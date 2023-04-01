@@ -35,6 +35,14 @@
   description: Catch all for changes in awk files
   color: cccccc
 
+# missing/ - The area of missing files with according to edited files against
+- name: missing/bash
+  description: Denotes a PR that needs to include changes against missing area
+  color: f772ec
+- name: missing/fish
+  description: Denotes a PR that needs to include changes against missing area
+  color: f772ec
+
 # triage/ - The state of an issue being triaged
 - name: triage/waiting
   description: Needs to be placed into a milestone, or be closed by maintainers
@@ -77,7 +85,7 @@
   color: f3f5da
 - name: lifecycle/rotten
   description: >- # join lines with spaces (>) and remove last newline (-)
-    Labeled by GitHub actions after 30 days of having the 'lifecycle/stale' label.
+    Labeled by GitHub actions after 30 days of having 'lifecycle/stale' label.
     Issues and PRs with this label will close after another 30 days of inactivity.
   color: f3f5da
 - name: lifecycle/frozen

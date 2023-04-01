@@ -1,14 +1,21 @@
 # Rules for labeling
 
+# Add area label against edited files
 area/bash:
 - '**/*.sh'
 - '**/*.bash'
-
 area/zsh:
 - '**/*.zsh'
-
 area/fish:
 - '**/*.fish'
-
 area/awk:
 - '**/*.awk'
+
+# Add 'missing/bash` label to any change to `src/*.sh` files as long as the `*.fish` files hasn't changed
+missing/bash:
+- any: ['functions/*.fish']
+  all: ['!src/*']
+# Opposite rule for above
+missing/fish:
+- any: ['src/*']
+  all: ['!functions/*.fish']
