@@ -1,3 +1,6 @@
+#
+# colors: https://flatuicolors.com/
+#
 # kind/ - The type of issue
 - name: kind/bug
   description: A bug; unintended behavior
@@ -38,10 +41,10 @@
 # missing/ - The area of missing files with according to edited files against
 - name: missing/bash
   description: Denotes a PR that needs to include changes against missing area
-  color: f772ec
+  color: fd79a8
 - name: missing/fish
   description: Denotes a PR that needs to include changes against missing area
-  color: f772ec
+  color: fd79a8
 
 # triage/ - The state of an issue being triaged
 - name: triage/waiting
@@ -60,13 +63,13 @@
 # release/
 - name: release/major
   description: Indicates major version to bump up next
-  color: 2cb320
+  color: 1dd1a1
 - name: release/minor
   description: Indicates minor version to bump up next
-  color: 2cb320
+  color: 1dd1a1
 - name: release/patch
   description: Indicates patch version to bump up next
-  color: 2cb320
+  color: 1dd1a1
 
 # tagpr
 - name: tagpr
@@ -82,18 +85,18 @@
 # lifecycle/ - Where something is at in it's lifecycle
 - name: lifecycle/stale
   description: Labeled by GitHub actions after 30 days of inactivity
-  color: f3f5da
+  color: feca57
 - name: lifecycle/rotten
   description: >- # join lines with spaces (>) and remove last newline (-)
     Labeled by GitHub actions after 30 days of having 'lifecycle/stale' label.
     Issues and PRs with this label will close after another 30 days of inactivity.
-  color: f3f5da
+  color: feca57
 - name: lifecycle/frozen
   description: Prevents GitHub actions from labeling Issues and PRs with 'lifecycle/stale' or 'lifecycle/rotten'.
-  color: f3f5da
+  color: feca57
 - name: lifecycle/todo
   description: Denote issues or PRs that the maintainer has determined to be willing to work on
-  color: f3f5da
+  color: feca57
 - name: lifecycle/wont-do
   description: Denote issues or PRs that the maintainer has determined to be willing not to execute against
-  color: f3f5da
+  color: feca57
