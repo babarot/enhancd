@@ -512,26 +512,6 @@ Default is empty. You can run any commands after changing directory with enhancd
 </details>
 
 <details>
-<summary><strong><code>ENHANCD_COMPLETION_KEYBIND</code></strong></summary>
-
-Default is <kbd>Tab</kbd> (`^I`). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
-
-</details>
-
-<details>
-<summary><strong><code>ENHANCD_COMPLETION_BEHAVIOR</code></strong></summary>
-
-Default is `default` (Regular completion). See [#90](https://github.com/b4b4r07/enhancd/issues/90).
-
-It can be taken following words:
-
-- `default`
-- `list` (dir list with `$ENHANCD_FILTER`)
-- `history` (dir history list with `$ENHANCD_FILTER`)
-
-</details>
-
-<details>
 <summary><strong><code>ENHANCD_USE_ABBREV</code></strong></summary>
 
 Set this to `true` to abbreviate the home directory prefix to `~` when performing an interactive search.
