@@ -43,13 +43,6 @@ if [[ -d ${ENHANCD_DIR}/sources ]]; then
   done
 fi
 
-if [[ ${SHELL} == *zsh* ]]; then
-  for src in ${ENHANCD_ROOT}/src/*.zsh
-  do
-    source "${src}"
-  done
-fi
-
 # make a log file and a root directory
 if [[ ! -d ${ENHANCD_DIR} ]]; then
   mkdir -p "${ENHANCD_DIR}"
