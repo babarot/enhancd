@@ -1,4 +1,4 @@
-name: tagpr
+name: Tagpr
 on:
   push:
     branches:

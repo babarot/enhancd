@@ -1,0 +1,88 @@
+# kind/ - The type of issue
+- name: kind/bug
+  description: A bug; unintended behavior
+  color: 425df5
+- name: kind/feature
+  description: A feature request; new or enhanced behavior
+  color: 425df5
+- name: kind/support
+  description: Questions, supporting users, etc.
+  color: 425df5
+- name: kind/documentation
+  description: Documentation of enhancd itself
+  color: 425df5
+- name: kind/deprecation
+  description: Related to a feature or part of code being deprecated.
+  color: 425df5
+- name: kind/cleanup
+  description: Categorizes issue or PR as related to cleaning up code, issues, etc.
+  color: 425df5
+- name: kind/breaking-change
+  description: Denotes a PR that introduces potentially breaking changes that require user action.
+  color: 425df5
+
+# area/ - The area of work that needs to be executed against
+- name: area/bash
+  description: Catch all for changes in bash files
+  color: cccccc
+- name: area/zsh
+  description: Catch all for changes in zsh files
+  color: cccccc
+- name: area/fish
+  description: Catch all for changes in fish files
+  color: cccccc
+- name: area/awk
+  description: Catch all for changes in awk files
+  color: cccccc
+
+# triage/ - The state of an issue being triaged
+- name: triage/needs
+  description: Needs to be placed into a milestone, or be closed by maintainers
+  color: f58442
+- name: triage/blocked
+  description: Cannot move forward until some roadblock is lifted
+  color: f58442
+- name: triage/needs-info
+  description: An issue that needs more investigation from maintainers or more info from the issue provider
+  color: f58442
+- name: triage/duplicate
+  description: A duplicate issue. These issues are usually closed after receiving this label
+  color: f58442
+
+# release/
+- name: release/major
+  description: Indicates major version to bump up next
+  color: 2cb320
+- name: release/minor
+  description: Indicates minor version to bump up next
+  color: 2cb320
+- name: release/patch
+  description: Indicates patch version to bump up next
+  color: 2cb320
+
+# tagpr
+- name: tagpr
+  description: Used by tagpr for managing the release
+  color: ededed
+- name: tagpr:minor
+  description: Used by tagpr for managing the release
+  color: ededed
+- name: tagpr:major
+  description: Used by tagpr for managing the release
+  color: ededed
+
+# lifecycle/ - Where something is at in it's lifecycle
+- name: lifecycle/stale
+  description: Labeled by GitHub actions after 30 days of inactivity
+  color: f3f5da
+- name: lifecycle/rotten
+  description: >
+    Labeled by GitHub actions after 30 days of having the lifecycle/stale label.
+    Issues and PRs with this label will close after another 30 days of inactivity.
+  color: f3f5da
+- name: lifecycle/frozen
+  description: Prevents GitHub actions from labeling Issues and PRs with lifecycle/stale or lifecycle/rotten
+  color: f3f5da
+- name: lifecycle/wont-do
+  description: For issues and PRs the community has determined are not a priority and will not execute against
+  color: f3f5da
