@@ -49,13 +49,19 @@ __enhancd::cd()
         args+=( ".." )
         break
         ;;
-      "${ENHANCD_ARG_HOME}")
-        args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
+      "${ENHANCD_ARG_SINGLE_DOT}")
+        args+=( "$(__enhancd::sources::current_dirs | __enhancd::filter::interactive)" )
         code=${?}
         break
         ;;
       ".")
-        args+=( "$(__enhancd::sources::current_dirs | __enhancd::filter::interactive)" )
+        # When $ENHANCD_ARG_DOUBLE_DOT is configured,
+        # ".." is passed to builtin cd
+        args+=( "." )
+        break
+        ;;
+      "${ENHANCD_ARG_HOME}")
+        args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
         code=${?}
         break
         ;;
