@@ -66,9 +66,9 @@ Features:
 ## Getting Started
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229218449-8725c080-38ff-4c32-ba40-926fe7a09303.gif">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229218456-a8671129-3e73-4952-a876-fe8419f23d23.gif">
-  <img alt="" src="https://user-images.githubusercontent.com/4442708/229218449-8725c080-38ff-4c32-ba40-926fe7a09303.gif">
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229307417-50cf53de-594f-4a19-8547-9820d3af2f1c.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229307415-32cb36ee-491d-47c5-b852-e94d802e9584.gif">
+  <img alt="demo" src="https://user-images.githubusercontent.com/4442708/229307417-50cf53de-594f-4a19-8547-9820d3af2f1c.gif">
 </picture>
 
 Trying enhancd on the current shell, you need to run this command:

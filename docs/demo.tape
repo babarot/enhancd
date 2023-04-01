@@ -43,7 +43,8 @@ Type@200ms "afx" Sleep 1s Enter
 
 # Second
 Sleep 1s
-Type@30ms "echo $ENHANCD_FILTER" Sleep 1s Enter
+Type@30ms "echo $ENHANCD_FILTER" Sleep 1s Enter Sleep 1
+Type "# Let's raise the priority of using fzf" Sleep 1s Ctrl+C
 Type@30ms "export ENHANCD_FILTER=fzf:$ENHANCD_FILTER" Sleep 1s Enter
 Type "cd" Sleep 1s Enter
 Sleep 1s
