@@ -73,11 +73,17 @@ __enhancd::filter::interactive()
       ;;
     *)
       local selected
-      selected="$(echo "${stdin}" | eval "${filter}")"
-      if [[ -z ${selected} ]]; then
-        return 0
-      fi
-      echo "${selected}"
+      local -a lines
+      lines=( ${stdin} )
+      while (( ${#lines[@]} > 1 ))
+      do
+        selected="$(printf "%s\n" "${lines[@]}" | eval "${filter}")"
+        if [[ -z ${selected} ]]; then
+          return 0
+        fi
+        lines=( ${selected} )
+      done
+      echo "${lines[@]}"
       ;;
   esac
 }
