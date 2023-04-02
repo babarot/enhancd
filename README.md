@@ -171,9 +171,9 @@ $ (paths) | cd
 ```
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229297681-f6c4404d-ebb9-463e-81b1-d80408abd1ba.gif">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229297676-2ddd4593-9ac6-4933-96fc-a2b0801179e6.gif">
-  <img alt="" src="https://user-images.githubusercontent.com/4442708/229297681-f6c4404d-ebb9-463e-81b1-d80408abd1ba.gif" width="600">
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229368007-071958e1-77a6-4fd1-b371-535d1dac46f6.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229368002-dd1c0c4c-6b53-4908-8b88-e00dc4e884ff.gif">
+  <img alt="piping" src="https://user-images.githubusercontent.com/4442708/229368007-071958e1-77a6-4fd1-b371-535d1dac46f6.gif" width="600">
 </picture>
 
 ## Options
@@ -208,7 +208,13 @@ desc | a description for the option
 func | a command which returns directory list (e.g. `ghq list --full-path`)
 condition | a command which determine that the option should be implemented or not (e.g. `which ghq`)
 
-<img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298741-236f2920-cde2-4184-9fd3-72849af7a223.png">
+<!-- <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298741-236f2920-cde2-4184-9fd3-72849af7a223.png"> -->
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/4442708/229365175-aecfe844-cbd7-4ee2-87a6-ea8471ac9b6f.gif">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/4442708/229365177-6c8d6056-9ba3-4f22-ba28-48f3991f9f98.gif">
+  <img alt="options" src="https://user-images.githubusercontent.com/4442708/229365175-aecfe844-cbd7-4ee2-87a6-ea8471ac9b6f.gif" width="600">
+</picture>
 
 enhancd loads these `config.ltsv` files located in:
 
