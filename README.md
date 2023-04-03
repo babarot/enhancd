@@ -202,11 +202,14 @@ short:-G	long:--ghq	desc:Show ghq path	func:ghq list --full-path	condition:which
 
 Label | Description
 ---|---
-short | a short option (e.g. `-G`)
-long | a long option (e.g. `--ghq`)
+short (`*`) | a short option (e.g. `-G`)
+long (`*`) | a long option (e.g. `--ghq`)
 desc | a description for the option
-func | a command which returns directory list (e.g. `ghq list --full-path`)
+func (`*`) | a command which returns directory list (e.g. `ghq list --full-path`)
 condition | a command which determine that the option should be implemented or not (e.g. `which ghq`)
+format | a string which indicates how to format a line selected by the filter before passing cd command. `%` is replaced as a selected line and then passed to cd command (e.g. `$HOME/src/%`). This is useful for the case that input sources for the interactive filter are not a full-path.
+
+> **Note**: `*`: A required key. But either `short` or `long` is good enough.
 
 <!-- <img width="600" alt="" src="https://user-images.githubusercontent.com/4442708/229298741-236f2920-cde2-4184-9fd3-72849af7a223.png"> -->
 
