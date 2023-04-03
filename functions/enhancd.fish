@@ -59,19 +59,34 @@ function enhancd
                     set -a opts "$argv[1]"
                 else
                     set -l opt "$argv[1]"
-                    set -l arg "$argv[2]"
-                    set -l func
-                    set func (_enhancd_ltsv_get "$opt" "func")
+                    set -l func cond format
                     set cond (_enhancd_ltsv_get "$opt" "condition")
+                    set func (_enhancd_ltsv_get "$opt" "func")
+                    set format (_enhancd_ltsv_get "$opt" "format")
                     if not _enhancd_command_run "$cond"
                         echo "$opt: defined but require '$cond'" >&2
                         return 1
                     end
                     if test -z $func
-                        echo "$opt: no such option" >&2
+                        echo "$opt: 'func' label is required" >&2
                         return 1
                     end
+                    if test -n $format; and not string match --quiet '*%*' $format
+                        echo "$opt: 'format' label needs to include '%' (selected line)" >&2
+                        return 1
+                    fi
                     _enhancd_command_run "$func" "$arg" | _enhancd_filter_interactive
+                    set -l seleted
+                    if test -z $format
+                        set selected (_enhancd_command_run "$func" | _enhancd_filter_interactive)
+                    else
+                        # format is maybe including $HOME etc. need magic line of 'eval printf' to expand that.
+                        set selected (_enhancd_command_run "$func" | _enhancd_filter_interactive | xargs -I% echo (eval printf "%s" "$format"))
+                    end
+                    set code $status
+                    set -a args $selected
+                    break
+
                 end
 
             case '*'
