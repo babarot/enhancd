@@ -1,9 +1,9 @@
 {
-    line[NR] = $0
+  line[NR] = $0
 }
 
 END {
-    for (i = NR; i > 0; i--) {
-        print line[i]
-    }
+  for (i = NR; i > 0; i--) {
+    print line[i]
+  }
 }
