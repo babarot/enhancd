@@ -1,5 +1,16 @@
 # Changelog
 
+## [v2.5.0](https://github.com/b4b4r07/enhancd/compare/v2.4.1...v2.5.0) - 2023-04-03
+### New Features
+- Allow to pipe multiple dirs to cd by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/197
+- Support dot-feature in fish and add `ENHANCD_ARG_SINGLE_DOT` by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/198
+- Add 'format' label to format custom input before passing cd by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/192
+### Refactorings
+- Format awk scripts by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/201
+### Others
+- Remove completion feature from enhancd by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/191
+- Drastically update around GH workflows by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/199
+
 ## [v2.4.1](https://github.com/b4b4r07/enhancd/compare/v2.4.0...v2.4.1) - 2023-03-31
 - Use tagpr workflow to make tag and update version file by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/193
 - Update all environment name by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/195
