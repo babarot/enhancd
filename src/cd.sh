@@ -89,7 +89,7 @@ __enhancd::cd()
             echo "${opt}: 'func' label is required" >&2
             return 1
           fi
-          if [[ ${format//\%/} == ${format} ]]; then
+          if [[ -n ${format} ]] && [[ ${format//\%/} == "${format}" ]]; then
             echo "${opt}: 'format' label needs to include '%' (selected line)" >&2
             return 1
           fi

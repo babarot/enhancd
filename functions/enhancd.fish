@@ -71,7 +71,7 @@ function enhancd
                         echo "$opt: 'func' label is required" >&2
                         return 1
                     end
-                    if not string match --quiet '*%*' $format
+                    if test -n $format; and not string match --quiet '*%*' $format
                         echo "$opt: 'format' label needs to include '%' (selected line)" >&2
                         return 1
                     fi
