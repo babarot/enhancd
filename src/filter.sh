@@ -1,29 +1,15 @@
 __enhancd::filter::exists()
 {
-  skip_dir_existence() {
-    local dir="${1}" path
-    local -a paths
-    # paths=( ${ENHANCD_PATHS_IGNORE_CHECKING_EXIST//:/ } )
-    # for path in $(__enhancd::helper::parse "${ENHANCD_PATHS_IGNORE_CHECKING_EXIST}")
-    # paths=( "$HOME/src/github.com/b4b4r07/enhancd/*" )
-    paths=( "$HOME/src/github.com/b4b4r07/enhancd" )
-    for path in "${paths[@]}"
-    do
-      # if [[ ${dir} == ${path}/* ]]; then
-      set -x
-      if [[ ${dir} == ${path}/* ]]; then
-        return 0
-      fi
-      set +x
-    done
-    return 1
-  }
-
-  local line
-  while read line
+  local path
+  while read path
   do
-    if skip_dir_existence ${line} || [[ -d ${line} ]]; then
-      echo "${line}"
+    if __enhancd::helper::check_included_in_colon_delimited_string "${path}" "${ENHANCD_PATHS_IGNORE_CHECKING_EXIST}"; then
+      # print a path if included in the env regardless of directory existence
+      echo "${path}"; continue
+    fi
+    if [[ -d ${path} ]]; then
+      # print a path if a path exists
+      echo "${path}"; continue
     fi
   done
 }

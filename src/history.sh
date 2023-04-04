@@ -29,6 +29,11 @@ __enhancd::history::list()
 
 __enhancd::history::update()
 {
+  if __enhancd::helper::check_included_in_colon_delimited_string "${PWD}" "${ENHANCD_PATHS_IGNORE_ADDING_HISTORY}"; then
+    # skip update if included in the env
+    return 0
+  fi
+
   {
     __enhancd::history::exists "${PWD}" || __enhancd::filepath::walk
     __enhancd::history::open
