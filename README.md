@@ -1,6 +1,6 @@
-[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg
-[version-link]: https://github.com/b4b4r07/enhancd/tags
-[sponsors-badge]: https://img.shields.io/github/sponsors/b4b4r07?logo=github&color=lightyellow
+[version-badge]: https://img.shields.io/github/release/b4b4r07/enhancd.svg
+[version-link]: https://github.com/b4b4r07/enhancd/releases
+[sponsors-badge]: https://img.shields.io/github/sponsors/b4b4r07?logo=github&color=blueviolet
 [sponsors-link]: https://github.com/sponsors/b4b4r07
 [repostatus-badge]: https://www.repostatus.org/badges/latest/active.svg
 [repostatus-link]: https://www.repostatus.org/#active
