@@ -19,7 +19,7 @@ BEGIN {
     command = sprintf("%s &>/dev/null", condition);
     code = system(command)
     close(command);
-    if (code == 1) { next }
+    if (code != 0) { next }
   }
 
   len++;
