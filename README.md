@@ -222,7 +222,78 @@ enhancd loads these `config.ltsv` files located in:
 2. `$ENHANCD_DIR/config.ltsv`
 3. `$HOME/.config/enhancd/config.ltsv`
 
-Thanks to this feature, it's easy to add your custom option as you hope.
+The real example in my dotfiles is [.config/enhancd/config.ltsv](https://github.com/b4b4r07/dotfiles/blob/main/.config/enhancd/config.ltsv).
+
+Also, here are a few examples:
+
+<table>
+<tr><td align="center" width="50%"> <strong>func</strong> </td><td align="center" width="50%"> <strong>outputs</strong> </td></tr>
+
+<tr>
+<td>
+
+```bash
+fd --type directory --hidden --exclude .git
+--search-path $(git rev-parse --show-toplevel)
+--exec realpath --relative-to=. {}
+```
+
+This command allows you to show the all directories managed by Git.
+
+> **Note** Using `realpath` from GNU coreutils 8.23+
+
+</td>
+<td>
+
+```console
+$ cd --git  # in "functions" dir
+❯ _
+  8/8
+> ../.github
+  ../.github/ISSUE_TEMPLATE
+  ../.github/workflows
+  ../conf.d
+  ../docs
+  ../src
+  enhancd
+  enhancd/lib
+```
+
+All shown paths are resolved relative to the working directory.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```bash
+cat ~/.config/enhancd/*.fav
+| sort | uniq | xargs -I% sh -c 'echo %'
+```
+
+This command allows you to show directories listed on any files. Besides, a tilde variable or environment variables are expanded and shown to the console.
+
+</td>
+<td>
+
+```console
+$ cd -x
+❯ _
+  8/8
+> /Users/babarot/src/github.com/b4b4r07
+  /Users/babarot/.config/afx
+  /Users/babarot/.config/nvim
+  /Users/babarot/src/github.com/...
+  /Users/babarot/src/github.com/...
+```
+
+</td>
+</tr>
+
+</table>
+
+
 
 ## Installation
 
@@ -271,7 +342,7 @@ github:
     env:
       FZF_DEFAULT_COMMAND: fd --type f
       FZF_DEFAULT_OPTS: >
-        --height 75% --multi --reverse --margin=0,1
+        --height 75% --reverse --margin=0,1
         --bind ctrl-f:page-down,ctrl-b:page-up,ctrl-/:toggle-preview
         --bind pgdn:preview-page-down,pgup:preview-page-up
         --marker="✚" --pointer="▶" --prompt="❯ "
