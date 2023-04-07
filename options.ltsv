@@ -1,5 +1,5 @@
 # this is for bash/zsh
-# fish version is ./functions/enhancd/config.ltsv
+# fish version is ./functions/enhancd/options.ltsv
 short:-h	long:--help	desc:Show help message	func:	condition:
 short:-q	long:	desc:(default) quiet, no output or use of hooks	func:	condition:[[ $SHELL == *zsh* ]]
 short:-s	long:	desc:(default) refuse to use paths with symlinks	func:	condition:[[ $SHELL == *zsh* ]]

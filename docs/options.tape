@@ -28,7 +28,7 @@ Sleep 1s
 Sleep 1s
 Type "# You can add new option as you like by editing config file!" Sleep 1s Ctrl+C
 Enter Enter
-Type "vim ~/.config/enhancd/config.ltsv" Sleep 1s Enter
+Type "vim ~/.config/enhancd/options.ltsv" Sleep 1s Enter
 Type "i"
 Type `short:-G	long:--ghq	desc:Show ghq list	func:ghq list --full-path	condition:which ghq` Sleep 1s
 Escape

@@ -192,9 +192,9 @@ OPTIONS:
 Version: 2.3.0
 ```
 
-In enhancd, all options are defined at a configuration file ([config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv)). This mechanism allows you to add what you want as new option or delete unneeded default options. It uses [LTSV](http://ltsv.org/) (Labeled Tab-Separated Values) format.
+In enhancd, all options are defined at a configuration file ([options.ltsv](https://github.com/b4b4r07/enhancd/blob/master/options.ltsv)). This mechanism allows you to add what you want as new option or delete unneeded default options. It uses [LTSV](http://ltsv.org/) (Labeled Tab-Separated Values) format.
 
-For example, let's say you want to use [`ghq list`](https://github.com/x-motemen/ghq) as custom inputs for `cd` command. In this case, all you have to do is just to add this one line to your any `config.ltsv`:
+For example, let's say you want to use [`ghq list`](https://github.com/x-motemen/ghq) as custom inputs for `cd` command. In this case, all you have to do is just to add this one line to your any `options.ltsv`:
 
 ```tsv
 short:-G	long:--ghq	desc:Show ghq path	func:ghq list --full-path	condition:which ghq
@@ -216,13 +216,13 @@ condition | a command which determine that the option should be implemented or n
   <img alt="options" src="https://user-images.githubusercontent.com/4442708/229365175-aecfe844-cbd7-4ee2-87a6-ea8471ac9b6f.gif" width="600">
 </picture>
 
-enhancd loads these `config.ltsv` files located in:
+enhancd loads these `options.ltsv` files located in:
 
-1. `$ENHANCD_ROOT/config.ltsv`
-2. `$ENHANCD_DIR/config.ltsv`
-3. `$HOME/.config/enhancd/config.ltsv`
+1. `$ENHANCD_ROOT/options.ltsv`
+2. `$ENHANCD_DIR/options.ltsv`
+3. `$HOME/.config/enhancd/options.ltsv`
 
-The real example in my dotfiles is [.config/enhancd/config.ltsv](https://github.com/b4b4r07/dotfiles/blob/main/.config/enhancd/config.ltsv).
+The real example in my dotfiles is [.config/enhancd/options.ltsv](https://github.com/b4b4r07/dotfiles/blob/main/.config/enhancd/options.ltsv).
 
 Also, here are a few examples:
 
@@ -483,7 +483,7 @@ $ fisher install b4b4r07/enhancd
 <details>
 <summary><strong><code>ENHANCD_DIR</code></strong></summary>
 
-A directory to have `enhancd.log` and `config.ltsv`. It defaults to `~/.enhancd`.
+A directory to have `enhancd.log` and `options.ltsv`. It defaults to `~/.enhancd`.
 
 </details>
 
