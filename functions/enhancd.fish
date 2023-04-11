@@ -74,9 +74,9 @@ function enhancd
                     if test -n $format; and not string match --quiet '*%*' $format
                         echo "$opt: 'format' label needs to include '%' (selected line)" >&2
                         return 1
-                    fi
+                    end
                     _enhancd_command_run "$func" "$arg" | _enhancd_filter_interactive
-                    set -l seleted
+                    set -l selected
                     if test -z $format
                         set selected (_enhancd_command_run "$func" | _enhancd_filter_interactive)
                     else

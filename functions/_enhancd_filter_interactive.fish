@@ -13,7 +13,7 @@ function _enhancd_filter_interactive
     set -l filter (_enhancd_helper_parse_filter_string "$ENHANCD_FILTER")
     set -l count (echo "$stdin" | _enhancd_command_grep -c "")
 
-    if test $ENHANCD_USE_ABBREV = true
+    if test "$ENHANCD_USE_ABBREV" = true
         function _enhancd_filter_interactive_abbrev
             while read -l line
                 string replace --regex "^$HOME" "~" "$line"
