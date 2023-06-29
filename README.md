@@ -282,7 +282,7 @@ github:
         --color bg+:#262626,fg+:#dadada,hl:#f09479,hl+:#f09479
         --color border:#303030,info:#cfcfb0,header:#80a0ff,spinner:#36c692
         --color prompt:#87afff,pointer:#ff5189,marker:#f09479
-      FZF_CTRL_T_COMMAND: rg --files --hedden --follow --glob "!.git/*"
+      FZF_CTRL_T_COMMAND: rg --files --hidden --follow --glob "!.git/*"
       FZF_CTRL_T_OPTS: --preview "bat --color=always --style=header,grid --line-range :100 {}"
       FZF_ALT_C_COMMAND: fd --type d
       FZF_ALT_C_OPTS: --preview "tree -C {} | head -100"
