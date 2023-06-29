@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.5.2](https://github.com/b4b4r07/enhancd/compare/v2.5.1...v2.5.2) - 2023-06-29
+### Bug fixes
+- Do not quote multiple lines to deal as single line by @b4b4r07 in https://github.com/b4b4r07/enhancd/pull/210
+### Others
+- Update README.md to fix typo in FZF_CTRL_T_COMMAND by @timfee in https://github.com/b4b4r07/enhancd/pull/213
+
 ## [v2.5.1](https://github.com/b4b4r07/enhancd/compare/v2.5.0...v2.5.1) - 2023-04-11
 ### Bug fixes
 - fix fish errors by @peeviddy in https://github.com/b4b4r07/enhancd/pull/204
