@@ -32,10 +32,6 @@ function __enhancd_install --on-event enhancd_install
         mkdir -p "$ENHANCD_DIR"
     end
 
-    if not test -f "$ENHANCD_DIR/enhancd.log"
-        touch "$ENHANCD_DIR/enhancd.log"
-    end
-
     _enhancd_alias
 end
 
@@ -58,7 +54,9 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_COMPLETION_BEHAVIOR
     set --erase ENHANCD_COMPLETION_KEYBIND
     set --erase ENHANCD_FILTER
+    set --erase ENHANCD_CURRENT_FILTER
     set --erase _ENHANCD_VERSION
+    set --erase _ENHANCD_READY
 end
 
 # alias to enhancd
@@ -68,3 +66,12 @@ end
 
 # bindings
 bind \ef '_enhancd_complete'
+
+set -Ux ENHANCD_CURRENT_FILTER (_enhancd_helper_parse_filter_string "$ENHANCD_FILTER")
+
+# Migrate from file based to universal var
+if test -z $ENHANCD_DIRECTORIES; and test -f "$ENHANCD_DIR/enhancd.log"
+    while read -l line
+        set -a ENHANCD_DIRECTORIES "$line"
+    end < "$ENHANCD_DIR/enhancd.log"
+end

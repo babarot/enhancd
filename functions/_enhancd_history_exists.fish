@@ -5,5 +5,5 @@ function _enhancd_history_exists
         set dir $argv[1]
     end
 
-    _enhancd_history_open | _enhancd_command_grep "$dir" ^/dev/null >/dev/null
+    _enhancd_history_open | string match -r -q "$dir" ^/dev/null >/dev/null
 end
