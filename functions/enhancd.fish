@@ -33,7 +33,7 @@ function enhancd
                 set -a args (_enhancd_source_mru | _enhancd_filter_interactive)
                 set code $status
 
-            case '-'
+            case -
                 set -a args "$OLDPWD"
 
             case "$ENHANCD_ARG_SINGLE_DOT"
@@ -47,10 +47,14 @@ function enhancd
                 set -a args (_enhancd_source_home | _enhancd_filter_interactive)
                 set code $status
 
-            case '--'
+            case --
                 set -a opts "$argv[1]"
                 set -a args (_enhancd_source_history "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
+
+            case --help
+                _enhancd_ltsv_open \
+                    | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/help.awk"
 
             case '-*' '--*'
                 if _enhancd_helper_is_default_flag "$argv[1]"
@@ -87,9 +91,6 @@ function enhancd
 
                 end
 
-            case "--help"
-                _enhancd_ltsv_open \
-                  | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/help.awk"
 
             case '*'
                 set -a args (_enhancd_source_history "$argv[1]" | _enhancd_filter_interactive)
@@ -99,13 +100,13 @@ function enhancd
     end
 
     switch $count_argv
-        case '0'
+        case 0
             set -a args (_enhancd_source_home | _enhancd_filter_interactive)
             set code $status
     end
 
     switch "$code"
-        case '0'
+        case 0
             _enhancd_cd_builtin $opts $args
             return $status
         case '*'
