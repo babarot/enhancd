@@ -9,7 +9,7 @@ function _enhancd_filter_interactive
         set --prepend stdin $tmp
     end
 
-    if test -z "$stdin"; or test -p /dev/stdin;
+    if test -z "$stdin"; or test -p /dev/stdin
         read -z stdin
     end
 
