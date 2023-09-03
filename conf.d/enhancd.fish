@@ -41,6 +41,7 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_COMMAND
     set --erase ENHANCD_ROOT
     set --erase ENHANCD_DIR
+    set --erase ENHANCD_DIRECTORIES
     set --erase ENHANCD_ENABLE_DOUBLE_DOT
     set --erase ENHANCD_ENABLE_SINGLE_DOT
     set --erase ENHANCD_ENABLE_HYPHEN
