@@ -24,6 +24,8 @@ function __enhancd_install --on-event enhancd_install
 
     set -Ux _ENHANCD_VERSION (command cat "$root/VERSION")
 
+    set -Ux ENHANCD_DIRECTORIES
+    set -Ux ENHANCD_CURRENT_FILTER
     # Set the filters if empty
     set -Ux ENHANCD_FILTER "fzy:fzf:peco:sk:zf"
 
