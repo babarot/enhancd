@@ -4,7 +4,7 @@ function enhancd
     set -l opts
     set -l code 0
 
-    if test -z $_ENHANCD_READY
+    if test -z "$_ENHANCD_READY"
         _enhancd_cd_ready
         if not set -q argv[1]
             _enhancd_cd_builtin "$HOME"
@@ -14,18 +14,18 @@ function enhancd
         return $status
     end
 
+    if not isatty
+        _enhancd_filter_interactive | read --line args
+    end
+
     # set indice to the first element
     set -l i 1
-    set -l count_argv (count $argv)
 
-    while [ $i -le $count_argv ]
+    while [ $i -le (count $argv) ]
         switch $argv[$i]
-            case "$ENHANCD_ARG_DOUBLE_DOT"
-                set -a args (_enhancd_source_parent_dirs | _enhancd_filter_interactive)
-                set code $status
-
-            case '..'
-                set -a args ".."
+            case --help
+                _enhancd_ltsv_open \
+                    | "$ENHANCD_AWK_CMD" -f "$ENHANCD_ROOT/lib/help.awk"
 
             case "$ENHANCD_ARG_HYPHEN"
                 # If a hyphen is passed as the argument,
@@ -35,6 +35,13 @@ function enhancd
 
             case -
                 set -a args "$OLDPWD"
+
+            case "$ENHANCD_ARG_DOUBLE_DOT"
+                set -a args (_enhancd_source_parent_dirs | _enhancd_filter_interactive)
+                set code $status
+
+            case '..'
+                set -a args ".."
 
             case "$ENHANCD_ARG_SINGLE_DOT"
                 set -a args (_enhancd_sources_current_dirs | _enhancd_filter_interactive)
@@ -51,10 +58,6 @@ function enhancd
                 set -a opts "$argv[1]"
                 set -a args (_enhancd_source_history "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
-
-            case --help
-                _enhancd_ltsv_open \
-                    | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/help.awk"
 
             case '-*' '--*'
                 if _enhancd_helper_is_default_flag "$argv[1]"
@@ -91,7 +94,6 @@ function enhancd
 
                 end
 
-
             case '*'
                 set -a args (_enhancd_source_history "$argv[1]" | _enhancd_filter_interactive)
 
@@ -99,7 +101,7 @@ function enhancd
         set i (math "$i + 1")
     end
 
-    switch $count_argv
+    switch (count $args)
         case 0
             set -a args (_enhancd_source_home | _enhancd_filter_interactive)
             set code $status

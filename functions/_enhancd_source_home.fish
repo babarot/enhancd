@@ -5,8 +5,7 @@ function _enhancd_source_home
     end
 
     begin
-        set -l list (_enhancd_history_list)
-        set -a list "$HOME"
-        echo $list
+        echo "$HOME"
+        _enhancd_history_list
     end | _enhancd_filter_unique
 end

@@ -1,10 +1,8 @@
 function _enhancd_filter_exists
-    read --list --local lines
-    set -l items
-    for line in $lines
+    set -l line
+    while read line
         if test -d "$line"
-            set -a items "$line"
+            echo "$line"
         end
     end
-    echo $items
 end

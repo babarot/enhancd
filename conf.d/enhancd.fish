@@ -27,6 +27,8 @@ function __enhancd_install --on-event enhancd_install
     # Set the filters if empty
     set -Ux ENHANCD_FILTER "fzy:fzf:peco:sk:zf"
 
+    set -Ux ENHANCD_AWK_CMD "awk"
+
     # make a log file and a root directory
     if not test -d "$ENHANCD_DIR"
         mkdir -p "$ENHANCD_DIR"
@@ -41,7 +43,6 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_COMMAND
     set --erase ENHANCD_ROOT
     set --erase ENHANCD_DIR
-    set --erase ENHANCD_DIRECTORIES
     set --erase ENHANCD_ENABLE_DOUBLE_DOT
     set --erase ENHANCD_ENABLE_SINGLE_DOT
     set --erase ENHANCD_ENABLE_HYPHEN
@@ -56,6 +57,8 @@ function __enhancd_uninstall --on-event enhancd_uninstall
     set --erase ENHANCD_COMPLETION_KEYBIND
     set --erase ENHANCD_FILTER
     set --erase ENHANCD_CURRENT_FILTER
+    set --erase ENHANCD_DIRECTORIES
+    set --erase ENHANCD_AWK_CMD
     set --erase _ENHANCD_VERSION
     set --erase _ENHANCD_READY
 end
@@ -69,9 +72,10 @@ end
 bind \ef '_enhancd_complete'
 
 set -Ux ENHANCD_CURRENT_FILTER (_enhancd_helper_parse_filter_string "$ENHANCD_FILTER")
+set -Ux ENHANCD_AWK_CMD (_enhancd_command_awk)
 
 # Migrate from file based to universal var
-if test -z $ENHANCD_DIRECTORIES; and test -f "$ENHANCD_DIR/enhancd.log"
+if test -z "$ENHANCD_DIRECTORIES"; and test -f "$ENHANCD_DIR/enhancd.log"
     while read -l line
         set -a ENHANCD_DIRECTORIES "$line"
     end < "$ENHANCD_DIR/enhancd.log"

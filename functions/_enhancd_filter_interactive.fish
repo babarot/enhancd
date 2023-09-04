@@ -1,54 +1,30 @@
 function _enhancd_filter_interactive
-    read --local --list stdin
-
-    # If input separated by the null character
-    # only the first line has been read in stdin
-    if test (count $stdin) -eq 1
-        set -l tmp $stdin
-        read -z --list stdin
-        set --prepend stdin $tmp
-    end
-
-    if test -z "$stdin"; or test -p /dev/stdin
-        read -z stdin
-    end
-
-    if test -z "$stdin"
-        echo "no entry" >&2
-        return 1
-    end
-
-    set -l count (count $stdin)
+    set -l filter "$ENHANCD_CURRENT_FILTER"
+    set -l before_cmd
+    set -l after_cmd
 
     if test "$ENHANCD_USE_ABBREV" = true
-        function _enhancd_filter_interactive_abbrev
-            while read -l line
-                string replace --regex "^$HOME" "~" "$line"
-            end
-        end
-
-        function _enhancd_filter_interactive_expand
-            while read -l line
-                string replace --regex "^~" "$HOME" "$line"
-            end
-        end
-
-        set filter "_enhancd_filter_interactive_abbrev | $ENHANCD_CURRENT_FILTER | _enhancd_filter_interactive_expand"
+        # Escape '/' for sed processing
+        set -l home_escaped (string replace -a '/' '\/' "$HOME")
+        set before_cmd sed 's/^'$home_escaped'/~/g'
+        set after_cmd sed 's/^~/'$home_escaped'/g'
+    else
+        set before_cmd cat
+        set after_cmd cat
     end
 
-    switch "$count"
-        case '1'
-            if test -n "$stdin"
-                echo "$stdin"
-            else
-                return 1
-            end
-
-        case '*'
-            set -l selected (string join \n -- $stdin | eval "$ENHANCD_CURRENT_FILTER")
-            if test -z "$selected"
-                return 1
-            end
-            echo "$selected"
+    read --line line_1 line_2
+    if test -z "$line_1" -a -z "$line_2"
+        echo "no entry" >&2
+        return 1
+    else if test -n "$line_1" -a -z "$line_2"
+        echo "$line_1"
+    else
+        # Prepend the first two lines we read to stdin
+        begin
+            printf "$line_1\n$line_2\n"
+            cat
+        end | $before_cmd | $filter | $after_cmd
+        or return 1
     end
 end
