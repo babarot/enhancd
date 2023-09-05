@@ -11,7 +11,8 @@ function _enhancd_helper_parse_filter_string
 
     while test -n "$str"
         for item in (string split ':' $str)
-            if _enhancd_command_which "$item"
+            set -l cmd (string split ' ' -- "$item")
+            if _enhancd_command_which (string trim -- "$cmd[1]")
                 echo $item
                 return 0
             else
