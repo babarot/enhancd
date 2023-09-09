@@ -1,5 +1,7 @@
 function _enhancd_cd_ready
-    _enhancd_helper_parse_filter_string "$ENHANCD_FILTER" 2 >/dev/null
-   ; and test -s $ENHANCD_DIR/enhancd.log
+    test -n "$ENHANCD_AWK_CMD"
+   ; and test -n "$ENHANCD_CURRENT_FILTER"
+   ; and test -n "$ENHANCD_DIRECTORIES"
+   ; and set -Ux _ENHANCD_READY 1
     return $status
 end

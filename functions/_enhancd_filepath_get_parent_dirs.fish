@@ -4,7 +4,7 @@ function _enhancd_filepath_get_parent_dirs
         set argv[1] "$PWD"
     end
 
-    _enhancd_command_awk \
+    "$ENHANCD_AWK_CMD" \
         -f "$ENHANCD_ROOT/lib/step_by_step.awk" \
         -v dir="$argv[1]"
 end

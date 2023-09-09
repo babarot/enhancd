@@ -4,7 +4,8 @@ function enhancd
     set -l opts
     set -l code 0
 
-    if not _enhancd_cd_ready
+    if test -z "$_ENHANCD_READY"
+        _enhancd_cd_ready
         if not set -q argv[1]
             _enhancd_cd_builtin "$HOME"
         else
@@ -13,14 +14,18 @@ function enhancd
         return $status
     end
 
+    if not isatty
+        _enhancd_filter_interactive | read --line args
+    end
+
     # set indice to the first element
     set -l i 1
 
     while [ $i -le (count $argv) ]
         switch $argv[$i]
-            case "--help"
+            case --help
                 _enhancd_ltsv_open \
-                  | _enhancd_command_awk -f "$ENHANCD_ROOT/lib/help.awk"
+                    | "$ENHANCD_AWK_CMD" -f "$ENHANCD_ROOT/lib/help.awk"
 
             case "$ENHANCD_ARG_HYPHEN"
                 # If a hyphen is passed as the argument,
@@ -28,7 +33,7 @@ function enhancd
                 set -a args (_enhancd_source_mru | _enhancd_filter_interactive)
                 set code $status
 
-            case '-'
+            case -
                 set -a args "$OLDPWD"
 
             case "$ENHANCD_ARG_DOUBLE_DOT"
@@ -49,7 +54,7 @@ function enhancd
                 set -a args (_enhancd_source_home | _enhancd_filter_interactive)
                 set code $status
 
-            case '--'
+            case --
                 set -a opts "$argv[1]"
                 set -a args (_enhancd_source_history "$argv[2]" | _enhancd_filter_interactive)
                 set code $status
@@ -96,14 +101,14 @@ function enhancd
         set i (math "$i + 1")
     end
 
-    switch (count $argv)
-        case '0'
+    switch (count $args)
+        case 0
             set -a args (_enhancd_source_home | _enhancd_filter_interactive)
             set code $status
     end
 
     switch "$code"
-        case '0'
+        case 0
             _enhancd_cd_builtin $opts $args
             return $status
         case '*'

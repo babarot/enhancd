@@ -4,5 +4,5 @@ function _enhancd_filter_unique
         command cat "$argv[1]"
     else
         command cat <&0
-    end | _enhancd_command_awk '!a[$0]++' 2>/dev/null
+    end | "$ENHANCD_AWK_CMD" '!a[$0]++' 2>/dev/null
 end

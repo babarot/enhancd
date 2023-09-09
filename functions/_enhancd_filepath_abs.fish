@@ -13,7 +13,7 @@ function _enhancd_filepath_abs
         return 1
     end
 
-    _enhancd_command_awk \
+    "$ENHANCD_AWK_CMD" \
         -f "$ENHANCD_ROOT/lib/to_abspath.awk" \
         -v cwd="$cwd" \
         -v dir="$dir"
