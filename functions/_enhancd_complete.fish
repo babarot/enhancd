@@ -5,5 +5,5 @@ function _enhancd_complete
         commandline -t "$query"
     end
 
-    commandline --functions repaint
+    commandline -f repaint
 end
