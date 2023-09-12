@@ -51,5 +51,9 @@ __enhancd::sources::history()
     return 0
   fi
 
+  if [[ -n $CDPATH  ]]; then
+    __enhancd::command::awk -f "${ENHANCD_ROOT}/functions/enhancd/lib/cdpath.awk" -v cdpath="${CDPATH}" -v dir="${dir}" && return 0
+  fi
+
   __enhancd::history::list "${dir}"
 }
