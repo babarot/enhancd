@@ -30,7 +30,7 @@ function _enhancd_filter_interactive
     end
 
     switch "$count"
-        case '1'
+        case '2'
             if test -n "$stdin"
                 echo "$stdin"
             else
