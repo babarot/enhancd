@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.5.2](https://github.com/babarot/enhancd/compare/v2.5.1...v2.5.2) - 2025-01-01
+### Bug fixes
+- Do not quote multiple lines to deal as single line by @babarot in https://github.com/babarot/enhancd/pull/210
+### Others
+- Update README.md to fix typo in FZF_CTRL_T_COMMAND by @timfee in https://github.com/babarot/enhancd/pull/213
+- Single results are still showing the filter #207 by @augustocdias in https://github.com/babarot/enhancd/pull/221
+- Use CDPATH if set by @jbro in https://github.com/babarot/enhancd/pull/219
+
 ## [v2.5.1](https://github.com/b4b4r07/enhancd/compare/v2.5.0...v2.5.1) - 2023-04-11
 ### Bug fixes
 - fix fish errors by @peeviddy in https://github.com/b4b4r07/enhancd/pull/204
