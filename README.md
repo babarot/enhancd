@@ -344,7 +344,7 @@ Bash
 </tr>
 
 <tr>
-<td rowspan="2"> Zsh </td>
+<td rowspan="3"> Zsh </td>
 <td>
 
 [`zplug`](https://github.com/zplug/zplug) (powerful plugin manager for zsh):
@@ -381,6 +381,22 @@ and then load as a plugin in your zshrc.
 ```bash
 # .zshrc
 plugins+=(enhancd)
+```
+
+</td>
+</tr>
+<tr>
+<!-- <td> Zsh </td> -->
+<td>
+
+[`zi`](https://wiki.zshell.dev) user:
+
+Load as a plugin in your zshrc.
+
+```bash
+# .zshrc
+e src"init.sh"
+zi load b4b4r07/enhancd
 ```
 
 </td>
