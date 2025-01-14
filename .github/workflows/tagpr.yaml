@@ -2,7 +2,6 @@ name: Tagpr
 on:
   push:
     branches:
-    - master
     - main
 jobs:
   tagpr:
