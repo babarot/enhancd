@@ -16,8 +16,8 @@ BEGIN {
 {
   condition = ltsv("condition")
   if (condition != "") {
-    command = sprintf("%s &>/dev/null", condition);
-    code = system(command)
+    command = sprintf("{ %s; } &>/dev/null", condition);
+    code = system(command);
     close(command);
     if (code != 0) { next }
   }
