@@ -32,7 +32,7 @@ Type "dot" Sleep 1s Enter
 # Second
 Enter Enter
 Sleep 1s
-Type "echo ~/src/github.com/b4b4r07/enhancd | cd" Sleep 1s Enter
+Type "echo ~/src/github.com/babarot/enhancd | cd" Sleep 1s Enter
 Sleep 1s
 
 # end

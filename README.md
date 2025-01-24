@@ -1,11 +1,11 @@
-[version-badge]: https://img.shields.io/github/tag/b4b4r07/enhancd.svg
-[version-link]: https://github.com/b4b4r07/enhancd/tags
-[sponsors-badge]: https://img.shields.io/github/sponsors/b4b4r07?logo=github&color=lightyellow
-[sponsors-link]: https://github.com/sponsors/b4b4r07
+[version-badge]: https://img.shields.io/github/tag/babarot/enhancd.svg
+[version-link]: https://github.com/babarot/enhancd/tags
+[sponsors-badge]: https://img.shields.io/github/sponsors/babarot?logo=github&color=lightyellow
+[sponsors-link]: https://github.com/sponsors/babarot
 [repostatus-badge]: https://www.repostatus.org/badges/latest/active.svg
 [repostatus-link]: https://www.repostatus.org/#active
 [awk-link]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
-[license-link]: https://b4b4r07.mit-license.org
+[license-link]: https://babarot.mit-license.org
 
 <div align="center">
 
@@ -112,8 +112,8 @@ List latest 10 directories. This is useful for choosing the directory recently v
 $ cd -
 ❯ enhancd
   2/10
-> /Users/babarot/src/github.com/b4b4r07/enhancd
-  /Users/babarot/src/github.com/b4b4r07/enhancd/src
+> /Users/babarot/src/github.com/babarot/enhancd
+  /Users/babarot/src/github.com/babarot/enhancd/src
 ```
 
 To disable this feature, set `ENHANCD_ENABLE_HYPHEN` to `false`.
@@ -122,13 +122,13 @@ To disable this feature, set `ENHANCD_ENABLE_HYPHEN` to `false`.
 
 List all parent directories of the current working directory to quickly go back to any directory instead of typing `cd ../../..` redundantly.
 
-Let's say you're in `~/src/github.com/b4b4r07/enhancd`. The result of `cd ..` will be:
+Let's say you're in `~/src/github.com/babarot/enhancd`. The result of `cd ..` will be:
 
 ```console
 $ cd ..
 ❯ _
   6/6
-> /Users/babarot/src/github.com/b4b4r07
+> /Users/babarot/src/github.com/babarot
   /Users/babarot/src/github.com
   /Users/babarot/src
   /Users/babarot
@@ -192,7 +192,7 @@ OPTIONS:
 Version: 2.3.0
 ```
 
-In enhancd, all options are defined at a configuration file ([config.ltsv](https://github.com/b4b4r07/enhancd/blob/master/config.ltsv)). This mechanism allows you to add what you want as new option or delete unneeded default options. It uses [LTSV](http://ltsv.org/) (Labeled Tab-Separated Values) format.
+In enhancd, all options are defined at a configuration file ([config.ltsv](https://github.com/babarot/enhancd/blob/master/config.ltsv)). This mechanism allows you to add what you want as new option or delete unneeded default options. It uses [LTSV](http://ltsv.org/) (Labeled Tab-Separated Values) format.
 
 For example, let's say you want to use [`ghq list`](https://github.com/x-motemen/ghq) as custom inputs for `cd` command. In this case, all you have to do is just to add this one line to your any `config.ltsv`:
 
@@ -234,18 +234,18 @@ Thanks to this feature, it's easy to add your custom option as you hope.
 enhancd is consists of a bunch of shell scripts. Running this command to clone repo and to run an entrypoint script enables you to try it out.
 
 ```bash
-git clone https://github.com/b4b4r07/enhancd && source enhancd/init.sh
+git clone https://github.com/babarot/enhancd && source enhancd/init.sh
 ```
 
 ### Using package manager
 
-Using [AFX](https://github.com/b4b4r07/afx) for installing and managing shell plugins is heavily recommended now because it's better solution to manage enhancd and your favorite interactive filter at the same way.
+Using [AFX](https://github.com/babarot/afx) for installing and managing shell plugins is heavily recommended now because it's better solution to manage enhancd and your favorite interactive filter at the same way.
 
 ```yaml
 github:
-- name: b4b4r07/enhancd
+- name: babarot/enhancd
   description: A next-generation cd command with your interactive filter
-  owner: b4b4r07
+  owner: babarot
   repo: enhancd
   plugin:
     env:
@@ -330,7 +330,7 @@ Bash
 1. Run cloning on the console.
 
    ```console
-   $ git clone https://github.com/b4b4r07/enhancd.git /path/to/enhancd
+   $ git clone https://github.com/babarot/enhancd.git /path/to/enhancd
    ```
 
 2. Add this line to your bashrc.
@@ -353,7 +353,7 @@ Add this line to your zshrc
 
 ```bash
 # .zshrc
-zplug "b4b4r07/enhancd", use:init.sh
+zplug "babarot/enhancd", use:init.sh
 ```
 
 and then run this command.
@@ -373,7 +373,7 @@ $ zplug install
 Clone repo,
 
 ```console
-$ git clone https://github.com/b4b4r07/enhancd.git $ZSH_CUSTOM/plugins/enhancd
+$ git clone https://github.com/babarot/enhancd.git $ZSH_CUSTOM/plugins/enhancd
 ```
 
 and then load as a plugin in your zshrc.
@@ -396,7 +396,7 @@ Load as a plugin in your zshrc.
 ```bash
 # .zshrc
 e src"init.sh"
-zi load b4b4r07/enhancd
+zi load babarot/enhancd
 ```
 
 </td>
@@ -416,7 +416,7 @@ System Requirements:
 Install with [Fisher](https://github.com/jorgebucaran/fisher):
 
 ```console
-$ fisher install b4b4r07/enhancd
+$ fisher install babarot/enhancd
 ```
 
 </td>
@@ -481,7 +481,7 @@ Enable to list sub directories in the current directory when `.` is given. Defau
 ref: [Single-dot (`.`)](#single-dot-)
 
 > **Note**
-> Added in [#188](https://github.com/b4b4r07/enhancd/pull/188) [#198](https://github.com/b4b4r07/enhancd/pull/198)
+> Added in [#188](https://github.com/babarot/enhancd/pull/188) [#198](https://github.com/babarot/enhancd/pull/198)
 
 </details>
 
@@ -579,15 +579,15 @@ $ cd -
 ❯ _
   10/10
   /Users/babarot/src
-> /Users/babarot/src/github.com/b4b4r07/enhancd/src
+> /Users/babarot/src/github.com/babarot/enhancd/src
   /Users/babarot/enhancd
-  /Users/babarot/src/github.com/b4b4r07/dotfiles
-  /Users/babarot/src/github.com/b4b4r07/dotfiles/.config/nvim/lua/plugins
-  /Users/babarot/src/github.com/b4b4r07/enhancd/functions/enhancd/lib
-  /Users/babarot/src/github.com/b4b4r07/tmux-git-prompt
+  /Users/babarot/src/github.com/babarot/dotfiles
+  /Users/babarot/src/github.com/babarot/dotfiles/.config/nvim/lua/plugins
+  /Users/babarot/src/github.com/babarot/enhancd/functions/enhancd/lib
+  /Users/babarot/src/github.com/babarot/tmux-git-prompt
   /Users/babarot/.tmux/plugins/tmux-git-prompt
   /Users/babarot/.tmux/plugins/tmux-colors-solarized
-  /Users/babarot/.afx/github.com/b4b4r07
+  /Users/babarot/.afx/github.com/babarot
 ```
 -->
 
