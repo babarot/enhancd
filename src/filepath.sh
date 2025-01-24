@@ -15,7 +15,7 @@ __enhancd::filepath::walk()
 
   # __enhancd::filepath::get_parent_dirs does not return $PWD itself,
   # so add it to the array explicitly
-  dirs=( "${PWD}" $(__enhancd::filepath::get_parent_dirs "${1:-${PWD}}") )
+  IFS=$'\n' dirs=( "${PWD}" $(__enhancd::filepath::get_parent_dirs "${1:-${PWD}}") )
 
   for dir in "${dirs[@]}"
   do
