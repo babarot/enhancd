@@ -116,7 +116,13 @@ __enhancd::cd()
 
   case ${#args[@]} in
     0)
-      args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
+      # When $ENHANCD_ARG_HOME is configured,
+      # this behaves like `cd`
+      if [[ -n "$ENHANCD_ARG_HOME" ]]; then
+        args+=( "$HOME" )
+      else
+        args+=( "$(__enhancd::sources::home | __enhancd::filter::interactive)" )
+      fi
       code=${?}
       ;;
   esac
