@@ -1,6 +1,11 @@
 #!/bin/bash
 # vim: ft=zsh
 
+# Exit early if not in an interactive terminal
+if [[ ! -t 0 ]]; then
+  return 2>/dev/null || exit
+fi
+
 export ENHANCD_ROOT
 export ENHANCD_COMMAND
 export ENHANCD_FILTER
