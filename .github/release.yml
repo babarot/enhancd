@@ -2,6 +2,7 @@ changelog:
   exclude:
     labels:
       - tagpr
+      - changelog/skip
   categories:
     - title: Breaking Changes
       labels:
@@ -12,6 +13,12 @@ changelog:
     - title: Bug fixes
       labels:
         - kind/bug
+    - title: Deprecated features
+      labels:
+        - kind/deprecation
+    - title: Improvements
+      labels:
+        - kind/improvement
     - title: Refactorings
       labels:
         - kind/cleanup
