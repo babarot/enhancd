@@ -40,5 +40,5 @@
 	vPrefix = true
 	releaseBranch = main
 	versionFile = VERSION
-	majorLabels = release/major
-	minorLabels = release/minor
+	majorLabels = kind/breaking-change
+	minorLabels = kind/feature,kind/deprecation
