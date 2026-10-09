@@ -1,5 +1,22 @@
 # Changelog
 
+## [v2.5.2](https://github.com/babarot/enhancd/compare/v2.5.1...v2.5.2) - 2026-10-09
+
+### Bug fixes
+- Do not quote multiple lines to deal as single line by @babarot in https://github.com/babarot/enhancd/pull/210
+### Others
+- Update README.md to fix typo in FZF_CTRL_T_COMMAND by @timfee in https://github.com/babarot/enhancd/pull/213
+- Single results are still showing the filter #207 by @augustocdias in https://github.com/babarot/enhancd/pull/221
+- Use CDPATH if set by @jbro in https://github.com/babarot/enhancd/pull/219
+- fix: parent directory containing spaces (#222) by @iamKunal in https://github.com/babarot/enhancd/pull/229
+- doc: Add install instructions for zi by @papanito in https://github.com/babarot/enhancd/pull/223
+- Remove label sync; labels are managed in github-config by @babarot in https://github.com/babarot/enhancd/pull/235
+- Pin actions to commit SHAs and declare job permissions by @babarot in https://github.com/babarot/enhancd/pull/236
+- Use only kind/* labels for tagpr version bumps by @babarot in https://github.com/babarot/enhancd/pull/237
+- Sync shared files from github-config by @babarot in https://github.com/babarot/enhancd/pull/238
+- Use the shared PR labeler workflow by @babarot in https://github.com/babarot/enhancd/pull/239
+- Sync shared files from github-config by @babarot in https://github.com/babarot/enhancd/pull/240
+
 ## [v2.5.1](https://github.com/babarot/enhancd/compare/v2.5.0...v2.5.1) - 2023-04-11
 ### Bug fixes
 - fix fish errors by @peeviddy in https://github.com/babarot/enhancd/pull/204
