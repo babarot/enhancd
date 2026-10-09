@@ -1,0 +1,28 @@
+# Rules for labeling
+
+# Add area label against edited files
+area/bash:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.sh', '**/*.bash']
+area/zsh:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.zsh'
+area/fish:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.fish'
+area/awk:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.awk'
+
+# Add 'missing/bash' label to any change to `functions/*.fish` files as long as the `src/*` files haven't changed
+missing/bash:
+  - all:
+      - changed-files:
+          - any-glob-to-any-file: 'functions/*.fish'
+          - all-globs-to-all-files: '!src/*'
+# Opposite rule for above
+missing/fish:
+  - all:
+      - changed-files:
+          - any-glob-to-any-file: 'src/*'
+          - all-globs-to-all-files: '!functions/*.fish'
