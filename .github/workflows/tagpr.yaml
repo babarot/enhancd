@@ -6,8 +6,12 @@ on:
 jobs:
   tagpr:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-    - uses: actions/checkout@v3
-    - uses: Songmu/tagpr@v1
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+    - uses: Songmu/tagpr@0c4eb5a3b0862693702acea436a7c68bd586530d # v1.21.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
